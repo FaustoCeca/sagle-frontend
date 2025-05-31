@@ -27,7 +27,7 @@ type GameFormProps = {
     title: string;
     birthYear: number;
     imageUrl: any;
-    saga: any;
+    sagaId: number;
     steamLink?: string;
 }
 
@@ -54,7 +54,7 @@ export const SagaForm = () => {
             link: ''
         }
     });
-    const { handleSubmit, reset, register, watch } = methods;
+    const { handleSubmit, reset, register, formState: {isSubmitting} } = methods;
     const addFile = useFile(state => state.addFile);
     const file = useFile(state => state.file);
     const removeFile = useFile(state => state.removeFile);
@@ -194,9 +194,9 @@ export const SagaForm = () => {
                         {...register("hasMultiplayer")}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                        <option value="some">Some</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Some">Some</option>
                     </select>
                 </div>
                 <DragFiles onChange={() => addFile} />
@@ -213,6 +213,7 @@ export const SagaForm = () => {
                 <button
                     type="submit"
                     className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    disabled={isSubmitting}
                 >
                     Submit
                 </button>
@@ -228,7 +229,7 @@ export const GameForm = () => {
             title: '',
             birthYear: new Date().getFullYear(),
             imageUrl: null,
-            saga: null,
+            sagaId: 0,
             steamLink: ''
         }
     });
@@ -236,7 +237,7 @@ export const GameForm = () => {
     const file = useFile(state => state.file);
     const removeFile = useFile(state => state.removeFile);
     const {sagas, error, isLoading} = useGetSagas();
-    const { handleSubmit, reset } = methods;
+    const { handleSubmit, reset, formState: {isSubmitting} } = methods;
 
     const onSubmit = async (data: GameDto) => {
         const gameData: GameDto = {
@@ -252,11 +253,14 @@ export const GameForm = () => {
         try {
             // console.log("Submitting game data:", gameData);
             await createGame(gameData, file);
+            removeFile();
             reset();
         } catch (error) {
             console.error('Error uploading game:', error);
         }
     }
+
+    console.log("Sagas:", sagas);
 
     return (
         <FormProvider {...methods}>
@@ -298,7 +302,7 @@ export const GameForm = () => {
                         Saga
                     </label>
                     <select
-                        {...methods.register("saga")}
+                        {...methods.register("sagaId")}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                         <option value="">Select a saga</option>
@@ -332,6 +336,7 @@ export const GameForm = () => {
                 <button
                     type="submit"
                     className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    disabled={isSubmitting}
                 >
                     Submit
                 </button>

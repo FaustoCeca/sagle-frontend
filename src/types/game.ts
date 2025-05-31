@@ -5,10 +5,11 @@ export interface Saga {
     isTheSagle: boolean;
     imageUrl: string;
     lastTimeBeingSagle: Date | string   | null;
+    wasSagleYesterday: boolean;
     categories: Category[];
     games: Game[];
     perspectives: Perspective[];
-    artStyle: ArtStyles[];
+    artStyles: ArtStyles[];
     hasMultiplayer: "yes" | "no" | "some";
     link: string;
     createdAt: Date;

@@ -8,6 +8,8 @@ import { registerUser } from "./actions/register";
 import { useEffect } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import CreateButton from "./components/CreateButton";
+import bg from '../public/bg.png';
+
 
 const SagleContentApp = () => {
   const { isLoading, error, data: userData } = useQuery({
@@ -27,7 +29,18 @@ const SagleContentApp = () => {
   
   console.log("SagleContentApp user", user);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+    <div
+      className="flex flex-col items-center min-h-dvh w-full py-8 lg:overflow-auto overflow-scroll"
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+    </div>
+  )
   if (error) return <div>Error registering user</div>;
 
   return (

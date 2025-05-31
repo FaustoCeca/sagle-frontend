@@ -1,13 +1,15 @@
+import { memo, useMemo } from "react";
 import useSagleStore from "../hooks/useSagle";
-import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
+import useTriedSagasStore from "../hooks/useTriedSagas";
+import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, lastGameLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
 import TableSagaItem from "./TableSagaItem";
 
 const SelectedSagas = () => {
     const sagle = useSagleStore((state) => state.sagle);
-
+    const triedSagas = useTriedSagasStore((state) => state.triedSagas);
+    const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
 
     if (!sagle) return <div>Loading...</div>
-    console.log("sagle", sagle);
 
     return (
         <div
@@ -23,7 +25,9 @@ const SelectedSagas = () => {
                         state: "correct",
                         showArrow: false
                     })}
+                    showImage={true}
                     getDisplayValue={(saga) => saga.title}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -34,6 +38,7 @@ const SelectedSagas = () => {
                         showArrow: false
                     })}
                     getDisplayValue={(saga) => saga.categories.map(c => c.name).join(", ")}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -47,6 +52,7 @@ const SelectedSagas = () => {
                         lower: sagle && saga.games.length > sagle.games.length
                     })}
                     getDisplayValue={(saga) => saga.games.length.toString()}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -60,6 +66,21 @@ const SelectedSagas = () => {
                         lower: sagle && saga.games[0].birthYear > sagle.games[0].birthYear
                     })}
                     getDisplayValue={(saga) => saga.games[0].birthYear.toString()}
+                    triedSagas={memoizedTriedSagas}
+                />
+
+                <TableSagaItem 
+                    title="Last Game in"
+                    ariaLabel="saga-last-game"
+                    renderLogic={(saga) => ({
+                        // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
+                        state: lastGameLogic(sagle, saga),
+                        showArrow: true,
+                        higher: sagle && saga.games[saga.games.length - 1].birthYear < sagle.games[sagle.games.length - 1].birthYear,
+                        lower: sagle && saga.games[saga.games.length - 1].birthYear > sagle.games[sagle.games.length - 1].birthYear
+                    })}
+                    getDisplayValue={(saga) => saga.games[saga.games.length - 1].birthYear.toString()}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -70,6 +91,7 @@ const SelectedSagas = () => {
                         showArrow: false,
                     })}
                     getDisplayValue={(saga) => saga.perspectives.map(p => p.name).join(", ")}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -79,7 +101,8 @@ const SelectedSagas = () => {
                         state: artStylesLogic(sagle, saga),
                         showArrow: false
                     })}
-                    getDisplayValue={(saga) => saga.artStyle.map((artStyle) => artStyle.name).join(", ")}
+                    getDisplayValue={(saga) => saga.artStyles.map((artStyle) => artStyle.name).join(", ")}
+                    triedSagas={memoizedTriedSagas}
                 />
 
                 <TableSagaItem
@@ -90,6 +113,7 @@ const SelectedSagas = () => {
                         showArrow: false
                     })}
                     getDisplayValue={(saga) => saga.hasMultiplayer}
+                    triedSagas={memoizedTriedSagas}
                 />
 
             </div>

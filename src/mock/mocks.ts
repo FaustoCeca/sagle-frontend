@@ -15,7 +15,7 @@ export const Sagas: Saga[] = [
         },
         {
             id: 2,
-            name: "Adventure",
+            name: "Sci-Fi",
             sagas: [],
         },
         ],
@@ -23,7 +23,7 @@ export const Sagas: Saga[] = [
         {
             id: 1,
             title: "The Legend of Zelda: Breath of the Wild",
-            birthYear: 2017,
+            birthYear: 2007,
             imageUrl: "https://example.com",
             sagaId: 1,
             saga: {} as Saga,
@@ -57,7 +57,7 @@ export const Sagas: Saga[] = [
             sagas: [],
         },
         ],
-        hasMultiplayer: "no",
+        hasMultiplayer: "No",
     },
     {
         id: 2,

@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
 import { getSagas } from "../actions/getters"
+import type { Saga } from "../types/game"
 
-export const useGetSagas = () => {
+interface Response {
+    sagas: Saga[];
+    isLoading: boolean;
+    error: Error | null;
+}
+
+export const useGetSagas = (): Response => {
     const {data, isLoading, error} = useQuery({
         queryKey: ["sagas"],
         queryFn: getSagas,

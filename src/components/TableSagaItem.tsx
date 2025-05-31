@@ -1,4 +1,3 @@
-import useTriedSagasStore from '../hooks/useTriedSagas';
 import type { Saga } from '../types/game';
 import SquareResult from './SquareResult';
 
@@ -12,15 +11,18 @@ interface TableSagaItemProps {
         lower?: boolean;
     };
     getDisplayValue: (saga: Saga) => string | string[];
+    showImage?: boolean;
+    triedSagas: Saga[];
 }
 
-const TableSagaItem = ({ 
-    title, 
-    ariaLabel, 
+const TableSagaItem = ({
+    title,
+    ariaLabel,
     renderLogic,
-    getDisplayValue 
+    getDisplayValue,
+    showImage = false,
+    triedSagas = []
 }: TableSagaItemProps) => {
-    const triedSagas = useTriedSagasStore((state) => state.triedSagas);
 
     return (
         <div className="text-center">
@@ -30,19 +32,36 @@ const TableSagaItem = ({
             >
                 {title}
             </span>
-            {triedSagas.map((saga) => {
-                const { state, showArrow, higher, lower } = renderLogic(saga);
-                return (
-                    <SquareResult
-                        key={saga.id}
-                        title={getDisplayValue(saga)}
-                        showArrow={showArrow || false}
-                        state={state}
-                        higher={higher}
-                        lower={lower}
-                    />
-                );
-            })}
+            {
+                triedSagas.length > 0 && !showImage &&
+                triedSagas.map((saga) => {
+                    const { state, showArrow, higher, lower } = renderLogic(saga);
+                    return (
+                        <SquareResult
+                            key={saga.id}
+                            title={getDisplayValue(saga)}
+                            showArrow={showArrow || false}
+                            state={state}
+                            higher={higher}
+                            lower={lower}
+                        />
+                    );
+                })
+            }
+            {
+                showImage && triedSagas.length > 0 && (
+                    <div className="flex flex-col items-center">
+                        {triedSagas.map((saga) => (
+                            <img
+                                key={saga.id}
+                                src={saga.imageUrl}
+                                alt={saga.title}
+                                className="w-20 h-20 object-cover mb-2 border-solid border-2 border-black"
+                            />
+                        ))}
+                    </div>
+                )
+            }
         </div>
     );
 };

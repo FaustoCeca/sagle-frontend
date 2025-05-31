@@ -16,7 +16,7 @@ export interface GameDto {
     title: string;
     birthYear: number;
     imageUrl: any;
-    saga: any;
+    sagaId: number;
     steamLink?: string;
 }
 

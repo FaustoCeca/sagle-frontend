@@ -48,24 +48,24 @@ export const firstGameLogic = (sagle: Saga, saga: Saga) => {
     }
 }
 
-// export const lastGameLogic = (sagle: Saga, saga: Saga) => {
-//     if (!sagle) return "incorrect";
+export const lastGameLogic = (sagle: Saga, saga: Saga) => {
+    if (!sagle) return "incorrect";
 
-//     const sagleLastGame = sagle.games[sagle.games.length - 1].birthYear;
-//     const triedLastGame = saga.games[saga.games.length - 1].birthYear;
+    const sagleLastGame = sagle.games[sagle.games.length - 1].birthYear;
+    const triedLastGame = saga.games[saga.games.length - 1].birthYear;
 
-//     if (sagleLastGame === triedLastGame) {
-//         return "correct";
-//     } else if (sagleLastGame < triedLastGame) {
-//         return "incorrect";
-//     }
-// }
+    if (sagleLastGame === triedLastGame) {
+        return "correct";
+    } else if (sagleLastGame < triedLastGame) {
+        return "incorrect";
+    }
+}
 
 export const perspectivesLogic = (sagle: Saga, saga: Saga) => {
     if (!sagle) return "incorrect";
 
-    const saglePerspectives = sagle.perspectives.map(p => p.name);
-    const triedPerspectives = saga.perspectives.map(p => p.name);
+    const saglePerspectives = sagle.perspectives.map(p => p.id);
+    const triedPerspectives = saga.perspectives.map(p => p.id);
 
     const hasAllPerspectives = saglePerspectives.every(perspective =>
         triedPerspectives.includes(perspective)
@@ -87,8 +87,8 @@ export const perspectivesLogic = (sagle: Saga, saga: Saga) => {
 export const artStylesLogic = (sagle: Saga, saga: Saga) => {
     if (!sagle) return "incorrect";
 
-    const sagleArtStyles = sagle.artStyle.map(a => a.name);
-    const triedArtStyles = saga.artStyle.map(a => a.name);
+    const sagleArtStyles = sagle.artStyles.map(a => a.id);
+    const triedArtStyles = saga.artStyles.map(a => a.id);
 
     const hasAllArtStyles = sagleArtStyles.every(artStyle =>
         triedArtStyles.includes(artStyle)

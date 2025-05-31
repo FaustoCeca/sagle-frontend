@@ -4,6 +4,7 @@ import type { Saga } from '../types/game';
 import useTriedSagasStore from '../hooks/useTriedSagas';
 import { useEffect, useState } from 'react';
 import useSagleStore from '../hooks/useSagle';
+import { useGetSagas } from '../hooks/useGetSagas';
 
 
 const SelectSaga = () => {
@@ -14,18 +15,19 @@ const SelectSaga = () => {
     const sagle = useSagleStore((state) => state.sagle);
     const foundedSagle = useSagleStore((state) => state.foundedSagle);
     const setFoundedSagle = useSagleStore((state) => state.setFoundedSagle);
-
+    const {sagas, error, isLoading} = useGetSagas();
+    
+    console.log('sagas', sagas);
     console.log('triedSagas', triedSagas);
 
-
-    const yesterdaySagle = Sagas.find((saga) => {
+    const yesterdaySagle = sagas.find((saga) => {
         const yesterday = dayjs().subtract(1, "day").format("DD-MM-YYYY");
         const sagaDate = dayjs(saga.lastTimeBeingSagle).add(1, "day").format("DD-MM-YYYY");
 
         return sagaDate == yesterday;
     })
 
-    const availableSagas = Sagas.filter(saga => saga.id !== yesterdaySagle?.id && !triedSagas.some(triedSaga => triedSaga.id === saga.id));
+    const availableSagas = sagas.filter(saga => saga.id !== yesterdaySagle?.id && !triedSagas.some(triedSaga => triedSaga.id === saga.id));
 
     const filteredSagas = availableSagas.filter(saga =>
         saga.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -133,9 +135,9 @@ const SelectSaga = () => {
                             >
                                 <picture>
                                     <img
-                                        src={saga.games[0].imageUrl}
+                                        src={saga.imageUrl}
                                         alt={saga.title}
-                                        className="w-10 h-10 rounded-full"
+                                        className="object-cover w-16 h-16 border-solid border-2 border-black"
                                     />
                                 </picture>
                                 {saga.title}

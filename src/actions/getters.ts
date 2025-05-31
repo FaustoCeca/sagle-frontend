@@ -79,3 +79,23 @@ export const getSagas = async () => {
 
     return data;
 }
+
+export const getSagle = async () => {
+    const url = `${config.apiUrl}/sagle/get-sagle`;
+
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+}
