@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
 import { getPerspectives } from "../actions/getters"
+import type { Perspective } from "../types/game"
 
-export const useGetPerspectives = () => {
+interface Response {
+    perspectives: Perspective[]
+    isLoading: boolean
+    error: Error | null
+}
+
+export const useGetPerspectives = (): Response => {
     const {data, isLoading, error} = useQuery({
         queryKey: ["perspectives"],
         queryFn: getPerspectives,

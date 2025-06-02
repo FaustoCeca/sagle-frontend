@@ -1,8 +1,15 @@
+import { useGetArtStyles } from "../../hooks/useGetArtStyles";
+import { useGetCategories } from "../../hooks/useGetCategories";
+import { useGetPerspectives } from "../../hooks/useGetPerspectives";
 import useHowToPlayModal from "../../hooks/useHowToPlayModal";
 import BaseModal from "./BaseModal";
 
 const HowToPlayModal = () => {
     const closeModal = useHowToPlayModal(state => state.closeModal);
+    const { categories } = useGetCategories();
+    const { perspectives } = useGetPerspectives();
+    const { artStyles } = useGetArtStyles();
+
     return (
         <BaseModal
             onClose={closeModal}
@@ -40,9 +47,13 @@ const HowToPlayModal = () => {
                         <span className="text-cyan-500">
                             Posible values:
                         </span>
-                        <span>
-                            {" "}<i>Action, Adventure, RPG, Strategy, Simulation, Sports, etc.</i>
-                        </span>
+                        {" "}
+                        <i>
+
+                            {
+                                categories.map((category) => category.name).join(", ")
+                            }
+                        </i>
                     </p>
                 </div>
                 <div>
@@ -56,7 +67,7 @@ const HowToPlayModal = () => {
                             Posible values:
                         </span>
                         <span>
-                            {" "}<i>Starting from 2 to infinity number of games. </i>
+                            {" "}<i>Starting from 2 to infinity number of games. (We only a accept principal games and spin-offs that feels like a these ones, not DLCs or 4-6 hours spin-offs)</i>
                         </span>
                     </p>
                 </div>
@@ -86,7 +97,12 @@ const HowToPlayModal = () => {
                             Posible values:
                         </span>
                         <span>
-                            {" "}<i>First Person, Third Person, Top Down, Side Scroller, etc.</i>
+                            {" "}
+                            <i>
+                                {
+                                    perspectives.map((perspective) => perspective.name).join(", ")
+                                }
+                            </i>
                         </span>
                     </p>
                 </div>
@@ -100,9 +116,12 @@ const HowToPlayModal = () => {
                         <span className="text-cyan-500">
                             Posible values:
                         </span>
-                        <span>
-                            {" "}<i>Pixel Art, 2D, 3D, Realistic, etc.</i>
-                        </span>
+                        {" "}
+                        <i>
+                            {
+                                artStyles.map((artStyle) => artStyle.name).join(", ")
+                            }
+                        </i>
                     </p>
                 </div>
                 <div>

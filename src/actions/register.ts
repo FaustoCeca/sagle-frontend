@@ -3,8 +3,6 @@ import { config } from "../config/config";
 export const registerUser = async () => {
     const url = `${config.apiUrl}/users/register`;
 
-    console.log('Registering user at:', url);
-
     const response = await fetch(url, {
         method: 'POST',
         headers: {

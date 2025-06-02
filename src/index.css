@@ -1,1 +1,19 @@
 @import "tailwindcss";
+/* import bg from '../public/bg.png'; */
+
+
+html {
+    scroll-behavior: smooth;
+    background-image: url('../public/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.grid-votes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 0 auto;
+}

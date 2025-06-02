@@ -12,6 +12,8 @@ import { useGetPerspectives } from "../hooks/useGetPerspectives";
 import { useGetArtStyles } from "../hooks/useGetArtStyles";
 import { createSaga } from "../actions/createSaga";
 import { useGetSagas } from "../hooks/useGetSagas";
+import MultipleSelects from "./MultipleSelects";
+import type { ArtStyles, Category, Perspective } from "../types/game";
 
 type SagaFormProps = {
     title: string;
@@ -100,92 +102,42 @@ export const SagaForm = () => {
                     />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Categories (Ctrl/Cmd + Click para selección múltiple)
-                    </label>
-                    <select
-                        multiple
-                        {...register("categories")}
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                        {
-                            loadingCategories ? (
-                                <option value="">Loading categories...</option>
-                            ) : categoriesError ? (
-                                <option value="">Error loading categories</option>
-                            ) : (
-                                categories.map((category: {
-                                    id: number;
-                                    name: string;
-                                }) => (
-                                    <option 
-                                        key={category.id} 
-                                        value={category.id}
-                                    >
-                                        {category.name}
-                                    </option>
-                                ))
-                            )
-                        }
-                    </select>
-                </div>
+                <MultipleSelects 
+                    name="categories"
+                    label="Categories (Ctrl/Cmd + Click para selección múltiple)"
+                    options={categories.map((category: Category) => ({
+                        id: category.id,
+                        name: category.name
+                    }))}
+                    loading={loadingCategories}
+                    error={categoriesError ? "Error loading categories" : null}
+                    required
+                />
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Perspectives (Ctrl/Cmd + Click para selección múltiple)
-                    </label>
-                    <select
-                        multiple
-                        {...register("perspectives")}
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                        {
-                            loadingPerspectives ? (
-                                <option value="">Loading perspectives...</option>
-                            ) : perspectivesError ? (
-                                <option value="">Error loading perspectives</option>
-                            ) : (
-                                perspectives.map((perspective: {
-                                    id: number;
-                                    name: string;
-                                }) => (
-                                    <option key={perspective.id} value={perspective.id}>
-                                        {perspective.name}
-                                    </option>
-                                ))
-                            )
-                        }
-                    </select>
-                </div>
+                <MultipleSelects 
+                    name="perspectives"
+                    label="Perspectives (Ctrl/Cmd + Click para selección múltiple)"
+                    options={perspectives.map((perspective: Perspective) => ({
+                        id: perspective.id,
+                        name: perspective.name
+                    }))}
+                    loading={loadingPerspectives}
+                    error={perspectivesError ? "Error loading perspectives" : null}
+                    required
+                />
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Art Styles (Ctrl/Cmd + Click para selección múltiple)
-                    </label>
-                    <select
-                        multiple
-                        {...register("artStyles")}
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                        {
-                            loadingArtStyles ? (
-                                <option value="">Loading art styles...</option>
-                            ) : artStylesError ? (
-                                <option value="">Error loading art styles</option>
-                            ) : (
-                                artStyles.map((artStyle: {
-                                    id: number;
-                                    name: string;
-                                }) => (
-                                    <option key={artStyle.id} value={artStyle.id}>
-                                        {artStyle.name}
-                                    </option>
-                                ))
-                            )
-                        }
-                    </select>
-                </div>
+                <MultipleSelects 
+                    name="artStyles"
+                    label="Art Styles (Ctrl/Cmd + Click para selección múltiple)"
+                    options={artStyles.map((artStyle: ArtStyles) => ({
+                        id: artStyle.id,
+                        name: artStyle.name
+                    }))}
+                    loading={loadingArtStyles}
+                    error={artStylesError ? "Error loading art styles" : null}
+                    required
+                />
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
                         Has Multiplayer

@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
 import { getCategories } from "../actions/getters"
+import type { Category } from "../types/game"
 
-export const useGetCategories = () => {
+interface Response {
+    categories: Category[]
+    isLoading: boolean
+    error: Error | null
+}
+
+export const useGetCategories = (): Response => {
     const {data, isLoading, error} = useQuery({
         queryKey: ["categories"],
         queryFn: getCategories,

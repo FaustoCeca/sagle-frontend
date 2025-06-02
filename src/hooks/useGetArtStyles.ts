@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { getArtStyles } from "../actions/getters";
+import type { ArtStyles } from "../types/game";
 
-export const useGetArtStyles = () => {
+interface Response {
+    artStyles: ArtStyles[]
+    isLoading: boolean
+    error: Error | null
+}
+
+
+export const useGetArtStyles = (): Response => {
     const { data, isLoading, error } = useQuery({
         queryKey: ["artStyles"],
         queryFn: getArtStyles,

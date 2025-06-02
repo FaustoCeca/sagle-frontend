@@ -38,10 +38,8 @@ export interface Game {
     title: string;
     birthYear: number;
     imageUrl: string;
-    sagaId: number;
     saga: Saga;
     votes: number;
     steamLink?: string;
     createdAt: Date;
 }
-

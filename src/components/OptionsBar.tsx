@@ -1,8 +1,25 @@
+import { CircleHelp } from "lucide-react";
 import useHowToPlayModal from "../hooks/useHowToPlayModal";
 import HowToPlayModal from "./modals/HowToPlayModal";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useEffect } from "react";
 
 const OptionsBar = () => {
   const { openModal, isOpen } = useHowToPlayModal();
+  const user = useCurrentUser(state => state.user);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    } else {
+      document.body.style.overflow = 'auto'; // Re-enable scrolling when modal is closed
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'; // Clean up on unmount
+    };
+  }, [isOpen]);
+
   return (
     <>
     <div
@@ -11,16 +28,19 @@ const OptionsBar = () => {
         <div
             className="flex flex-row justify-between items-center gap-6"
             >
-            {/* Racha */}
             <div>
-              Racha
+              {user?.streak}
             </div>
             <button
-            onClick={openModal}
+              onClick={openModal}
+              className="cursor-pointer"
             >
-              How to play
+                <CircleHelp
+                    className="text-amber-300"
+                    size={30}
+                    aria-label="how-to-play"
+                />
             </button>
-            {/* How to play modal */}
         </div>
     </div>
     {
