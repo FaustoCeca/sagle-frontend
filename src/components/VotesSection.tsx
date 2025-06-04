@@ -4,10 +4,13 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import useSagleStore from "../hooks/useSagle";
 import GameCard from "./GameCard";
 import { useMemo } from "react";
+import { useGetUser } from "../hooks/useGetUser";
+import LoadingSpinner from "./LoadingSpinners";
+import GameCardSkeleton from "./GameCardSkeleton";
 
 const VotesSection = () => {
     const sagle = useSagleStore((state) => state.sagle);
-    const user = useCurrentUser(state => state.user);
+    const { user, isLoading: isUserLoading } = useGetUser();
     const { mutateAsync: vote, isPending: isVoting } = useMutation({
         mutationFn: voteGame,
         // TODO: implementar
@@ -25,10 +28,13 @@ const VotesSection = () => {
         [sagle?.games]
     );
 
-    console.log('sagle', sagle?.games);
+    // console.log('sagle', sagle?.games);
 
     const votesArr = sagle?.games.map(game => game.votes) || [];
     const totalVotes = votesArr.reduce((acc, votes) => acc + votes, 0);
+
+    console.log('isUserLoading', isUserLoading);
+    console.log('sagle', sagle);
 
     const handleVote = async (gameId: number) => {
         if (user?.hasVotedToday) {
@@ -45,39 +51,58 @@ const VotesSection = () => {
 
     return (
         <div
-            className="flex flex-col items-center justify-center min-h-dvh w-full py-8"
+            className="flex flex-col items-center justify-center min-h-dvh w-full py-8 mt-10"
+            style={{
+                visibility: user?.hasParticipatedToday ? 'visible' : 'hidden',
+            }}
+
         >
             <h2
                 className="text-2xl font-bold text-center mb-4"
                 aria-label="congrats-sagle"
             >
-                Congrats! You guessed the Sagle of the day: <span>
-                    <a
-                        href={`${sagle?.link}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-700"
-                        aria-label="sagle-link"
-                    >
-                        {sagle?.title}
-                    </a>
-                </span>
+                Congrats! You guessed the Sagle of the day: {
+                    sagle ?
+                        <span>
+                            <a
+                                href={`${sagle?.link}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 hover:text-blue-700"
+                                aria-label="sagle-link"
+                            >
+                                {sagle.title}
+                            </a>
+                        </span> : <span className="inline-flex items-center text-blue-500 hover:text-blue-700">
+                            Loading Sagle...
+                            <LoadingSpinner size="small" className="ml-2" />
+                        </span>}
             </h2>
             <div
-                className="mt-6 w-full grid-votes"
+                className="flex items-center justify-center w-full max-w-3xl"
             >
                 {
-                    sortedGames.map((game) => (
-                        <GameCard
-                            key={game.id}
-                            game={game}
-                            aria-label={`game-card-${game.id}`}
-                            onVote={handleVote}
-                            isVoting={isVoting}
-                            hasVotedToday={user?.hasVotedToday}
-                            totalVotes={totalVotes}
-                        />
-                    ))
+                    sagle ?
+                        <div
+                            className="mt-6 w-full grid-votes"
+                        >
+                            {
+                                sortedGames.map((game) => (
+                                    <GameCard
+                                        key={game.id}
+                                        game={game}
+                                        aria-label={`game-card-${game.id}`}
+                                        onVote={handleVote}
+                                        isVoting={isVoting}
+                                        hasVotedToday={user?.hasVotedToday}
+                                        totalVotes={totalVotes}
+                                    />
+                                ))
+                            }
+                        </div> :
+                        <div className="mt-6 w-full grid-votes items-center" aria-label="loading-games">
+                            <GameCardSkeleton count={3} />
+                        </div>
                 }
             </div>
         </div>

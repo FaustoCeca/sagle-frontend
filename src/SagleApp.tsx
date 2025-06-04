@@ -4,7 +4,7 @@ import SelectSaga from "./components/SelectSaga";
 import logo from '../public/sagle-logo.png';
 import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import CreateButton from "./components/CreateButton";
 import bg from '../public/bg.png';
@@ -12,36 +12,55 @@ import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
 import useSagleStore from "./hooks/useSagle";
+import useTriedSagasStore from "./hooks/useTriedSagas";
+import { useGetAttempts } from "./hooks/useGetAttempts";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 
 
 const SagleContentApp = () => {
   const { isLoading: isUserLoading, error, user: userData } = useGetUser();
-  const { setUser, user } = useCurrentUser();
+  const { setUser } = useCurrentUser();
   const voteSectionRef = useRef<HTMLDivElement>(null);
   const { sagle, isLoading: isSagleLoading } = useGetSagle();
   const setSagle = useSagleStore((state) => state.setSagle);
+  const foundedSagle = useSagleStore((state) => state.foundedSagle);
+  const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
+  const { attemptedSagas } = useGetAttempts();
+
 
   useEffect(() => {
-    if (sagle) {
-      setSagle(sagle);
+    if (sagle) setSagle(sagle);
+    if (userData) setUser(userData);
+  }, [sagle, userData, setSagle, setUser]);
+
+  useEffect(() => {
+    if (!userData || !attemptedSagas?.length) return;
+    // @ts-ignore 
+    setTriedSagas(attemptedSagas);
+  }, [userData, attemptedSagas, setTriedSagas]);
+
+  useEffect(() => {
+    if (userData?.hasParticipatedToday) {
+      const scrollToVotes = () => {
+        voteSectionRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+
+      requestAnimationFrame(scrollToVotes);
     }
-  }, [sagle, setSagle]);
+  }, [userData?.hasParticipatedToday]);
 
-  useEffect(() => {
-    setUser(userData || null);
-  }, [userData, setUser]);
 
-  useEffect(() => {
-    if (user?.hasParticipatedToday && voteSectionRef.current && !isSagleLoading) {
-      voteSectionRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }
-  }, [user, voteSectionRef, isSagleLoading]);
-  
+  const MemoizedOptionsBar = memo(OptionsBar);
+  const MemoizedSelectSaga = memo(SelectSaga);
+  const MemoizedSelectedSagas = memo(SelectedSagas);
+  const MemoizedVotesSection = memo(VotesSection);
+
   if (
-    isUserLoading 
+    isUserLoading
   ) return (
     <div
       className="flex flex-col items-center min-h-dvh w-full py-8 lg:overflow-auto overflow-scroll"
@@ -55,12 +74,12 @@ const SagleContentApp = () => {
     </div>
   )
 
-  if (error) return <div>Error registering user</div>;
+  if (error) return <div>Error registering userData</div>;
 
   return (
     <AppWrapper>
       <picture>
-        <img 
+        <img
           src={logo}
           className="w-full h-auto max-w-[300px] max-h-[300px] object-contain"
           alt="sagle-logo"
@@ -68,33 +87,34 @@ const SagleContentApp = () => {
         />
       </picture>
       {
-        user && user.isAdmin && (
+        userData && userData.isAdmin && (
           <CreateButton />
         )
       }
-      <OptionsBar />
-      <SelectSaga />
-      <SelectedSagas />
+      <MemoizedOptionsBar />
+      <MemoizedSelectSaga />
+      <MemoizedSelectedSagas />
       {
-        user?.hasParticipatedToday && (
-          <div
-            ref={voteSectionRef}
-          >
-            <VotesSection />
-          </div>
-        )
+        <div
+          className="w-full"
+          ref={voteSectionRef}
+          id="votes-section"
+          data-votes-section
+        >
+          <MemoizedVotesSection />
+        </div>
       }
     </AppWrapper>
   );
 };
 
 const SagleApp = () => {
-
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
       <SagleContentApp />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

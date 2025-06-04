@@ -1,6 +1,6 @@
 import { config } from "../config/config"
 
-export const winSagle = async () => {
+export const winSagle = async (): Promise<{message: string, success: boolean}> => {
     const url = `${config.apiUrl}/sagle/win-sagle`;
 
     try {

@@ -16,7 +16,7 @@ export const registerUser = async () => {
 
     const data = await response.json();
 
-    console.log('User registered successfully:', data);
+    // console.log('User registered successfully:', data);
 
     return data;
 }

@@ -22,31 +22,41 @@ const OptionsBar = () => {
 
   return (
     <>
-    <div
+      <div
         className="bg-gray-600 border border-amber-300 border-solid rounded-lg py-2 px-4 max-w-2xl mt-12"
-        >
+      >
         <div
-            className="flex flex-row justify-between items-center gap-6"
+          className="flex flex-row justify-between items-center gap-6"
+        >
+          <div className="relative group">
+            <span
+              className="text-2xl transform transition-transform group-hover:animate-flame cursor-default"
+              aria-label={`Streak: ${user?.streak || 0} days`}
+              title={`Streak: ${user?.streak || 0} days`}
             >
-            <div>
-              {user?.streak}
-            </div>
-            <button
-              onClick={openModal}
-              className="cursor-pointer"
-            >
-                <CircleHelp
-                    className="text-amber-300"
-                    size={30}
-                    aria-label="how-to-play"
-                />
-            </button>
+              🔥
+            </span>
+            <span className="ml-0.5 font-bold text-amber-300">
+              {user?.streak || 0}
+            </span>
+          </div>
+          <button
+            onClick={openModal}
+            className="cursor-pointer"
+            aria-label="how-to-play"
+          >
+            <CircleHelp
+              className="text-amber-300"
+              size={30}
+              aria-label="how-to-play"
+            />
+          </button>
         </div>
-    </div>
-    {
-      isOpen &&
-      <HowToPlayModal />
-    }
+      </div>
+      {
+        isOpen &&
+        <HowToPlayModal />
+      }
     </>
   )
 }

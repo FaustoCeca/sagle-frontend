@@ -3,13 +3,14 @@ import useSagleStore from "../hooks/useSagle";
 import useTriedSagasStore from "../hooks/useTriedSagas";
 import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, lastGameLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
 import TableSagaItem from "./TableSagaItem";
+import LoadingSpinner from "./LoadingSpinners";
 
 const SelectedSagas = () => {
     const sagle = useSagleStore((state) => state.sagle);
     const triedSagas = useTriedSagasStore((state) => state.triedSagas);
     const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
 
-    if (!sagle) return <div>Loading...</div>
+    if (!sagle) return <LoadingSpinner className="mt-4" size="large" />
 
     return (
         <div

@@ -1,20 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { registerUser } from "../actions/register";
 
 export const useGetUser = () => {
-    const { isLoading, error, data: userData } = useQuery({
-    queryKey: ['register'],
-    queryFn: registerUser,
-    // Only try once and don't retry on error
-    retry: false,
-    // Don't refetch automatically
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
+    const queryClient = useQueryClient();
+    
+    const { data: userData, isLoading, error } = useQuery({
+        queryKey: ['register'],
+        queryFn: registerUser,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
+
+    const fetchUserAgain = queryClient.invalidateQueries({
+        queryKey: ['register'],
+    });
 
     return {
+        user: userData,
         isLoading,
         error,
-        user: userData || null,
+        fetchUserAgain, // refetch
     };
-}
+};

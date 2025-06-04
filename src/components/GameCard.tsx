@@ -46,7 +46,7 @@ const GameCard = ({
                        `}
         >
             <div
-                className={`absolute inset-0 bg-black hover:opacity-60 opacity-0 rounded-lg transition-opacity duration-300
+                className={`absolute inset-0 bg-black hover:opacity-60 opacity-30 rounded-lg transition-opacity duration-300
                     ${hasVotedToday && 'opacity-60'}
                     `}
                 aria-hidden="true"
@@ -79,7 +79,7 @@ const GameCard = ({
                 </p>
             }
             {hasVotedToday && (
-                <p className="absolute bottom-2 right-2 text-white z-20">
+                <p className="absolute bottom-2 left-2 text-white z-20">
                     {game.votes} votes
                 </p>
             )}

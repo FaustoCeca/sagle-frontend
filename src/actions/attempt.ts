@@ -1,0 +1,32 @@
+import { config } from "../config/config"
+
+export const attempt = async (sagaId: number): Promise<{
+    message: string;
+    success: boolean;
+    haveFoundSagle?: boolean;
+}> => {
+    const url = `${config.apiUrl}/sagle/attempt`;
+
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sagaId }),
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to attempt game: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+        throw new Error(`Attempt failed: ${data.message}`);
+    }
+
+    return {
+        message: data.message,
+        success: data.success,
+        haveFoundSagle: data.haveFoundSagle,
+    };
+}

@@ -99,3 +99,23 @@ export const getSagle = async () => {
 
     return data;
 }
+
+export const getAttemptsIds = async () => {
+    const url = `${config.apiUrl}/sagle/attempts`;
+
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+}
