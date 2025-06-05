@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { attempt } from '../actions/attempt';
 import SagasDropdown from './SagasDropdown';
 import { useGetUser } from '../hooks/useGetUser';
+import LoadingSpinner from './LoadingSpinners';
 
 type SelectSagaProps = {
     searchTerm: string;
@@ -83,7 +84,7 @@ const SelectSaga = () => {
             setValue('selectedSagaId', undefined);
 
             if (result.haveFoundSagle) {
-                await fetchUserAgain;
+                fetchUserAgain();
                 setFoundedSagle(true);
                 localStorage.setItem('foundedSagle', 'true');
             }
@@ -161,10 +162,9 @@ const SelectSaga = () => {
 
             {
                 isSubmitting && (
-                    // TODO: Create a loading state or spinner here
-                    <p>
-                        Submitting your guess...
-                    </p>
+                    <div className="mt-4 flex items-center w-full justify-center">
+                        <LoadingSpinner size="medium" />
+                    </div>
                 )
             }
         </form>

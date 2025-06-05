@@ -15,8 +15,7 @@ import useSagleStore from "./hooks/useSagle";
 import useTriedSagasStore from "./hooks/useTriedSagas";
 import { useGetAttempts } from "./hooks/useGetAttempts";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-
-
+import confetti from "canvas-confetti";
 
 const SagleContentApp = () => {
   const { isLoading: isUserLoading, error, user: userData } = useGetUser();
@@ -40,14 +39,22 @@ const SagleContentApp = () => {
     setTriedSagas(attemptedSagas);
   }, [userData, attemptedSagas, setTriedSagas]);
 
+
   useEffect(() => {
     if (userData?.hasParticipatedToday) {
       const scrollToVotes = () => {
         voteSectionRef.current?.scrollIntoView({
           behavior: 'smooth',
-          block: 'start',
+          block: 'end',
         });
       }
+
+      confetti({
+        particleCount: 200,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#ff0', '#f00', '#0f0', '#00f', '#ff00ff'],
+      })
 
       requestAnimationFrame(scrollToVotes);
     }

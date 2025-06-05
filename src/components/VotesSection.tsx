@@ -1,26 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
 import { voteGame } from "../actions/voteGame";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import useSagleStore from "../hooks/useSagle";
 import GameCard from "./GameCard";
 import { useMemo } from "react";
 import { useGetUser } from "../hooks/useGetUser";
 import LoadingSpinner from "./LoadingSpinners";
 import GameCardSkeleton from "./GameCardSkeleton";
+import { useGetSagle } from "../hooks/useGetSagle";
 
 const VotesSection = () => {
-    const sagle = useSagleStore((state) => state.sagle);
-    const { user, isLoading: isUserLoading } = useGetUser();
+    const { sagle, fetchSagleAgain, isFetching } = useGetSagle();
+    const { user, fetchUserAgain } = useGetUser();
     const { mutateAsync: vote, isPending: isVoting } = useMutation({
         mutationFn: voteGame,
-        // TODO: implementar
-        //         onSuccess: () => {
-        //     toast.success('Vote registered successfully!');
-        // },
-        // onError: (error) => {
-        //     toast.error('Failed to register vote');
-        //     console.error('Error voting:', error);
-        // }
+        onSuccess: () => {
+            fetchSagleAgain(); 
+            fetchUserAgain();        
+        }
     });
 
     const sortedGames = useMemo(() =>
@@ -28,19 +23,18 @@ const VotesSection = () => {
         [sagle?.games]
     );
 
-    // console.log('sagle', sagle?.games);
-
     const votesArr = sagle?.games.map(game => game.votes) || [];
     const totalVotes = votesArr.reduce((acc, votes) => acc + votes, 0);
 
-    console.log('isUserLoading', isUserLoading);
-    console.log('sagle', sagle);
+    // console.log('sagle', sagle);
+    // console.log('is Voting', isVoting);
+    // console.log('is Sagle loading', isFetching);
 
     const handleVote = async (gameId: number) => {
-        if (user?.hasVotedToday) {
-            // toast.error('You have already voted today!');
-            return;
-        }
+        // if (user?.hasVotedToday) {
+        //     // toast.error('You have already voted today!');
+        //     return;
+        // }
 
         try {
             await vote(gameId);
@@ -94,6 +88,7 @@ const VotesSection = () => {
                                         aria-label={`game-card-${game.id}`}
                                         onVote={handleVote}
                                         isVoting={isVoting}
+                                        isSagleFetching={isFetching}
                                         hasVotedToday={user?.hasVotedToday}
                                         totalVotes={totalVotes}
                                     />

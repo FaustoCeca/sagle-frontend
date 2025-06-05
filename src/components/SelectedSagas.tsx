@@ -1,9 +1,10 @@
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import useSagleStore from "../hooks/useSagle";
 import useTriedSagasStore from "../hooks/useTriedSagas";
 import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, lastGameLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
 import TableSagaItem from "./TableSagaItem";
 import LoadingSpinner from "./LoadingSpinners";
+import { getGameYear } from "../utils/getGameYear";
 
 const SelectedSagas = () => {
     const sagle = useSagleStore((state) => state.sagle);
@@ -63,10 +64,10 @@ const SelectedSagas = () => {
                         // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
                         state: firstGameLogic(sagle, saga),
                         showArrow: true,
-                        higher: sagle && saga.games[0].birthYear < sagle.games[0].birthYear,
-                        lower: sagle && saga.games[0].birthYear > sagle.games[0].birthYear
+                        higher: sagle && getGameYear(saga, "first") < getGameYear(sagle, "first"),
+                        lower: sagle && getGameYear(saga, "first") > getGameYear(sagle, "first")
                     })}
-                    getDisplayValue={(saga) => saga.games[0].birthYear.toString()}
+                    getDisplayValue={(saga) => saga.games.map(g => g.birthYear).sort((a, b) => a - b)[0].toString()}
                     triedSagas={memoizedTriedSagas}
                 />
 
@@ -77,10 +78,10 @@ const SelectedSagas = () => {
                         // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
                         state: lastGameLogic(sagle, saga),
                         showArrow: true,
-                        higher: sagle && saga.games[saga.games.length - 1].birthYear < sagle.games[sagle.games.length - 1].birthYear,
-                        lower: sagle && saga.games[saga.games.length - 1].birthYear > sagle.games[sagle.games.length - 1].birthYear
+                        higher: sagle && getGameYear(saga, "last") < getGameYear(sagle, "last"),
+                        lower: sagle && getGameYear(saga, "last") > getGameYear(sagle, "last")
                     })}
-                    getDisplayValue={(saga) => saga.games[saga.games.length - 1].birthYear.toString()}
+                    getDisplayValue={(saga) => saga.games.map(g => g.birthYear).sort((a, b) => a - b)[saga.games.length - 1].toString()}
                     triedSagas={memoizedTriedSagas}
                 />
 

@@ -4,6 +4,7 @@ interface GameCardProps {
     game: Game;
     onVote: (gameId: number) => Promise<void>;
     isVoting: boolean;
+    isSagleFetching?: boolean;
     hasVotedToday?: boolean;
     totalVotes: number;
 }
@@ -12,6 +13,7 @@ const GameCard = ({
     game,
     onVote,
     isVoting,
+    isSagleFetching = false,
     hasVotedToday = false,
     totalVotes = 0
 }: GameCardProps) => {
@@ -25,10 +27,14 @@ const GameCard = ({
 
     const votePercentage = totalVotes > 0 ? (game.votes / totalVotes) * 100 : 0;
 
+    console.log('isVoting', isVoting);
+    console.log('isSagleFetching', isSagleFetching);
+
     return (
-        <div
+        <button
+            type="button"
             onClick={handleClick}
-            role="button"
+            // disabled={isVoting || hasVotedToday}
             aria-label={`game-card-${game.id}`}
             style={{
                 backgroundImage: `url(${game.imageUrl})`,
@@ -38,10 +44,11 @@ const GameCard = ({
                 aspectRatio: '16/9',
                 minHeight: '300px',
             }}
+            // TODO: trabajar en animacion
             className={`relative w-full cursor-pointer h-full rounded-lg shadow-lg 
                        flex items-end justify-center p-4 pb-8 text-white 
                         transition-transform duration-300
-                       ${isVoting ? 'opacity-50 cursor-not-allowed' : ''}
+                       ${isVoting || isSagleFetching ? 'opacity-80 cursor-not-allowed' : ''}
                     ${hasVotedToday ? '' : 'hover:scale-105'}
                        `}
         >
@@ -93,7 +100,7 @@ const GameCard = ({
                     Steam
                 </a>
             )}
-        </div>
+        </button>
     )
 }
 
