@@ -1,25 +1,30 @@
 import { useMemo } from "react";
-import useSagleStore from "../hooks/useSagle";
 import useTriedSagasStore from "../hooks/useTriedSagas";
 import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, lastGameLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
 import TableSagaItem from "./TableSagaItem";
 import LoadingSpinner from "./LoadingSpinners";
 import { getGameYear } from "../utils/getGameYear";
+import type { Saga } from "../types/game";
 
-const SelectedSagas = () => {
-    const sagle = useSagleStore((state) => state.sagle);
+interface SelectedSagasProps {
+    sagle: Saga | null;
+}
+
+const SelectedSagas = ({sagle}: SelectedSagasProps) => {
     const triedSagas = useTriedSagasStore((state) => state.triedSagas);
     const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
 
     if (!sagle) return <LoadingSpinner className="mt-4" size="large" />
-
     return (
+        <>
         <div
-            className="flex flex-col items-center justify-center mt-4"
+            className="flex flex-col items-center justify-center mt-4 lg:w-auto w-full"
         >
             <div
-                className="flex w-full gap-4 items-center"
+                className="w-full overflow-x-auto pb-4 hide-scrollbar"
             >
+                <div className="flex flex-nowrap gap-4 min-w-max">
+
                 <TableSagaItem
                     title="Saga"
                     ariaLabel="selected-sagas"
@@ -117,9 +122,16 @@ const SelectedSagas = () => {
                     getDisplayValue={(saga) => saga.hasMultiplayer}
                     triedSagas={memoizedTriedSagas}
                 />
-
+                </div>
             </div>
         </div>
+        <p
+            className="text-center  mt-2 lg:hidden block"
+        >
+            {'<'} Scroll horizontally to see all the columns {">"}
+        </p>
+        </>
+
     )
 }
 

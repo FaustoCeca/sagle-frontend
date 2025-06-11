@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type { Saga } from '../types/game';
 import SquareResult from './SquareResult';
 
@@ -23,41 +24,72 @@ const TableSagaItem = ({
     showImage = false,
     triedSagas = []
 }: TableSagaItemProps) => {
+    const [animateId, setAnimateId] = useState<number>(0);
+
+    useEffect(() => {
+        if (triedSagas.length == 0) return;
+        const newSaga = triedSagas[0];
+
+        setAnimateId(newSaga.id);
+
+        const timer = setTimeout(() => {
+            setAnimateId(0);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [triedSagas]);
 
     return (
         <div className="text-center">
             <span
-                className="text-base font-bold mb-4 text-white"
+                className="text-base font-bold text-white"
                 aria-label={ariaLabel}
             >
                 {title}
             </span>
             {
                 triedSagas.length > 0 && !showImage &&
-                triedSagas.map((saga) => {
-                    const { state, showArrow, higher, lower } = renderLogic(saga);
-                    return (
-                        <SquareResult
-                            key={saga.id}
-                            title={getDisplayValue(saga)}
-                            showArrow={showArrow || false}
-                            state={state}
-                            higher={higher}
-                            lower={lower}
-                        />
-                    );
-                })
+                <div className="flex flex-col items-center mt-2">
+                    {
+                        triedSagas.map((saga, index) => {
+                            const { state, showArrow, higher, lower } = renderLogic(saga);
+                            return (
+                                <div
+                                    key={index}
+                                    className={`square-result-container ${animateId == saga?.id ? 'animate-fade-in' : ''}`}
+                                >
+                                    <SquareResult
+                                        title={getDisplayValue(saga)}
+                                        showArrow={showArrow || false}
+                                        state={state}
+                                        higher={higher}
+                                        lower={lower}
+                                    />
+                                </div>
+                            );
+                        })
+                    }
+                </div>
             }
             {
                 showImage && triedSagas.length > 0 && (
                     <div className="flex flex-col items-center">
-                        {triedSagas.map((saga) => (
-                            <img
-                                key={saga.id}
-                                src={saga.imageUrl}
-                                alt={saga.title}
-                                className="w-20 h-20 object-cover mb-2 border-solid border-2 border-black"
-                            />
+                        {triedSagas.map((saga, index) => (
+                            <>
+                                <div
+                                    key={index}
+                                    className={`${animateId == saga?.id ? 'animate-fade-in' : ''} mt-2 text-[0px] h-full w-full flex items-center justify-center`}
+                                >
+                                    <img
+                                        src={saga.imageUrl}
+                                        alt={saga.title}
+                                        className="w-[110px] h-[110px] object-cover border-solid border-2 border-black"
+                                    />
+                                </div>
+                                {/* <span className="text-base font-semibold text-white line-clamp-1">
+                                    {saga.title}
+                                </span> */}
+                            </>
                         ))}
                     </div>
                 )

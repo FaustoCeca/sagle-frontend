@@ -6,13 +6,14 @@ interface Response {
   sagle: Saga;
   isLoading: boolean;
   isFetching: boolean;
+  isFetched: boolean;
   error: Error | null;
   fetchSagleAgain: () => void;
 }
 
 export const useGetSagle = (): Response => {
   const queryClient = useQueryClient();
-  const { data: sagle, isLoading, error, isFetching } = useQuery({
+  const { data: sagle, isLoading, error, isFetching, isFetched } = useQuery({
     queryKey: ['sagle'],
     queryFn: getSagle,
     refetchOnWindowFocus: false,
@@ -34,6 +35,7 @@ export const useGetSagle = (): Response => {
       sagle,
       isLoading,
       isFetching,
+      isFetched,
       error,
       fetchSagleAgain, // refetch
     }

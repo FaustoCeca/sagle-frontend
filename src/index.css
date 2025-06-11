@@ -16,6 +16,11 @@ html {
     width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
 }
 
 @keyframes flame {
@@ -27,5 +32,25 @@ html {
 }
 
 .animate-flame {
-    animation: flame 0.5s ease-in-out infinite;
+  animation: flame 0.5s ease-in-out infinite;
+}
+
+/* Añade esto a tu archivo CSS global */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.square-result-container {
+  display: block;
 }

@@ -4,7 +4,7 @@ import SelectSaga from "./components/SelectSaga";
 import logo from '../public/sagle-logo.png';
 import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import CreateButton from "./components/CreateButton";
 import bg from '../public/bg.png';
@@ -16,22 +16,26 @@ import useTriedSagasStore from "./hooks/useTriedSagas";
 import { useGetAttempts } from "./hooks/useGetAttempts";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import confetti from "canvas-confetti";
+import { useSockets } from "./hooks/useSockets";
 
 const SagleContentApp = () => {
   const { isLoading: isUserLoading, error, user: userData } = useGetUser();
   const { setUser } = useCurrentUser();
   const voteSectionRef = useRef<HTMLDivElement>(null);
-  const { sagle, isLoading: isSagleLoading } = useGetSagle();
+  const { sagle } = useGetSagle();
   const setSagle = useSagleStore((state) => state.setSagle);
-  const foundedSagle = useSagleStore((state) => state.foundedSagle);
   const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
   const { attemptedSagas } = useGetAttempts();
+  const { isConnected } = useSockets(); 
 
+  console.log('isConnected:', isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
     if (userData) setUser(userData);
   }, [sagle, userData, setSagle, setUser]);
+
+  console.log('Sagle:', sagle);
 
   useEffect(() => {
     if (!userData || !attemptedSagas?.length) return;
@@ -70,7 +74,8 @@ const SagleContentApp = () => {
     isUserLoading
   ) return (
     <div
-      className="flex flex-col items-center min-h-dvh w-full py-8 lg:overflow-auto overflow-scroll"
+      // className="flex flex-col items-center min-h-dvh w-full py-8 lg:overflow-auto overflow-scroll"
+      className="flex flex-col items-center min-h-dvh w-full py-8"
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: 'cover',
@@ -100,8 +105,11 @@ const SagleContentApp = () => {
       }
       <MemoizedOptionsBar />
       <MemoizedSelectSaga />
-      <MemoizedSelectedSagas />
+      <MemoizedSelectedSagas 
+        sagle={sagle}
+      />
       {
+
         <div
           className="w-full"
           ref={voteSectionRef}

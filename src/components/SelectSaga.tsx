@@ -100,13 +100,13 @@ const SelectSaga = () => {
             aria-label="select-saga-form"
         >
             <h2
-                className="text-5xl font-bold text-center mb-4 text-amber-100 mt-5"
+                className="lg:text-5xl text-3xl font-bold text-center mb-4 text-amber-100 mt-5"
                 aria-label="guess-sagle"
             >
                 Guess the Sagle today!
             </h2>
             <p
-                className="text-lg text-center mb-4 font-semibold "
+                className="lg:text-lg text-base text-center mb-4 font-semibold text-white"
                 aria-label="yesterday-sagle"
             >
                 Yesterday's Sagle was: {' '}
@@ -136,7 +136,7 @@ const SelectSaga = () => {
                     autoComplete='off'
                     translate='no'
                     placeholder={user?.hasParticipatedToday ? "You've already guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
-                    className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px]"
+                    className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base"
                     aria-label="search-saga"
                     disabled={isSubmitting || isLoading || user?.hasParticipatedToday}
                 />
@@ -151,7 +151,7 @@ const SelectSaga = () => {
 
             {selectedSagaId && (
                 <button
-                    className="mt-4 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    className="mt-4 cursor-pointer w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
                     aria-label="submit-guess"
                     type="submit"
                     disabled={foundedSagle || isSubmitting || isLoading || user?.hasParticipatedToday}

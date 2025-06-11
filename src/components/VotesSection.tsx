@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { voteGame } from "../actions/voteGame";
 import GameCard from "./GameCard";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useGetUser } from "../hooks/useGetUser";
 import LoadingSpinner from "./LoadingSpinners";
 import GameCardSkeleton from "./GameCardSkeleton";
@@ -10,36 +10,55 @@ import { useGetSagle } from "../hooks/useGetSagle";
 const VotesSection = () => {
     const { sagle, fetchSagleAgain, isFetching } = useGetSagle();
     const { user, fetchUserAgain } = useGetUser();
+    const isProcessingVote = useRef(false);
     const { mutateAsync: vote, isPending: isVoting } = useMutation({
         mutationFn: voteGame,
         onSuccess: () => {
-            fetchSagleAgain(); 
-            fetchUserAgain();        
+            fetchSagleAgain();
+            fetchUserAgain();
         }
     });
 
-    const sortedGames = useMemo(() =>
-        sagle?.games.sort((a, b) => a.id - b.id) || [],
-        [sagle?.games]
-    );
+
+    const sortedGames = useMemo(() => {
+        // Add safety check to ensure sagle and sagle.games exist
+        if (!sagle || !sagle.games) return [];
+        return [...sagle.games].sort((a, b) => a.id - b.id);
+    }, [sagle?.games]);
+    // Notice the [...sagle.games] - this creates a copy of the array before sorting, which is a good practice since sort() mutates the original array.
 
     const votesArr = sagle?.games.map(game => game.votes) || [];
     const totalVotes = votesArr.reduce((acc, votes) => acc + votes, 0);
 
-    // console.log('sagle', sagle);
-    // console.log('is Voting', isVoting);
-    // console.log('is Sagle loading', isFetching);
-
     const handleVote = async (gameId: number) => {
-        // if (user?.hasVotedToday) {
-        //     // toast.error('You have already voted today!');
-        //     return;
-        // }
+        if (user?.hasVotedToday || isProcessingVote.current) {
+            console.warn('Vote already cast or in process, ignoring vote attempt.');
+            return;
+        }
+
 
         try {
+            // Optimistically update the UI
+            // if (sagle && !isProcessingVote.current && !isVoting) {
+            //     const optimisticData = {
+            //         ...sagle,
+            //         games: sagle.games.map(game =>
+            //             game.id === gameId
+            //                 ? { ...game, votes: game.votes + 1 }
+            //                 : game
+            //         )
+            //     };
+
+            //     // Update the cache immediately for a responsive feel
+            //     queryClient.setQueryData(['sagle'], optimisticData);
+            // }
+
+            // Then perform the actual API call
             await vote(gameId);
         } catch (error) {
             console.error('Error handling vote:', error);
+            // On error, refetch to get the correct data
+            fetchSagleAgain();
         }
     };
 
@@ -52,7 +71,7 @@ const VotesSection = () => {
 
         >
             <h2
-                className="text-2xl font-bold text-center mb-4"
+                className="text-2xl font-bold text-center mb-4 lg:px-0 px-5 text-white"
                 aria-label="congrats-sagle"
             >
                 Congrats! You guessed the Sagle of the day: {
@@ -78,7 +97,7 @@ const VotesSection = () => {
                 {
                     sagle ?
                         <div
-                            className="mt-6 w-full grid-votes"
+                            className="mt-6 w-full grid-votes px-8 lg:px-0 gap-4"
                         >
                             {
                                 sortedGames.map((game) => (
@@ -89,6 +108,7 @@ const VotesSection = () => {
                                         onVote={handleVote}
                                         isVoting={isVoting}
                                         isSagleFetching={isFetching}
+                                        // isSagleFetched={isFetched}
                                         hasVotedToday={user?.hasVotedToday}
                                         totalVotes={totalVotes}
                                     />
