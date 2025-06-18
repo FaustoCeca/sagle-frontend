@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { memo, useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import CreateButton from "./components/CreateButton";
-import bg from '../public/bg.png';
+import bg from '../public/bg-black.jpg';
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
