@@ -1,19 +1,15 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { createPerspectives } from "../actions/createPerspective";
 import type { CategoryDto, GameDto, PerspectiveDto, SagaDto } from "../types/dtos";
 import useCreateModal from "../hooks/useCreateModal";
-import { createCategory } from "../actions/createCategory";
-import { createArt } from "../actions/createArt";
-import { createGame } from "../actions/createGame";
 import DragFiles from "./DragFiles";
 import { useFile } from "../hooks/useFile";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { useGetPerspectives } from "../hooks/useGetPerspectives";
 import { useGetArtStyles } from "../hooks/useGetArtStyles";
-import { createSaga } from "../actions/createSaga";
 import { useGetSagas } from "../hooks/useGetSagas";
 import MultipleSelects from "./MultipleSelects";
 import type { ArtStyles, Category, Perspective } from "../types/game";
+import { createArt, createCategory, createGame, createPerspectives, createSaga } from "../actions/creaters";
 
 type SagaFormProps = {
     title: string;

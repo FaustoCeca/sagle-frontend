@@ -126,7 +126,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
             </div>
         </div>
         <p
-            className="text-center  mt-2 lg:hidden block"
+            className="text-center mt-2 lg:hidden block text-white"
         >
             {'<'} Scroll horizontally to see all the columns {">"}
         </p>

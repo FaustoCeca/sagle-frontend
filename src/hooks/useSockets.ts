@@ -7,6 +7,7 @@ import type { Saga } from '../types/game';
 const socket = io(config.apiUrl, {
   transports: ['websocket'],
   autoConnect: false,
+  withCredentials: true,
 });
 
 export const useSockets = () => {
