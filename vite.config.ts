@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import reactSWC from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
 
 // const ReactCompilerConfig = {
@@ -14,7 +14,7 @@ export default defineConfig(({mode}) => {
   // const envPath = `./${envPrefix}`;
   return {
     plugins: [
-      react(),
+      reactSWC(),
       tailwindcss()
     ],
     build: {
