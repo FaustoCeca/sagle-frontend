@@ -29,9 +29,25 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        run: npm ci
+      
+      - name: Update tsconfig.node.json
         run: |
-          npm ci
-          npm install --save-dev @vitejs/plugin-react-swc
+          cat > tsconfig.node.json << 'EOF'
+          {
+            "extends": "./tsconfig.json",
+            "compilerOptions": {
+              "composite": true,
+              "skipLibCheck": true,
+              "module": "ESNext",
+              "moduleResolution": "bundler",
+              "allowSyntheticDefaultImports": true,
+              "strict": true,
+              "noEmit": true
+            },
+            "include": ["vite.config.ts"]
+          }
+          EOF  
 
       - name: Create type declaration file
         run: |
