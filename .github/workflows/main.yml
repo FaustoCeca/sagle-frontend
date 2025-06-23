@@ -64,7 +64,6 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS || '' }}
 
       - name: Add host key to known hosts
-        if: ${{ !secrets.KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H 146.190.147.241 >> ~/.ssh/known_hosts
