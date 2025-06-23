@@ -30,16 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
-      # - name: Create type declaration file
-      #   run: |
-      #     mkdir -p src/types
-      #     cat > src/types/modules.d.ts << 'EOF'
-      #     declare module 'canvas-confetti';
-      #     declare module 'react-dom';
-      #     declare module 'react-dom/client';
-      #     declare module '@vitejs/plugin-react-swc';
-      #     EOF
 
       # Create environment file with proper API URL
       - name: Create environment file
