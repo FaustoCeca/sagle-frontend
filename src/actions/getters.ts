@@ -8,7 +8,8 @@ export const getCategories = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -28,7 +29,8 @@ export const getPerspectives = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -48,7 +50,8 @@ export const getArtStyles = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -68,7 +71,8 @@ export const getSagas = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -88,7 +92,8 @@ export const getSagle = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {
@@ -108,7 +113,8 @@ export const getAttemptsIds = async () => {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-        }
+        },
+        credentials: "include"
     });
 
     if (!response.ok) {

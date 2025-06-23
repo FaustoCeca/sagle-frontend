@@ -31,7 +31,7 @@ const SelectSaga = () => {
     const { user, fetchUserAgain } = useGetUser();
 
     const yesterdaySagle = useMemo(() =>
-        sagas.find((saga) => saga.wasSagleYesterday),
+        sagas?.find((saga) => saga.wasSagleYesterday),
         [sagas]
     );
 

@@ -13,7 +13,9 @@ export const attempt = async (sagaId: number): Promise<{
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ sagaId }),
+        credentials: "include", // Include cookies in the request
     });
+    
     if (!response.ok) {
         throw new Error(`Failed to attempt game: ${response.statusText}`);
     }

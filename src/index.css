@@ -4,11 +4,15 @@
 
 html {
     scroll-behavior: smooth;
-    background-image: url('../public/bg.png');
+    background-image: url('../public/bg-black.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+
+    @media (max-width: 768px) {
+        background-image: url('../public/bg-mobile-black.jpg');
+    }
 }
 
 .grid-votes {

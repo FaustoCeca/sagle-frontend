@@ -18,6 +18,7 @@ export const voteGame = async (gameId: number): Promise<VoteGameResponse> => {
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include', // Include cookies for session management
     });
 
     if (!response.ok) {

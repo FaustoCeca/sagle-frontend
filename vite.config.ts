@@ -7,11 +7,24 @@ import tailwindcss from '@tailwindcss/vite'
 // }
 
 // https://vite.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({mode}) => {
+  // const envPrefix = mode === 'production' ? '.env.prod' :
+  //   mode === 'staging' ? '.env.stgn' : '.env';
+
+  // const envPath = `./${envPrefix}`;
   return {
     plugins: [
       react(),
       tailwindcss()
-    ]
+    ],
+    build: {
+      outDir: 'dist',
+      sourcemap: mode !== 'production',
+    },
+    envDir: '/',
+    envPrefix: 'VITE_',
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(mode),
+    }
   }
 })
