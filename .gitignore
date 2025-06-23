@@ -27,6 +27,5 @@ dist-ssr
 .env
 
 # locks
-package-lock.json
 yarn.lock
 pnpm-lock.yaml

@@ -17,6 +17,10 @@ export default defineConfig(({mode}) => {
       react(),
       tailwindcss()
     ],
+    build: {
+      outDir: 'dist',
+      sourcemap: mode !== 'production',
+    },
     envDir: '/',
     envPrefix: 'VITE_',
     define: {
