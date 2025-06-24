@@ -11,7 +11,7 @@ on:
 
 env:
   NODE_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
-  DEPLOY_PATH: ${{ github.ref == 'refs/heads/main' && '/var/www/sagle-frontend-prod' || '/var/www/sagle-frontend-stgn' }}
+  DEPLOY_PATH: ${{ github.ref == 'refs/heads/main' && '/var/www/thesagle-frontend/prod' || '/var/www/thesagle-frontend/staging' }}
   VITE_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://api.thesagle.com' || 'https://staging-api.thesagle.com' }}
 
 jobs:
@@ -121,10 +121,10 @@ jobs:
                   listen 80;
                   server_name $SERVER_NAME;
                   
-                  root $DEPLOY_PATH;
-                  index index.html;
                   
                   location / {
+                    root $DEPLOY_PATH;
+                    index index.html;
                       try_files \$uri \$uri/ /index.html;
                   }
                   
