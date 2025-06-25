@@ -27,6 +27,5 @@ export const voteGame = async (gameId: number): Promise<VoteGameResponse> => {
 
     const data = await response.json();
 
-    console.log('Vote response:', data);
     return data;
 }

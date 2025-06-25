@@ -78,10 +78,7 @@ const SelectSaga = () => {
 
         try {
             const result = await attempt(selectedSaga.id);
-            console.log('Attempt result:', result);
             addTriedSaga(selectedSaga);
-            setValue('searchTerm', '');
-            setValue('selectedSagaId', undefined);
 
             if (result.haveFoundSagle) {
                 fetchUserAgain();

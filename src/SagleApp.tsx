@@ -28,14 +28,12 @@ const SagleContentApp = () => {
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets(); 
 
-  console.log('isConnected:', isConnected);
+  console.log(isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
     if (userData) setUser(userData);
   }, [sagle, userData, setSagle, setUser]);
-
-  console.log('Sagle:', sagle);
 
   useEffect(() => {
     if (!userData || !attemptedSagas?.length) return;

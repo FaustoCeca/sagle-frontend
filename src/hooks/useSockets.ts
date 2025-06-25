@@ -27,17 +27,14 @@ export const useSockets = () => {
 
     function onDisconnect() {
       setIsConnected(false);
-      console.log('WebSocket disconnected');
     }
 
     function onVoteUpdate(saga: Saga) {
-      console.log('Vote update received:', saga);
       // Actualizar la caché de React Query con los nuevos datos de saga
       queryClient.setQueryData(['sagle'], saga);
     }
 
     function onAttemptUpdate(saga: Saga) {
-      console.log('Attempt update received:', saga);
       // Actualizar la caché de React Query con los nuevos datos de saga
       queryClient.invalidateQueries({ queryKey: ['sagle'] });
       queryClient.setQueryData(['sagle'], saga);

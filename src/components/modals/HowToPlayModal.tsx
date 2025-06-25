@@ -82,7 +82,7 @@ const HowToPlayModal = () => {
                             Posible values:
                         </span>
                         <span>
-                            {" "}<i>Any year of date to the current year</i>
+                            {" "}<i>Any year from 1950 to the current year</i>
                         </span>
                     </p>
                 </div>
@@ -138,6 +138,12 @@ const HowToPlayModal = () => {
                             {" "}<i>Yes, no or some (
                                 if some games have multiplayer and some don't, it will be "some"
                                 )</i>
+                        </span>
+                        <span>
+                            {" "}
+                            <i>
+                                (We only accept multiplayer if it is online and pvp or pve mode, not if it is just a leaderboard or a co-op mode in a single player game)
+                            </i>
                         </span>
                     </p>
                 </div>

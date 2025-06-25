@@ -36,28 +36,10 @@ const VotesSection = () => {
             return;
         }
 
-
         try {
-            // Optimistically update the UI
-            // if (sagle && !isProcessingVote.current && !isVoting) {
-            //     const optimisticData = {
-            //         ...sagle,
-            //         games: sagle.games.map(game =>
-            //             game.id === gameId
-            //                 ? { ...game, votes: game.votes + 1 }
-            //                 : game
-            //         )
-            //     };
-
-            //     // Update the cache immediately for a responsive feel
-            //     queryClient.setQueryData(['sagle'], optimisticData);
-            // }
-
-            // Then perform the actual API call
             await vote(gameId);
         } catch (error) {
             console.error('Error handling vote:', error);
-            // On error, refetch to get the correct data
             fetchSagleAgain();
         }
     };
@@ -91,6 +73,12 @@ const VotesSection = () => {
                             <LoadingSpinner size="small" className="ml-2" />
                         </span>}
             </h2>
+            <p
+                className="text-lg text-center mb-6 lg:px-0 px-5 text-white"
+                aria-label="vote-instructions"
+            >
+                Did you play it? Tell us who was your favorite game and vote for it!
+            </p>
             <div
                 className="flex items-center justify-center w-full max-w-3xl"
             >

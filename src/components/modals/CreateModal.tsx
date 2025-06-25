@@ -1,59 +1,53 @@
 import BaseModal from './BaseModal';
 import useCreateModal from '../../hooks/useCreateModal';
-import { ArtStyleForm, CategoryForm, GameForm, PerspectiveForm, SagaForm } from '../CreateForms';
+import { useState } from 'react';
+import { useGetSagas } from '../../hooks/useGetSagas';
+import CreateModalContent from '../CreateModalContent';
 
 const CreateModal = () => {
     const closeModal = useCreateModal(state => state.closeModal);
-    const formType = useCreateModal(state => state.formType);
-    const setFormType = useCreateModal(state => state.setFormType);
-
-    console.log("CreateModal rendered with formType:", formType);
-  return (
-    <BaseModal
-        onClose={closeModal}
-    >
-        <h2>
-            Crea un nuevo: {formType}
-        </h2>
-
-        <select
-            onChange={(e) => setFormType(e.target.value as "saga" | "game" | "category" | "perspective" | "artStyle")}
-            value={formType}
-            className="mb-4 p-2 border border-gray-300 rounded"
+    const [mode, setMode] = useState<"update" | "create">("create");
+    const { sagas } = useGetSagas();
+    
+    return (
+        <BaseModal
+            onClose={closeModal}
         >
-            <option value="saga">
-                Saga
-            </option>
-            <option value="game">
-                Game
-            </option>
-            <option value="category">
-                Category
-            </option>
-            <option value="perspective">
-                Perspective
-            </option>
-            <option value="artStyle">
-                Art Style
-            </option>
-        </select>
-        {
-            formType === "saga" && <SagaForm />
-        }
-        {
-            formType === "game" && <GameForm />
-        }
-        {
-            formType === "category" && <CategoryForm />
-        }
-        {
-            formType === "perspective" && <PerspectiveForm />
-        }
-        {
-            formType === "artStyle" && <ArtStyleForm />
-        }
-    </BaseModal>
-  )
+            <select
+                onChange={(e) => setMode(e.target.value as "update" | "create")}
+            >
+                <option value="create">Crear</option>
+                <option value="update">Actualizar</option>
+            </select>
+
+            {
+                mode === "create" && <CreateModalContent />           
+            }
+
+            {
+                mode === "update" && (
+                    <>
+                        <h2>
+                            Saga a actualizar
+                        </h2>
+                        <select
+                            value={sagas.map(saga => saga.id).join(",")}
+                            className="mb-4 p-2 border border-gray-300 rounded"
+                        >
+                            {
+                                sagas.map(saga => (
+                                    <option key={saga.id} value={saga.id}>
+                                        {saga.title} ({saga.id})
+                                    </option>
+                                ))
+                            }
+                        </select>
+                    </>
+                )
+            }
+
+        </BaseModal>
+    )
 }
 
 export default CreateModal;

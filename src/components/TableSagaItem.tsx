@@ -51,11 +51,11 @@ const TableSagaItem = ({
                 triedSagas.length > 0 && !showImage &&
                 <div className="flex flex-col items-center mt-2">
                     {
-                        triedSagas.map((saga, index) => {
+                        triedSagas.map((saga) => {
                             const { state, showArrow, higher, lower } = renderLogic(saga);
                             return (
                                 <div
-                                    key={index}
+                                    key={saga.id}
                                     className={`square-result-container ${animateId == saga?.id ? 'animate-fade-in' : ''}`}
                                 >
                                     <SquareResult

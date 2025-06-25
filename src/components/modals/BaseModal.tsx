@@ -20,7 +20,8 @@ const BaseModal = ({ onClose, children }: BaseModalProps) => {
     };
   }, [onClose]);
 
-  const handleBackdropClick = (event: React.MouseEvent) => {
+  // Quiero que si haces click fuera del modal, se cierre
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }
@@ -29,7 +30,6 @@ const BaseModal = ({ onClose, children }: BaseModalProps) => {
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50
         flex items-center justify-center overflow-y-auto overflow-x-hidden"
-        onClick={handleBackdropClick}
         aria-modal="true"
         role="dialog"
         tabIndex={-1}

@@ -27,8 +27,6 @@ const GameCard = ({
 
     const votePercentage = totalVotes > 0 ? (game.votes / totalVotes) * 100 : 0;
 
-    console.log('game', votePercentage);
-
     return (
         <button
             type="button"
