@@ -1,6 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
 import type { CategoryDto, GameDto, PerspectiveDto, SagaDto } from "../types/dtos";
-import useCreateModal from "../hooks/useCreateModal";
 import DragFiles from "./DragFiles";
 import { useFile } from "../hooks/useFile";
 import { useGetCategories } from "../hooks/useGetCategories";
@@ -10,6 +9,7 @@ import { useGetSagas } from "../hooks/useGetSagas";
 import MultipleSelects from "./MultipleSelects";
 import type { ArtStyles, Category, Perspective } from "../types/game";
 import { createArt, createCategory, createGame, createPerspectives, createSaga } from "../actions/creaters";
+import useActionModal from "../hooks/useActionModal";
 
 type SagaFormProps = {
     title: string;
@@ -59,6 +59,7 @@ export const SagaForm = () => {
     const { categories, error: categoriesError, isLoading: loadingCategories } = useGetCategories();
     const { perspectives, error: perspectivesError, isLoading: loadingPerspectives } = useGetPerspectives();
     const { artStyles, error: artStylesError, isLoading: loadingArtStyles } = useGetArtStyles();
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: SagaDto) => {
         const sagaData: SagaDto = {
@@ -76,6 +77,7 @@ export const SagaForm = () => {
             await createSaga(sagaData, file);
             removeFile();
             reset();
+            closeModal(); // Close the modal after submission
         } catch (error) {
             console.error('Error uploading game:', error);
         }
@@ -186,6 +188,8 @@ export const GameForm = () => {
     const removeFile = useFile(state => state.removeFile);
     const {sagas, error, isLoading} = useGetSagas();
     const { handleSubmit, reset, formState: {isSubmitting} } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
+
 
     const onSubmit = async (data: GameDto) => {
         const gameData: GameDto = {
@@ -203,6 +207,7 @@ export const GameForm = () => {
             await createGame(gameData, file);
             removeFile();
             reset();
+            closeModal();
         } catch (error) {
             console.error('Error uploading game:', error);
         }
@@ -300,7 +305,7 @@ export const CategoryForm = () => {
         }
     });
     const { handleSubmit, reset } = methods;
-    const closeModal = useCreateModal(state => state.closeModal);
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: CategoryDto) => {
         await createCategory(data);
@@ -342,7 +347,7 @@ export const PerspectiveForm = () => {
         }
     });
     const { handleSubmit, reset, register } = methods;
-    const closeModal = useCreateModal(state => state.closeModal);
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: PerspectiveDto) => {
         await createPerspectives(data);
@@ -384,7 +389,7 @@ export const ArtStyleForm = () => {
         }
     });
     const { handleSubmit, reset } = methods;
-    const closeModal = useCreateModal(state => state.closeModal);
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: CategoryDto) => {
         await createArt(data);

@@ -5,6 +5,7 @@ import useSagasModal from '../../hooks/useSagasModal';
 const SagasModal = () => {
   const { closeModal } = useSagasModal();
   const { sagas, isLoading, error } = useGetSagas();
+  const selectableSagas = sagas?.filter(saga => saga.games.length > 0) || [];
   return (
     <BaseModal
       onClose={closeModal}
@@ -21,7 +22,7 @@ const SagasModal = () => {
         {
           sagas && sagas.length > 0 && (
             <div className="mb-4 flex flex-col items-start justify-start w-full gap-2">
-              {sagas.map((saga) => (
+              {selectableSagas.map((saga) => (
                 <a 
                   key={saga.id} 
                   className="text-lg font-bold flex items-center gap-2 text-blue-500 hover:text-blue-700"

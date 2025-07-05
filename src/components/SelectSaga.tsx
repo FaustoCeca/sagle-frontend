@@ -101,26 +101,31 @@ const SelectSaga = () => {
             aria-label="select-saga-form"
         >
             <h2
-                className="lg:text-5xl text-3xl font-bold text-center mb-4 text-amber-100 mt-5"
+                className="lg:text-5xl text-3xl font-bold text-center mb-6 text-amber-100 mt-5"
                 aria-label="guess-sagle"
             >
                 Guess the Sagle today!
             </h2>
-            <p
-                className="lg:text-lg text-base text-center mb-4 font-semibold text-white"
-                aria-label="yesterday-sagle"
-            >
-                Yesterday's Sagle was: {' '}
-                <a
-                    href={`https://${yesterdaySagle?.link}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700"
-                >
-                    {yesterdaySagle?.title}
-                </a>
-                , good luck today!
-            </p>
+            {
+                yesterdaySagle && (
+
+                    <p
+                        className="lg:text-lg text-base text-center mb-4 font-semibold text-white"
+                        aria-label="yesterday-sagle"
+                    >
+                        Yesterday's Sagle was: {' '}
+                        <a
+                            href={`https://${yesterdaySagle.link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:text-blue-700"
+                        >
+                            {yesterdaySagle.title}
+                        </a>
+                        , good luck today!
+                    </p>
+                )
+            }
 
             <div className="relative md:px-0 px-4">
                 <input
@@ -136,8 +141,8 @@ const SelectSaga = () => {
                     onFocus={() => setShowDropdown(true)}
                     autoComplete='off'
                     translate='no'
-                    placeholder={user?.hasParticipatedToday ? "You've already guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
-                    className="w-full p-2 md:px-0 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base placeholder:text-sm placeholder:text-gray-700"
+                    placeholder={user?.hasParticipatedToday ? "You've guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
+                    className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base placeholder:text-sm placeholder:text-gray-700"
                     aria-label="search-saga"
                     disabled={isSubmitting || isLoading || user?.hasParticipatedToday}
                 />

@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type FormType = "saga" | "game" | "category" | "perspective" | "artStyle";
 
-interface CreateModalStore {
+interface ActionModalStore {
   isOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
@@ -10,7 +10,7 @@ interface CreateModalStore {
   setFormType: (type: FormType) => void;
 }
 
-const useCreateModal = create<CreateModalStore>((set) => ({
+const useActionModal = create<ActionModalStore>((set) => ({
   isOpen: false,
   openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false }),
@@ -18,4 +18,4 @@ const useCreateModal = create<CreateModalStore>((set) => ({
   setFormType: (type) => set({ formType: type })
 }));
 
-export default useCreateModal;
+export default useActionModal;

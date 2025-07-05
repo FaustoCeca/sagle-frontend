@@ -10,6 +10,7 @@ import { useGetArtStyles } from "../hooks/useGetArtStyles";
 import { useGetPerspectives } from "../hooks/useGetPerspectives";
 import type { SagaDto } from "../types/dtos";
 import { updateGame, updateSaga } from "../actions/updaters";
+import useActionModal from "../hooks/useActionModal";
 
 type SagaFormProps = {
   title: string;
@@ -48,6 +49,7 @@ export const SagaForm = () => {
   const { categories } = useGetCategories();
   const { perspectives } = useGetPerspectives();
   const { artStyles } = useGetArtStyles();
+  const closeModal = useActionModal(state => state.closeModal);
 
   const onSubmit = async (data: SagaDto) => {
     const updatedSaga: SagaDto = {
@@ -68,6 +70,8 @@ export const SagaForm = () => {
       }
 
       await updateSaga(currentSaga.id, updatedSaga, file);
+      reset();
+      closeModal();
     } catch (error) {
       console.error("Error updating saga:", error);
     }
@@ -236,8 +240,8 @@ export const GameForm = () => {
       steamLink: ''
     }
   });
-
   const { handleSubmit, reset, register, formState: { isSubmitting } } = methods;
+  const closeModal = useActionModal(state => state.closeModal);
 
   const onChangeGame = (gameId: number) => {
     const selectedGame = games.find(game => game.id === gameId);
@@ -275,6 +279,8 @@ export const GameForm = () => {
 
     try {
       await updateGame(currentGame.id, updatedGame, file);
+      reset();
+      closeModal(); 
     } catch (error) {
       console.error("Error updating game:", error);
     }

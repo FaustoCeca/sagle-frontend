@@ -4,6 +4,7 @@ import { deleteArtStyle, deleteCategory, deleteGame, deletePerspective, deleteSa
 import { useGetCategories } from '../hooks/useGetCategories';
 import { useGetPerspectives } from '../hooks/useGetPerspectives';
 import { useGetArtStyles } from '../hooks/useGetArtStyles';
+import useActionModal from '../hooks/useActionModal';
 
 type DeleteProps = {
     id: number;
@@ -12,7 +13,8 @@ type DeleteProps = {
 export const SagaForm = () => {
     const { sagas } = useGetSagas();
     const methods = useForm<DeleteProps>();
-    const { handleSubmit, register, formState: { isSubmitting } } = methods;
+    const { handleSubmit, register, reset, formState: { isSubmitting } } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: DeleteProps) => {
         if (!data.id) {
@@ -20,7 +22,13 @@ export const SagaForm = () => {
             return;
         }
 
-        await deleteSaga(data.id);
+        try {
+            await deleteSaga(data.id);
+            reset();
+            closeModal();
+        } catch (error) {
+            console.error("Error deleting saga:", error);
+        }
     }
 
     return (
@@ -63,7 +71,8 @@ export const GameForm = () => {
     const { sagas } = useGetSagas();
     const games = sagas.flatMap(saga => saga.games);
     const methods = useForm<DeleteProps>();
-    const { handleSubmit, register, formState: { isSubmitting } } = methods;
+    const { handleSubmit, register, reset, formState: { isSubmitting } } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: DeleteProps) => {
         if (!data.id) {
@@ -71,7 +80,13 @@ export const GameForm = () => {
             return;
         }
 
-        await deleteGame(data.id);
+        try {
+            await deleteGame(data.id);
+            reset();
+            closeModal();
+        } catch (error) {
+            console.error("Error deleting game:", error);
+        }
     }
 
     return (
@@ -113,7 +128,8 @@ export const GameForm = () => {
 export const CategoryForm = () => {
     const { categories } = useGetCategories();
     const methods = useForm<DeleteProps>();
-    const { handleSubmit, register, formState: { isSubmitting } } = methods;
+    const { handleSubmit, register, reset, formState: { isSubmitting } } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: DeleteProps) => {
         if (!data.id) {
@@ -121,7 +137,13 @@ export const CategoryForm = () => {
             return;
         }
 
-        await deleteCategory(data.id);
+        try {
+            await deleteCategory(data.id);
+            reset();
+            closeModal();
+        } catch (error) {
+            console.error("Error deleting category:", error);
+        }
     }
 
     return (
@@ -163,7 +185,8 @@ export const CategoryForm = () => {
 export const PerspectiveForm = () => {
     const { perspectives } = useGetPerspectives();
     const methods = useForm<DeleteProps>();
-    const { handleSubmit, register, formState: { isSubmitting } } = methods;
+    const { handleSubmit, register, reset, formState: { isSubmitting } } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
 
     const onSubmit = async (data: DeleteProps) => {
         if (!data.id) {
@@ -171,7 +194,13 @@ export const PerspectiveForm = () => {
             return;
         }
 
-        await deletePerspective(data.id);
+        try {
+            await deletePerspective(data.id);
+            reset();
+            closeModal();
+        } catch (error) {
+            console.error("Error deleting perspective:", error);
+        }
     }
 
     return (
@@ -213,14 +242,22 @@ export const PerspectiveForm = () => {
 export const ArtStylesForm = () => {
     const { artStyles } = useGetArtStyles();
     const methods = useForm<DeleteProps>();
-    const { handleSubmit, register, formState: { isSubmitting } } = methods;
+    const { handleSubmit, register, reset, formState: { isSubmitting } } = methods;
+    const closeModal = useActionModal(state => state.closeModal);
+
     const onSubmit = async (data: DeleteProps) => {
         if (!data.id) {
             console.error("No art style ID provided for deletion");
             return;
         }
 
-        await deleteArtStyle(data.id);
+        try {
+            await deleteArtStyle(data.id);
+            reset();
+            closeModal();
+        } catch (error) {
+            console.error("Error deleting art style:", error);
+        }
     }
 
     return (

@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import useCreateModal, { type FormType } from "../hooks/useCreateModal";
+import useActionModal, { type FormType } from "../hooks/useActionModal";
 
 interface SetFormModalProps {
     title: string;
@@ -18,15 +18,14 @@ const SetFormModal = ({
     perspectiveForm: PerspectiveFormComponent,
     artStyleForm: ArtStyleFormComponent
 }: SetFormModalProps) => {
-    const formType = useCreateModal(state => state.formType);
-    const setFormType = useCreateModal(state => state.setFormType);
+    const formType = useActionModal(state => state.formType);
+    const setFormType = useActionModal(state => state.setFormType);
 
     return (
         <>
             <h2>
                 {title}: {formType}
             </h2>
-
             <select
                 onChange={(e) => setFormType(e.target.value as FormType)}
                 value={formType}
@@ -53,6 +52,7 @@ const SetFormModal = ({
                     <option value="artStyle">Art Style</option>
                 }
             </select>
+
             {
                 formType === "saga" && SagaFormComponent && <SagaFormComponent />
             }

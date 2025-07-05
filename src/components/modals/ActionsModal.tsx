@@ -1,5 +1,4 @@
 import BaseModal from './BaseModal';
-import useCreateModal from '../../hooks/useCreateModal';
 import { useState } from 'react';
 import SetFormModal from '../SetFormModal';
 import { ArtStyleForm, CategoryForm, GameForm, PerspectiveForm, SagaForm } from '../CreateForms';
@@ -14,11 +13,12 @@ import {
     PerspectiveForm as DeletePerspectiveForm,
     ArtStylesForm as DeleteArtStyleForm
 } from '../DeleteForms';
+import useActionModal from '../../hooks/useActionModal';
 
 type CRUDMode = "create" | "update" | "delete";
 
-const CreateModal = () => {
-    const closeModal = useCreateModal(state => state.closeModal);
+const ActionModal = () => {
+    const closeModal = useActionModal(state => state.closeModal);
     const [mode, setMode] = useState<CRUDMode>("create");
 
     return (
@@ -65,4 +65,4 @@ const CreateModal = () => {
     )
 }
 
-export default CreateModal;
+export default ActionModal;
