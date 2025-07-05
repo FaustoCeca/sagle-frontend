@@ -23,8 +23,6 @@ const OptionsBar = () => {
     };
   }, [isOpen, isGamesModalOpen]);
 
-  console.log('isGamesModalOpen', isGamesModalOpen);
-
   return (
     <>
       <div

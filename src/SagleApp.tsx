@@ -91,7 +91,7 @@ const SagleContentApp = () => {
       <picture>
         <img
           src={logo}
-          className="w-full h-auto max-w-[300px] max-h-[300px] object-contain"
+          className="w-full h-auto max-w-[220px] lg:max-w-[300px] max-h-[220px] lg:max-h-[300px] object-contain"
           alt="sagle-logo"
           aria-label="sagle-logo"
         />

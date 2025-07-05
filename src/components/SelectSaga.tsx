@@ -39,9 +39,13 @@ const SelectSaga = () => {
         sagas.filter(saga =>
             saga.id !== yesterdaySagle?.id &&
             !triedSagas.some(triedSaga => triedSaga.id === saga.id)
+            && saga.games.length > 0
         ),
         [sagas, yesterdaySagle?.id, triedSagas]
     );
+
+
+
     const filteredSagas = useMemo(() =>
         availableSagas.filter(saga =>
             saga.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -118,7 +122,7 @@ const SelectSaga = () => {
                 , good luck today!
             </p>
 
-            <div className="relative">
+            <div className="relative md:px-0 px-4">
                 <input
                     type="text"
                     {...register('searchTerm', {
@@ -133,7 +137,7 @@ const SelectSaga = () => {
                     autoComplete='off'
                     translate='no'
                     placeholder={user?.hasParticipatedToday ? "You've already guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
-                    className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base"
+                    className="w-full p-2 md:px-0 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base placeholder:text-sm placeholder:text-gray-700"
                     aria-label="search-saga"
                     disabled={isSubmitting || isLoading || user?.hasParticipatedToday}
                 />

@@ -1,51 +1,66 @@
 import BaseModal from './BaseModal';
 import useCreateModal from '../../hooks/useCreateModal';
 import { useState } from 'react';
-import { useGetSagas } from '../../hooks/useGetSagas';
-import CreateModalContent from '../CreateModalContent';
+import SetFormModal from '../SetFormModal';
+import { ArtStyleForm, CategoryForm, GameForm, PerspectiveForm, SagaForm } from '../CreateForms';
+import {
+    SagaForm as UpdateSagaForm,
+    GameForm as UpdateGameForm,
+} from '../UpdateForms'
+import {
+    SagaForm as DeleteSagaForm,
+    GameForm as DeleteGameForm,
+    CategoryForm as DeleteCategoryForm,
+    PerspectiveForm as DeletePerspectiveForm,
+    ArtStylesForm as DeleteArtStyleForm
+} from '../DeleteForms';
+
+type CRUDMode = "create" | "update" | "delete";
 
 const CreateModal = () => {
     const closeModal = useCreateModal(state => state.closeModal);
-    const [mode, setMode] = useState<"update" | "create">("create");
-    const { sagas } = useGetSagas();
-    
+    const [mode, setMode] = useState<CRUDMode>("create");
+
     return (
         <BaseModal
             onClose={closeModal}
         >
             <select
-                onChange={(e) => setMode(e.target.value as "update" | "create")}
+                onChange={(e) => setMode(e.target.value as CRUDMode)}
             >
                 <option value="create">Crear</option>
                 <option value="update">Actualizar</option>
+                <option value="delete">Eliminar</option>
             </select>
 
             {
-                mode === "create" && <CreateModalContent />           
+                mode === "create" && <SetFormModal
+                    title="Crear un nuevo elemento"
+                    sagaForm={SagaForm}
+                    gameForm={GameForm}
+                    categoryForm={CategoryForm}
+                    perspectiveForm={PerspectiveForm}
+                    artStyleForm={ArtStyleForm}
+                />
             }
 
             {
-                mode === "update" && (
-                    <>
-                        <h2>
-                            Saga a actualizar
-                        </h2>
-                        <select
-                            value={sagas.map(saga => saga.id).join(",")}
-                            className="mb-4 p-2 border border-gray-300 rounded"
-                        >
-                            {
-                                sagas.map(saga => (
-                                    <option key={saga.id} value={saga.id}>
-                                        {saga.title} ({saga.id})
-                                    </option>
-                                ))
-                            }
-                        </select>
-                    </>
-                )
+                mode === "update" && <SetFormModal
+                    title='Actualizar un elemento existente'
+                    sagaForm={UpdateSagaForm}
+                    gameForm={UpdateGameForm}
+                />
             }
-
+            {
+                mode === "delete" && <SetFormModal
+                    title='Eliminar un elemento existente'
+                    sagaForm={DeleteSagaForm}
+                    gameForm={DeleteGameForm}
+                    categoryForm={DeleteCategoryForm}
+                    perspectiveForm={DeletePerspectiveForm}
+                    artStyleForm={DeleteArtStyleForm}
+                />
+            }
         </BaseModal>
     )
 }

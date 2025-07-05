@@ -13,7 +13,7 @@ export const createArt = async (dto: ArtStylesDto) => {
         method: 'POST',
     })
 
-    if (response.status !== 200) {
+    if (response.status !== 201) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -29,7 +29,7 @@ export const createCategory = async (dto: CategoryDto) => {
         method: 'POST',
     });
 
-    if (response.status !== 200) {
+    if (response.status !== 201) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -51,7 +51,7 @@ export const createGame = async (gameData: GameDto, file: File) => {
             method: 'POST',
         })
 
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -71,7 +71,7 @@ export const createPerspectives = async (dto: PerspectiveDto) => {
         method: 'POST',    
     })
 
-    if (response.status !== 200) {
+    if (response.status !== 201) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -90,7 +90,7 @@ export const createSaga = async (sagaData: SagaDto, file: File) => {
             method: 'POST',
         });
 
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         

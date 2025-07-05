@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
+export type FormType = "saga" | "game" | "category" | "perspective" | "artStyle";
+
 interface CreateModalStore {
   isOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
-  formType: "saga" | "game" | "category" | "perspective" | "artStyle";
-  setFormType: (type: "saga" | "game" | "category" | "perspective" | "artStyle") => void;
+  formType: FormType;
+  setFormType: (type: FormType) => void;
 }
 
 const useCreateModal = create<CreateModalStore>((set) => ({

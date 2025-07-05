@@ -41,9 +41,6 @@ const GameCard = ({
                 aspectRatio: '16/9',
                 minHeight: '300px',
             }}
-            // TODO: trabajar en animacion
-            // ${isVoting ? 'opacity-80 cursor-not-allowed' : ''}
-            //    ${isVoting || isSagleFetching || !isSagleFetched ? 'opacity-80 cursor-not-allowed' : ''}
             className={`relative w-full cursor-pointer h-full rounded-lg shadow-lg 
                 flex items-end justify-center p-4 pb-8 text-white 
                 transition-transform duration-300
@@ -60,7 +57,7 @@ const GameCard = ({
                 style={{
                     height: `${votePercentage}%`,
                     bottom: 0,
-                    top: 'auto'
+                    top: 'auto',
                 }}
                 role="progressbar"
                 aria-valuenow={votePercentage}

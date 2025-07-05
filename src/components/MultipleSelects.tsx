@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 interface Option {
     id: number;
@@ -23,38 +23,51 @@ const MultipleSelects = ({
     error = null,
     required = false
 }: MultipleSelectProps) => {
-    const { register } = useFormContext();
+    const { register, control } = useFormContext();
     return (
         <div>
             <label className="block text-sm font-medium text-gray-700">
                 {label}
                 {required && <span className="text-red-500">*</span>}
             </label>
-            <select
-                multiple
-                {...register(name, {required: required ? "This field is required" : false})}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 min-h-[120px]"
-            >
-                {
-                    loading ? (
-                        <option value="">Loading options...</option>
-                    ) : error ? (
-                        <option value="">Error loading options</option>
-                    ) : (
-                        options.map((options: {
-                            id: number;
-                            name: string;
-                        }) => (
-                            <option
-                                key={options.id}
-                                value={options.id}
-                            >
-                                {options.name}
-                            </option>
-                        ))
-                    )
-                }
-            </select>
+            <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (
+                    <select
+                        multiple
+                        value={field.value || []} 
+                        onChange={(e) => {
+                            const selectedOptions = Array.from(
+                                e.target.selectedOptions,
+                                option => Number(option.value)
+                            );
+                            field.onChange(selectedOptions);
+                        }}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 min-h-[120px]"
+                    >
+                        {
+                            loading ? (
+                                <option value="">Loading options...</option>
+                            ) : error ? (
+                                <option value="">Error loading options</option>
+                            ) : (
+                                options.map((option: {
+                                    id: number;
+                                    name: string;
+                                }) => (
+                                    <option
+                                        key={option.id}
+                                        value={option.id}
+                                    >
+                                        {option.name}
+                                    </option>
+                                ))
+                            )
+                        }
+                    </select>
+                )}
+            />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
     )

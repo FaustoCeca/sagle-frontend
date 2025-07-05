@@ -11,7 +11,7 @@ html {
     background-attachment: fixed;
 
     @media (max-width: 768px) {
-        background-image: url('../public/bg-mobile-black.jpg');
+      background-image: url('../public/bg-mobile-black.jpg');
     }
 }
 
