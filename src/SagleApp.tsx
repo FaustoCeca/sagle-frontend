@@ -6,7 +6,6 @@ import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { memo, useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
-import CreateButton from "./components/CreateButton";
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
@@ -16,6 +15,7 @@ import { useGetAttempts } from "./hooks/useGetAttempts";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
+import ActionButton from "./components/CreateButton";
 
 const SagleContentApp = () => {
   const { error, user: userData } = useGetUser();
@@ -27,7 +27,10 @@ const SagleContentApp = () => {
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets(); 
 
-  console.log(isConnected);
+    console.log("userData type:", userData ? typeof userData : "null/undefined", userData);
+  console.log("sagle type:", sagle ? typeof sagle : "null/undefined", sagle);
+  console.log("attemptedSagas type:", attemptedSagas ? (Array.isArray(attemptedSagas) ? "array" : typeof attemptedSagas) : "null/undefined", attemptedSagas);
+  console.log("isConnected type:", typeof isConnected, isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -62,7 +65,7 @@ const SagleContentApp = () => {
   }, [userData?.hasParticipatedToday]);
 
   const MemoizedOptionsBar = memo(OptionsBar);
-  // const MemoizedSelectSaga = memo(SelectSaga);
+  const MemoizedSelectSaga = memo(SelectSaga);
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
@@ -80,15 +83,15 @@ const SagleContentApp = () => {
       </picture>
       {
         userData && userData.isAdmin && (
-          <CreateButton />
+          <ActionButton />
         )
       }
       <MemoizedOptionsBar />
-      {/* <MemoizedSelectSaga /> */}
-      {/* <MemoizedSelectedSagas 
+      <MemoizedSelectSaga />
+      <MemoizedSelectedSagas 
         sagle={sagle}
-      /> */}
-      {/* {
+      />
+      {
 
         <div
           className="w-full"
@@ -98,7 +101,7 @@ const SagleContentApp = () => {
         >
           <MemoizedVotesSection />
         </div>
-      } */}
+      }
     </AppWrapper>
   );
 };
