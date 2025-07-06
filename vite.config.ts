@@ -12,7 +12,6 @@ export default defineConfig(({mode}) => {
       outDir: 'dist',
       sourcemap: mode !== 'production',
     },
-    envDir: '/',
     envPrefix: 'VITE_',
     define: {
       'process.env.NODE_ENV': JSON.stringify(mode),

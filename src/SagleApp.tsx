@@ -27,7 +27,7 @@ const SagleContentApp = () => {
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets(); 
 
-  console.log(isConnected);
+  // console.log(isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
