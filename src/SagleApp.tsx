@@ -27,7 +27,7 @@ const SagleContentApp = () => {
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets(); 
 
-  // console.log(isConnected);
+  console.log(isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -62,7 +62,7 @@ const SagleContentApp = () => {
   }, [userData?.hasParticipatedToday]);
 
   const MemoizedOptionsBar = memo(OptionsBar);
-  const MemoizedSelectSaga = memo(SelectSaga);
+  // const MemoizedSelectSaga = memo(SelectSaga);
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
@@ -85,10 +85,10 @@ const SagleContentApp = () => {
       }
       <MemoizedOptionsBar />
       {/* <MemoizedSelectSaga /> */}
-      <MemoizedSelectedSagas 
+      {/* <MemoizedSelectedSagas 
         sagle={sagle}
-      />
-      {
+      /> */}
+      {/* {
 
         <div
           className="w-full"
@@ -98,7 +98,7 @@ const SagleContentApp = () => {
         >
           <MemoizedVotesSection />
         </div>
-      }
+      } */}
     </AppWrapper>
   );
 };
