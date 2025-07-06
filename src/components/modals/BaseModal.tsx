@@ -22,6 +22,7 @@ const BaseModal = ({ onClose, children }: BaseModalProps) => {
 
   // Quiero que si haces click fuera del modal, se cierre
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log("Backdrop clicked");
     if (event.target === event.currentTarget) {
       onClose();
     }
@@ -40,13 +41,14 @@ const BaseModal = ({ onClose, children }: BaseModalProps) => {
       <div 
         className="absolute inset-0 bg-black opacity-80"
         onClick={handleBackdropClick}
-        />
+        data-testid="modal-backdrop"
+      />
       {/* Contenido del modal sin opacidad */}
       <div className="relative z-10 w-full flex items-center justify-center h-full">
         <div className="bg-white relative p-4 rounded-lg w-[80%] overflow-y-scroll max-h-[90%] shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-2 right-1 text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded-full p-2"
+          className="fixed top-5 right-5 text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded-full p-2"
         >
           <span className="sr-only">Close</span>
           <svg

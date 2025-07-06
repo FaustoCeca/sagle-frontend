@@ -15,7 +15,7 @@ type SelectSagaProps = {
 }
 
 const SelectSaga = () => {
-    const { register, handleSubmit, setValue, watch, formState: { isSubmitting } } = useForm<SelectSagaProps>({
+    const { register, handleSubmit, setValue, watch, formState: { isSubmitting }, reset } = useForm<SelectSagaProps>({
         defaultValues: {
             searchTerm: '',
             selectedSagaId: undefined,
@@ -83,6 +83,7 @@ const SelectSaga = () => {
         try {
             const result = await attempt(selectedSaga.id);
             addTriedSaga(selectedSaga);
+            reset({ searchTerm: '', selectedSagaId: undefined });
 
             if (result.haveFoundSagle) {
                 fetchUserAgain();

@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { memo, useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import CreateButton from "./components/CreateButton";
-import bg from '../public/bg-black.jpg';
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
@@ -19,7 +18,7 @@ import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
 
 const SagleContentApp = () => {
-  const { isLoading: isUserLoading, error, user: userData } = useGetUser();
+  const { error, user: userData } = useGetUser();
   const { setUser } = useCurrentUser();
   const voteSectionRef = useRef<HTMLDivElement>(null);
   const { sagle } = useGetSagle();
@@ -67,22 +66,6 @@ const SagleContentApp = () => {
   const MemoizedSelectSaga = memo(SelectSaga);
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
-
-  if (
-    isUserLoading
-  ) return (
-    <div
-      // className="flex flex-col items-center min-h-dvh w-full py-8 lg:overflow-auto overflow-scroll"
-      className="flex flex-col items-center min-h-dvh w-full py-8"
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-    </div>
-  )
 
   if (error) return <div>Error registering userData</div>;
 

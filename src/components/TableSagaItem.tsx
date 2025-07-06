@@ -86,9 +86,6 @@ const TableSagaItem = ({
                                         className="w-[110px] h-[110px] object-cover border-solid border-2 border-black"
                                     />
                                 </div>
-                                {/* <span className="text-base font-semibold text-white line-clamp-1">
-                                    {saga.title}
-                                </span> */}
                             </>
                         ))}
                     </div>

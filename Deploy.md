@@ -1,4 +1,5 @@
 Todavia no pude implementar github actions para CI/CD en el frontend, por lo tanto las reglas de deploy seran las siguientes
+Entornos: staging - prod
 
 Ir a la carpeta del entorno a deployar dentro del VPS (staging o prod)
 Hacer un pull de los cambios

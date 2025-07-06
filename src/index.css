@@ -1,18 +1,34 @@
 @import "tailwindcss";
 /* import bg from '../public/bg.png'; */
 
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('../public/bg-black.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media (max-width: 768px) {
+    background-image: url('../public/bg-mobile-black.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+}
 
 html {
     scroll-behavior: smooth;
-    background-image: url('../public/bg-black.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    @media (max-width: 768px) {
-      background-image: url('../public/bg-mobile-black.jpg');
-    }
 }
 
 .grid-votes {
