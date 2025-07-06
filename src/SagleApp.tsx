@@ -61,7 +61,6 @@ const SagleContentApp = () => {
     }
   }, [userData?.hasParticipatedToday]);
 
-
   const MemoizedOptionsBar = memo(OptionsBar);
   const MemoizedSelectSaga = memo(SelectSaga);
   const MemoizedSelectedSagas = memo(SelectedSagas);
@@ -85,7 +84,7 @@ const SagleContentApp = () => {
         )
       }
       <MemoizedOptionsBar />
-      <MemoizedSelectSaga />
+      {/* <MemoizedSelectSaga /> */}
       <MemoizedSelectedSagas 
         sagle={sagle}
       />
