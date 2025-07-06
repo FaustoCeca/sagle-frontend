@@ -30,6 +30,14 @@ const SelectSaga = () => {
     const { sagas, isLoading } = useGetSagas();
     const { user, fetchUserAgain } = useGetUser();
 
+    if (!user && isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <LoadingSpinner size="large" />
+            </div>
+        );
+    }
+
     const yesterdaySagle = useMemo(() =>
         sagas?.find((saga) => saga.wasSagleYesterday),
         [sagas]
