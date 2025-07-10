@@ -19,6 +19,7 @@ import ActionButton from "./components/CreateButton";
 import HintSection from "./components/HintSection";
 import AdSense from "./components/AdsenseAd";
 import { config } from "./config/config";
+import { useWindowSize } from "./hooks/useWindowSize";
 
 const SagleContentApp = () => {
   const { error, user: userData } = useGetUser();
@@ -29,6 +30,7 @@ const SagleContentApp = () => {
   const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets();
+  const { width } = useWindowSize();
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -68,10 +70,24 @@ const SagleContentApp = () => {
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
+  const isMobile = width < 768;
+
   if (error) return <div>Error registering userData</div>;
 
   return (
     <AppWrapper>
+      {
+        config.nodeEnv === 'production' &&
+        <AdSense
+          client="ca-pub-7814206622129697"
+          slot="XXXXXXXXXX" // Reemplaza con tu ID de slot para anuncios de banner
+          format="horizontal"
+          responsive={false}
+          width={isMobile ? "320px" : "728px"}
+          height={isMobile ? "50px" : "90px"}
+          className="mx-auto my-4"
+        />
+      }
       <picture>
         <img
           src={logo}
@@ -86,14 +102,6 @@ const SagleContentApp = () => {
         )
       }
       <MemoizedOptionsBar />
-      {
-        config.nodeEnv === 'production' &&
-        <AdSense
-          client="ca-pub-7814206622129697" // Tu ID de cliente real
-          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
-          className="my-4 w-full"
-        />
-      }
       <MemoizedSelectSaga />
       <MemoizedHintSection sagle={sagle} />
       <MemoizedSelectedSagas
@@ -113,9 +121,13 @@ const SagleContentApp = () => {
       {
         config.nodeEnv === 'production' &&
         <AdSense
-          client="ca-pub-7814206622129697" // Tu ID de cliente real
-          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
-          className="my-4 w-full"
+          client="ca-pub-7814206622129697"
+          slot="XXXXXXXXXX" // Reemplaza con tu ID de slot para anuncios de banner
+          format="horizontal"
+          responsive={false}
+          width={isMobile ? "320px" : "728px"}
+          height={isMobile ? "50px" : "90px"}
+          className="mx-auto my-4"
         />
       }
     </AppWrapper>

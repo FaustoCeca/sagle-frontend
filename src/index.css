@@ -74,3 +74,19 @@ html {
 .square-result-container {
   display: block;
 }
+
+.banner-ad {
+  width: 100%;
+  max-width: 728px;
+  height: 90px;
+  overflow: hidden;
+  margin: 1rem auto;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .banner-ad {
+    height: 50px;
+  }
+}

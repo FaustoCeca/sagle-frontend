@@ -7,9 +7,10 @@ interface AdSenseProps {
   responsive?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  width?: string;
+  height?: string;
 }
 
-// Extend the Window interface to include adsbygoogle
 declare global {
   interface Window {
     adsbygoogle: any[];
@@ -23,6 +24,8 @@ const AdSense: React.FC<AdSenseProps> = ({
   responsive = true,
   style = { display: 'block' },
   className = '',
+  width,
+  height,
 }) => {
   useEffect(() => {
     try {
@@ -35,11 +38,19 @@ const AdSense: React.FC<AdSenseProps> = ({
     }
   }, []);
 
+  // Combine style with width and height if provided
+  const combinedStyle = {
+    ...style,
+    ...(width && { width }),
+    ...(height && { height }),
+    maxWidth: '100%',
+  };
+
   return (
     <div className={className}>
       <ins
         className={`adsbygoogle ${responsive ? 'adsbygoogle-responsive' : ''}`}
-        style={style}
+        style={combinedStyle}
         data-ad-client={client}
         data-ad-slot={slot}
         data-ad-format={format}
