@@ -6,7 +6,6 @@ import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { memo, useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
-import CreateButton from "./components/CreateButton";
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
@@ -16,6 +15,10 @@ import { useGetAttempts } from "./hooks/useGetAttempts";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
+import ActionButton from "./components/CreateButton";
+import HintSection from "./components/HintSection";
+import AdSense from "./components/AdsenseAd";
+import { config } from "./config/config";
 
 const SagleContentApp = () => {
   const { error, user: userData } = useGetUser();
@@ -25,9 +28,7 @@ const SagleContentApp = () => {
   const setSagle = useSagleStore((state) => state.setSagle);
   const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
   const { attemptedSagas } = useGetAttempts();
-  const { isConnected } = useSockets(); 
-
-  // console.log(isConnected);
+  const { isConnected } = useSockets();
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -61,9 +62,9 @@ const SagleContentApp = () => {
     }
   }, [userData?.hasParticipatedToday]);
 
-
   const MemoizedOptionsBar = memo(OptionsBar);
   const MemoizedSelectSaga = memo(SelectSaga);
+  const MemoizedHintSection = memo(HintSection)
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
@@ -81,12 +82,21 @@ const SagleContentApp = () => {
       </picture>
       {
         userData && userData.isAdmin && (
-          <CreateButton />
+          <ActionButton />
         )
       }
       <MemoizedOptionsBar />
+      {
+        config.nodeEnv === 'production' &&
+        <AdSense
+          client="ca-pub-7814206622129697" // Tu ID de cliente real
+          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
+          className="my-4 w-full"
+        />
+      }
       <MemoizedSelectSaga />
-      <MemoizedSelectedSagas 
+      <MemoizedHintSection sagle={sagle} />
+      <MemoizedSelectedSagas
         sagle={sagle}
       />
       {
@@ -99,6 +109,14 @@ const SagleContentApp = () => {
         >
           <MemoizedVotesSection />
         </div>
+      }
+      {
+        config.nodeEnv === 'production' &&
+        <AdSense
+          client="ca-pub-7814206622129697" // Tu ID de cliente real
+          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
+          className="my-4 w-full"
+        />
       }
     </AppWrapper>
   );

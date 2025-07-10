@@ -2,7 +2,7 @@ import useActionModal from "../hooks/useActionModal";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import ActionModal from "./modals/ActionsModal";
 
-const CreateButton = () => {
+const ActionButton = () => {
   const currentUser = useCurrentUser(state => state.user);
   const openActionModal = useActionModal(state => state.openModal);
   const isOpen = useActionModal(state => state.isOpen);
@@ -26,4 +26,4 @@ const CreateButton = () => {
   )
 }
 
-export default CreateButton;
+export default ActionButton;

@@ -29,8 +29,9 @@ export const useGetAttempts = (): Response => {
         return { attemptedIds: [], isLoading: false, error };
     }
 
-    if (!attemptedIds || attemptedIds.length === 0) {
-        return { attemptedIds: [], isLoading: false, error: new Error("No attempted IDs found") };
+    if (!attemptedIds || !Array.isArray(attemptedIds) || attemptedIds.length === 0) {
+        console.warn("No valid attempted IDs found:", attemptedIds);
+        return { attemptedIds: [], isLoading: false, error: new Error("No attempted IDs found or invalid format") };
     }
 
 

@@ -122,7 +122,8 @@ const SelectSaga = () => {
                         className="lg:text-lg text-base text-center mb-4 font-semibold text-white"
                         aria-label="yesterday-sagle"
                     >
-                        Yesterday's Sagle was: {' '}
+                            {/* TODO: Fix this link */}
+                        {/* Yesterday's Sagle was: {' '}
                         <a
                             href={`https://${yesterdaySagle.link}`}
                             target="_blank"
@@ -131,7 +132,8 @@ const SelectSaga = () => {
                         >
                             {yesterdaySagle.title}
                         </a>
-                        , good luck today!
+                        , good luck today! */}
+                        Yesterday's Sagle was: <span className="text-blue-500">{yesterdaySagle.title}</span>, good luck today!
                     </p>
                 )
             }
