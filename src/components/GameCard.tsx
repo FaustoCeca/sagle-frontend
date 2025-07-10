@@ -53,7 +53,7 @@ const GameCard = ({
                 aria-hidden="true"
             />
             <div
-                className="absolute inset-y-0 right-0 w-full bg-white/10 backdrop-blur-sm transition-all duration-1000 ease-out"
+                className="absolute rounded-lg inset-y-0 right-0 w-full bg-white/10 backdrop-blur-sm transition-all duration-1000 ease-out"
                 style={{
                     height: `${votePercentage}%`,
                     bottom: 0,

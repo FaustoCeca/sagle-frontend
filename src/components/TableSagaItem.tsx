@@ -74,19 +74,17 @@ const TableSagaItem = ({
             {
                 showImage && triedSagas.length > 0 && (
                     <div className="flex flex-col items-center">
-                        {triedSagas.map((saga, index) => (
-                            <>
-                                <div
-                                    key={index}
-                                    className={`${animateId == saga?.id ? 'animate-fade-in' : ''} mt-2 text-[0px] h-full w-full flex items-center justify-center`}
-                                >
-                                    <img
-                                        src={saga.imageUrl}
-                                        alt={saga.title}
-                                        className="w-[110px] h-[110px] object-cover border-solid border-2 border-black"
-                                    />
-                                </div>
-                            </>
+                        {triedSagas.map((saga) => (
+                            <div
+                                key={saga.id}
+                                className={`${animateId == saga?.id ? 'animate-fade-in' : ''} mt-2 text-[0px] h-full w-full flex items-center justify-center`}
+                            >
+                                <img
+                                    src={saga.imageUrl}
+                                    alt={saga.title}
+                                    className="w-[110px] h-[110px] object-cover border-solid border-2 border-black"
+                                />
+                            </div>
                         ))}
                     </div>
                 )

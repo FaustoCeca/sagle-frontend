@@ -26,7 +26,7 @@ const UnlockHint = (
     )
 }
 
-const HintSection = ({sagle}: HintSectionProps) => {
+const HintSection = ({ sagle }: HintSectionProps) => {
     const triedSagas = useTriedSagasStore((state) => state.triedSagas);
     const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
     const [showHint, setShowHint] = useState(false);
@@ -36,13 +36,13 @@ const HintSection = ({sagle}: HintSectionProps) => {
     const canUnlockHint = memoizedTriedSagas.length >= requiredTries;
 
     if (!sagle) {
-        return <UnlockHint 
+        return <UnlockHint
             title='Loading your attempts...'
         />
     }
 
     if (!canUnlockHint && sagle) {
-        return <UnlockHint 
+        return <UnlockHint
             title={`You need ${requiredTries - memoizedTriedSagas.length} tries to unlock a hint!`}
         />
     }
@@ -63,13 +63,15 @@ const HintSection = ({sagle}: HintSectionProps) => {
     console.log("Hint:", hint);
 
     return (
-        <div className='text-white mt-4 p-4 px-8 rounded-md shadow-lg w-fit backdrop-blur-md'>
+        <button
+            className={`text-white mt-4 p-4 px-8 rounded-md shadow-lg w-fit backdrop-blur-md
+                ${!showHint ? 'cursor-pointer' : ''}
+                `}
+            onClick={handleUnlockHint}
+            disabled={isPending || showHint}
+        >
             {!showHint ? (
-                <button
-                    className='text-base cursor-pointer'
-                    onClick={handleUnlockHint}
-                    disabled={isPending}
-                >
+                <>
                     {
                         isPending ? (
                             <span>Loading hint...</span>
@@ -79,7 +81,7 @@ const HintSection = ({sagle}: HintSectionProps) => {
                             </span>
                         )
                     }
-                </button>
+                </>
             ) : (
                 <>
                     {error ? (
@@ -92,7 +94,7 @@ const HintSection = ({sagle}: HintSectionProps) => {
                     )}
                 </>
             )}
-        </div>
+        </button>
     )
 }
 
