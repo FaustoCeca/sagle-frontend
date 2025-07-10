@@ -17,6 +17,8 @@ import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
 import ActionButton from "./components/CreateButton";
 import HintSection from "./components/HintSection";
+import AdSense from "./components/AdsenseAd";
+import { config } from "./config/config";
 
 const SagleContentApp = () => {
   const { error, user: userData } = useGetUser();
@@ -26,7 +28,7 @@ const SagleContentApp = () => {
   const setSagle = useSagleStore((state) => state.setSagle);
   const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
   const { attemptedSagas } = useGetAttempts();
-  const { isConnected } = useSockets(); 
+  const { isConnected } = useSockets();
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -84,9 +86,17 @@ const SagleContentApp = () => {
         )
       }
       <MemoizedOptionsBar />
+      {
+        config.nodeEnv === 'production' &&
+        <AdSense
+          client="ca-pub-7814206622129697" // Tu ID de cliente real
+          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
+          className="my-4 w-full"
+        />
+      }
       <MemoizedSelectSaga />
       <MemoizedHintSection sagle={sagle} />
-      <MemoizedSelectedSagas 
+      <MemoizedSelectedSagas
         sagle={sagle}
       />
       {
@@ -99,6 +109,14 @@ const SagleContentApp = () => {
         >
           <MemoizedVotesSection />
         </div>
+      }
+      {
+        config.nodeEnv === 'production' &&
+        <AdSense
+          client="ca-pub-7814206622129697" // Tu ID de cliente real
+          slot="XXXXXXXXXX" // Necesitas crear un anuncio en AdSense para obtener este ID
+          className="my-4 w-full"
+        />
       }
     </AppWrapper>
   );
