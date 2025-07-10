@@ -85,7 +85,7 @@ const HintSection = ({sagle}: HintSectionProps) => {
                     ) : (
                         <>
                             <p className='font-semibold'>Hint:</p>
-                            <p>{hint?.text}</p>
+                            {hint?.text}
                         </>
                     )}
                 </>
