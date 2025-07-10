@@ -4,7 +4,7 @@ import SelectSaga from "./components/SelectSaga";
 import logo from '../public/sagle-logo.png';
 import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
@@ -70,7 +70,9 @@ const SagleContentApp = () => {
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
-  const isMobile = width < 768;
+  const isMobile = useMemo(() => width < 768, [width]);
+
+  console.log("SagleApp rendered");
 
   if (error) return <div>Error registering userData</div>;
 
