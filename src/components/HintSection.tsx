@@ -60,6 +60,8 @@ const HintSection = ({sagle}: HintSectionProps) => {
         }
     }
 
+    console.log("Hint:", hint);
+
     return (
         <div className='text-white mt-4 p-4 px-8 rounded-md shadow-lg w-fit backdrop-blur-md'>
             {!showHint ? (
