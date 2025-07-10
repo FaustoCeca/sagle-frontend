@@ -168,7 +168,7 @@ const SelectSaga = () => {
 
             {selectedSagaId && (
                 <button
-                    className="mt-4 cursor-pointer w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    className="mt-4 cursor-pointer w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors mx-4 md:mx-0"
                     aria-label="submit-guess"
                     type="submit"
                     disabled={foundedSagle || isSubmitting || isLoading || user?.hasParticipatedToday}
