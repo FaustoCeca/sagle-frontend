@@ -16,6 +16,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
 import ActionButton from "./components/CreateButton";
+import HintSection from "./components/HintSection";
 
 const SagleContentApp = () => {
   const { error, user: userData } = useGetUser();
@@ -26,11 +27,6 @@ const SagleContentApp = () => {
   const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
   const { attemptedSagas } = useGetAttempts();
   const { isConnected } = useSockets(); 
-
-    console.log("userData type:", userData ? typeof userData : "null/undefined", userData);
-  console.log("sagle type:", sagle ? typeof sagle : "null/undefined", sagle);
-  console.log("attemptedSagas type:", attemptedSagas ? (Array.isArray(attemptedSagas) ? "array" : typeof attemptedSagas) : "null/undefined", attemptedSagas);
-  console.log("isConnected type:", typeof isConnected, isConnected);
 
   useEffect(() => {
     if (sagle) setSagle(sagle);
@@ -66,6 +62,7 @@ const SagleContentApp = () => {
 
   const MemoizedOptionsBar = memo(OptionsBar);
   const MemoizedSelectSaga = memo(SelectSaga);
+  const MemoizedHintSection = memo(HintSection)
   const MemoizedSelectedSagas = memo(SelectedSagas);
   const MemoizedVotesSection = memo(VotesSection);
 
@@ -88,6 +85,7 @@ const SagleContentApp = () => {
       }
       <MemoizedOptionsBar />
       <MemoizedSelectSaga />
+      <MemoizedHintSection sagle={sagle} />
       <MemoizedSelectedSagas 
         sagle={sagle}
       />

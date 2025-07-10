@@ -44,3 +44,10 @@ export interface Game {
     steamLink?: string;
     createdAt: Date;
 }
+
+export interface Hint {
+    id: number;
+    text: string;
+    sagaId: number;
+    createdAt: Date;
+}
