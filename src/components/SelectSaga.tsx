@@ -52,8 +52,6 @@ const SelectSaga = () => {
         [sagas, yesterdaySagle?.id, triedSagas]
     );
 
-
-
     const filteredSagas = useMemo(() =>
         availableSagas.filter(saga =>
             saga.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -119,7 +117,7 @@ const SelectSaga = () => {
                 yesterdaySagle && (
 
                     <p
-                        className="lg:text-lg text-base text-center mb-4 font-semibold text-white"
+                        className="lg:text-lg text-base text-center mb-4 font-semibold text-white lg:px-0 px-4"
                         aria-label="yesterday-sagle"
                     >
                             {/* TODO: Fix this link */}
@@ -152,7 +150,7 @@ const SelectSaga = () => {
                     onFocus={() => setShowDropdown(true)}
                     autoComplete='off'
                     translate='no'
-                    placeholder={user?.hasParticipatedToday ? "You've guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
+                    placeholder={user.hasParticipatedToday ? "You've guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
                     className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base placeholder:text-sm placeholder:text-gray-700"
                     aria-label="search-saga"
                     disabled={isSubmitting || isLoading || user?.hasParticipatedToday}
