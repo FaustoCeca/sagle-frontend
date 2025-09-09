@@ -6,6 +6,7 @@ import { useGetUser } from "../hooks/useGetUser";
 import LoadingSpinner from "./LoadingSpinners";
 import GameCardSkeleton from "./GameCardSkeleton";
 import { useGetSagle } from "../hooks/useGetSagle";
+import { useTranslation } from "react-i18next";
 
 const VotesSection = () => {
     const { sagle, fetchSagleAgain, isFetching } = useGetSagle();
@@ -18,6 +19,7 @@ const VotesSection = () => {
             fetchUserAgain();
         }
     });
+    const {t} = useTranslation('votes');
 
 
     const sortedGames = useMemo(() => {
@@ -31,7 +33,7 @@ const VotesSection = () => {
     const totalVotes = votesArr.reduce((acc, votes) => acc + votes, 0);
 
     const handleVote = async (gameId: number) => {
-        if (user?.hasVotedToday || isProcessingVote.current) {
+        if (user.hasVotedToday || isProcessingVote.current) {
             console.warn('Vote already cast or in process, ignoring vote attempt.');
             return;
         }
@@ -48,15 +50,14 @@ const VotesSection = () => {
         <div
             className="flex flex-col items-center justify-center min-h-dvh w-full "
             style={{
-                visibility: user?.hasParticipatedToday ? 'visible' : 'hidden',
+                display: user?.hasParticipatedToday ? 'flex' : 'none',
             }}
-
         >
             <h2
                 className="text-2xl font-bold text-center mb-4 lg:px-0 px-5 text-white"
                 aria-label="congrats-sagle"
             >
-                Congrats! You guessed the Sagle of the day: {
+                {t("congrats")} {
                     sagle ?
                         <span>
                             <a
@@ -69,7 +70,7 @@ const VotesSection = () => {
                                 {sagle.title}
                             </a>
                         </span> : <span className="inline-flex items-center text-blue-500 hover:text-blue-700">
-                            Loading Sagle...
+                            {t("loading")}
                             <LoadingSpinner size="small" className="ml-2" />
                         </span>}
             </h2>
@@ -77,7 +78,7 @@ const VotesSection = () => {
                 className="text-lg text-center mb-6 lg:px-0 px-5 text-white"
                 aria-label="vote-instructions"
             >
-                Did you play it? Tell us who was your favorite game and vote for it!
+                {t("congratsDescription")}
             </p>
             <div
                 className="flex items-center justify-center w-full max-w-3xl"

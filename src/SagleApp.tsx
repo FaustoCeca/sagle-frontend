@@ -20,10 +20,12 @@ import HintSection from "./components/HintSection";
 import AdSense from "./components/AdsenseAd";
 import { config } from "./config/config";
 import { useWindowSize } from "./hooks/useWindowSize";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./components/ErrorFallback";
 
 const SagleContentApp = () => {
-  const { error, user: userData } = useGetUser();
-  const { setUser } = useCurrentUser();
+  const { user: userData } = useGetUser();
+  const { setUser, error } = useCurrentUser();
   const voteSectionRef = useRef<HTMLDivElement>(null);
   const { sagle } = useGetSagle();
   const setSagle = useSagleStore((state) => state.setSagle);
@@ -32,16 +34,21 @@ const SagleContentApp = () => {
   const { isConnected } = useSockets();
   const { width } = useWindowSize();
 
-  useEffect(() => {
-    if (sagle) setSagle(sagle);
-    if (userData) setUser(userData);
-  }, [sagle, userData, setSagle, setUser]);
+  if (error) {
+    throw new Error(error);
+  }
+  
 
   useEffect(() => {
-    if (!userData || !attemptedSagas?.length) return;
-    // @ts-ignore 
-    setTriedSagas(attemptedSagas);
-  }, [userData, attemptedSagas, setTriedSagas]);
+    if (sagle) {
+      setSagle(sagle);
+    }
+
+    if (userData) {
+      setUser(userData);
+      setTriedSagas(attemptedSagas);
+    }
+  }, [sagle, userData, setSagle, setUser, setTriedSagas]);
 
 
   useEffect(() => {
@@ -71,10 +78,6 @@ const SagleContentApp = () => {
   const MemoizedVotesSection = memo(VotesSection);
 
   const isMobile = useMemo(() => width < 768, [width]);
-
-  console.log("SagleApp rendered");
-
-  if (error) return <div>Error registering userData</div>;
 
   return (
     <AppWrapper>
@@ -109,17 +112,14 @@ const SagleContentApp = () => {
       <MemoizedSelectedSagas
         sagle={sagle}
       />
-      {
-
-        <div
-          className="w-full"
-          ref={voteSectionRef}
-          id="votes-section"
-          data-votes-section
-        >
-          <MemoizedVotesSection />
-        </div>
-      }
+      <div
+        className="w-full"
+        ref={voteSectionRef}
+        id="votes-section"
+        data-votes-section
+      >
+        <MemoizedVotesSection />
+      </div>
       {
         config.nodeEnv === 'production' &&
         <AdSense
@@ -141,7 +141,11 @@ const SagleApp = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ErrorBoundary
+        FallbackComponent={ErrorFallback}
+      >
       <SagleContentApp />
+      </ErrorBoundary>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )

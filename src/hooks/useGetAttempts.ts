@@ -5,7 +5,7 @@ import type { Saga } from "../types/game";
 
 interface Response {
     attemptedIds: number[];
-    attemptedSagas?: Saga[];
+    attemptedSagas: Saga[];
     isLoading: boolean
     error: Error | null
 }
@@ -22,16 +22,16 @@ export const useGetAttempts = (): Response => {
     const { sagas } = useGetSagas();
 
     if (isLoading) {
-        return { attemptedIds: [], isLoading, error: null };
+        return { attemptedIds: [], attemptedSagas: [], isLoading, error: null };
     }
 
     if (error) {
-        return { attemptedIds: [], isLoading: false, error };
+        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error };
     }
 
     if (!attemptedIds || !Array.isArray(attemptedIds) || attemptedIds.length === 0) {
         console.warn("No valid attempted IDs found:", attemptedIds);
-        return { attemptedIds: [], isLoading: false, error: new Error("No attempted IDs found or invalid format") };
+        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error: new Error("No attempted IDs found or invalid format") };
     }
 
 
@@ -43,7 +43,7 @@ export const useGetAttempts = (): Response => {
         });
 
     if (filteredSagas.length === 0) {
-        return { attemptedIds: [], isLoading: false, error: null };
+        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error: null };
     }
 
     return { attemptedIds, isLoading: false, error: null, attemptedSagas: filteredSagas };

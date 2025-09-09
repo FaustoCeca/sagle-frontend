@@ -4,7 +4,7 @@ import type { Hint } from "../types/game";
 
 interface Response {
     fetchHint: () => Promise<string>;
-    hint: Hint | null;
+    hints: Hint[] | null;
     isPending: boolean;
     error: Error | null;
 }
@@ -15,7 +15,7 @@ export const useGetHint = (): Response => {
     })
 
     return {
-        hint: data,
+        hints: data,
         isPending,
         error: error as Error | null,
         fetchHint: mutateAsync

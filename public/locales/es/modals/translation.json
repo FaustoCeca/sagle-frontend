@@ -1,0 +1,20 @@
+{
+    "howModal": "Como jugar",
+    "howModalTitle": "¡Adivina la saga de hoy entre las sagas más famosas de la industria de los videojuegos! Cambia cada 24 horas.",
+    "howModalDescription": "Cuando escribes el nombre de una saga, verás una lista de sugerencias. Haz clic en la que creas que es correcta. Esto revelará sus propiedades. El color del cuadrado indicará si estás en lo correcto, incorrecto o parcial:",
+    "howModalCorrect": "Verde: Saga correcta",
+    "howModalIncorrect": "Rojo: Saga incorrecta",
+    "howModalPartial": "Amarillo: Coincidencia parcial (algunas propiedades coinciden)",
+    "howModalProperties": "Propiedades. Estas son las propiedades que puedes ver:",
+    "howModalPossibleValues": "Valores posibles",
+    "howModalCategories": "Categorías: las categorías de la saga, de qué trata.",
+    "howModalGames": "Juegos: los juegos que forman parte de la saga.",
+    "howModalGamesExplanation": "Desde 2 hasta el infinito número de juegos. (Solo aceptamos juegos principales y spin-offs que se asemejen a estos, no DLCs o spin-offs de 4-6 horas)",
+    "howModalFirstGame": "Primer juego en: el año del primer juego en la saga.",
+    "howModalFirstGameExplanation": "Cualquier año desde 1950 hasta el año actual",
+    "howModalPerspective": "Perspectivas: las perspectivas de la saga, cómo se juega.",
+    "howModalArtStyle": "Estilo artístico: el estilo visual de la saga, cómo se ve.",
+    "howModalMultiplayer": "Multijugador: si la saga tiene multijugador o no.",
+    "howModalMultiplayerExplanation": "Sí, no o algunos (si algunos juegos tienen multijugador y otros no, será \"algunos\") (Solo aceptamos multijugador si es online y en modo PvP o PvE, no si solo es una tabla de clasificación o un modo cooperativo en un juego de un solo jugador)",
+    "sagasModalTitle": "Aquí puedes encontrar una lista de todas las sagas disponibles en el juego. Y las diferentes actualizaciones que se les han hecho."
+}
