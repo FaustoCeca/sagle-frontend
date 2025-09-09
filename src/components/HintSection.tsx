@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import useTriedSagasStore from '../hooks/useTriedSagas';
 import { useGetHint } from '../hooks/useGetHint';
 import type { Saga } from '../types/game';
+import { useTranslation } from 'react-i18next';
 
 interface UnlockHintProps {
     title: string;
@@ -30,25 +31,26 @@ const HintSection = ({ sagle }: HintSectionProps) => {
     const triedSagas = useTriedSagasStore((state) => state.triedSagas);
     const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
     const [showHint, setShowHint] = useState(false);
-    const { fetchHint, hint, isPending, error } = useGetHint();
+    const { fetchHint, hints, isPending, error } = useGetHint();
+    const { i18n, t } = useTranslation('game');
 
     const requiredTries = 3;
     const canUnlockHint = memoizedTriedSagas.length >= requiredTries;
 
     if (!sagle) {
         return <UnlockHint
-            title='Loading your attempts...'
+            title={t('loadingAttempts')}
         />
     }
 
     if (!canUnlockHint && sagle) {
         return <UnlockHint
-            title={`You need ${requiredTries - memoizedTriedSagas.length} tries to unlock a hint!`}
+            title={t('youNeed', { count: requiredTries - memoizedTriedSagas.length }) + ' ' + t('triesHint')}
         />
     }
 
     const handleUnlockHint = async () => {
-        if (!hint) {
+        if (!hints || hints.length === 0) {
             try {
                 await fetchHint();
                 setShowHint(true);
@@ -59,6 +61,7 @@ const HintSection = ({ sagle }: HintSectionProps) => {
             setShowHint(!showHint);
         }
     }
+    const currentLanguageHint = hints?.find(hint => hint.language === i18n.language);
 
     return (
         <button
@@ -72,10 +75,10 @@ const HintSection = ({ sagle }: HintSectionProps) => {
                 <>
                     {
                         isPending ? (
-                            <span>Loading hint...</span>
+                            <span>{t("loadingHint")}</span>
                         ) : (
                             <span>
-                                Unlock hint
+                                {t("unlockHint")}
                             </span>
                         )
                     }
@@ -86,8 +89,8 @@ const HintSection = ({ sagle }: HintSectionProps) => {
                         <p className='text-red-400'>Error loading hint: {error.message}</p>
                     ) : (
                         <>
-                            <p className='font-semibold'>Hint:</p>
-                            {hint?.text}
+                            <p className='font-semibold'></p>
+                            <p className='text-gray-300'>{currentLanguageHint?.text}</p>
                         </>
                     )}
                 </>

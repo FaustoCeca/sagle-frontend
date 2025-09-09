@@ -1,11 +1,15 @@
 import { useGetSagas } from '../../hooks/useGetSagas';
 import BaseModal from './BaseModal';
 import useSagasModal from '../../hooks/useSagasModal';
+import { useTranslation } from 'react-i18next';
+
 
 const SagasModal = () => {
   const { closeModal } = useSagasModal();
   const { sagas, isLoading, error } = useGetSagas();
   const selectableSagas = sagas?.filter(saga => saga.games.length > 0) || [];
+  const {t} = useTranslation('modals');
+
   return (
     <BaseModal
       onClose={closeModal}
@@ -15,7 +19,7 @@ const SagasModal = () => {
       >
         <h2 className="text-4xl font-bold mb-4">Sagas</h2>
         <p className="text-lg mb-4">
-          Here you can find a list of all the sagas available in the game. And the different updates that have been made to them.
+          {t("sagasModalTitle")}
         </p>
         {isLoading && <p>Loading sagas...</p>}
         {error && <p className="text-red-500">Error loading sagas: {error.message}</p>}

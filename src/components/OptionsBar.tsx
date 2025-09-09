@@ -5,6 +5,7 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useEffect } from "react";
 import SagasModal from "./modals/SagasModal";
 import useSagasModal from "../hooks/useSagasModal";
+import LanguageToggle from "./LenguageToggle";
 
 const OptionsBar = () => {
   const { openModal, isOpen } = useHowToPlayModal();
@@ -65,6 +66,7 @@ const OptionsBar = () => {
               aria-label="gamepad"
             />
           </button>
+          <LanguageToggle />
         </div>
       </div>
       {

@@ -48,6 +48,7 @@ export interface Game {
 export interface Hint {
     id: number;
     text: string;
+    language: "es" | "en" | "fr";
     sagaId: number;
     createdAt: Date;
 }

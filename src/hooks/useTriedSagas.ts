@@ -7,7 +7,7 @@ export interface UseTriedSagasStore {
     addTriedSaga: (saga: Saga) => void;
     removeTriedSaga: (saga: Saga) => void;
     clearTriedSagas: () => void; 
-    setTriedSagas?: (sagas: Saga[]) => void; // Optional setter for initial state
+    setTriedSagas: (sagas: Saga[]) => void;
 }
 
 const useTriedSagasStore = create<UseTriedSagasStore>()((set) => ({
