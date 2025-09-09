@@ -1,35 +1,23 @@
-import type { Saga } from '../types/game';
-import useTriedSagasStore from '../hooks/useTriedSagas';
-import { useCallback, useMemo, useState } from 'react';
-import useSagleStore from '../hooks/useSagle';
+import { useMemo } from 'react';
 import { useGetSagas } from '../hooks/useGetSagas';
-import { useForm } from 'react-hook-form';
-import { attempt } from '../actions/attempt';
-import SagasDropdown from './SagasDropdown';
 import { useGetUser } from '../hooks/useGetUser';
 import LoadingSpinner from './LoadingSpinners';
+import { useTranslation } from 'react-i18next';
+import SelectSagaInput from './SelectSagaInput';
 
-type SelectSagaProps = {
-    searchTerm: string;
-    selectedSagaId?: number;
-}
 
 const SelectSaga = () => {
-    const { register, handleSubmit, setValue, watch, formState: { isSubmitting }, reset } = useForm<SelectSagaProps>({
-        defaultValues: {
-            searchTerm: '',
-            selectedSagaId: undefined,
-        }
-    });
-    const searchTerm = watch('searchTerm');
-    const selectedSagaId = watch('selectedSagaId');
-    const [showDropdown, setShowDropdown] = useState(false);
-    const { triedSagas, addTriedSaga } = useTriedSagasStore();
-    const foundedSagle = useSagleStore((state) => state.foundedSagle);
-    const setFoundedSagle = useSagleStore((state) => state.setFoundedSagle);
-    const { sagas, isLoading } = useGetSagas();
-    const { user, fetchUserAgain } = useGetUser();
 
+    
+    const { sagas, isLoading } = useGetSagas();
+    const { user } = useGetUser();
+    const { t } = useTranslation('game');
+    
+    const yesterdaySagle = useMemo(() =>
+        sagas?.find((saga) => saga.wasSagleYesterday),
+        [sagas]
+    );
+    
     if (!user && isLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -38,80 +26,17 @@ const SelectSaga = () => {
         );
     }
 
-    const yesterdaySagle = useMemo(() =>
-        sagas?.find((saga) => saga.wasSagleYesterday),
-        [sagas]
-    );
 
-    const availableSagas = useMemo(() =>
-        sagas.filter(saga =>
-            saga.id !== yesterdaySagle?.id &&
-            !triedSagas.some(triedSaga => triedSaga.id === saga.id)
-            && saga.games.length > 0
-        ),
-        [sagas, yesterdaySagle?.id, triedSagas]
-    );
-
-    const filteredSagas = useMemo(() =>
-        availableSagas.filter(saga =>
-            saga.title.toLowerCase().includes(searchTerm.toLowerCase())
-        ),
-        [availableSagas, searchTerm]
-    );
-
-    const handleSagaSelect = useCallback((saga: Saga) => {
-        setValue('selectedSagaId', saga.id);
-        setValue('searchTerm', saga.title);
-        setShowDropdown(false);
-    }, [setValue]);
-
-    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue('searchTerm', e.target.value);
-        setShowDropdown(true);
-    }, [setValue]);
-
-    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Escape') {
-            setShowDropdown(false);
-        }
-
-        // TODO: esta funcionando mal, revisarla despues
-        // } else if (e.key === 'Enter' && selectedSaga) {
-        //     // Handle guess submission here
-        //     console.log('Selected saga:', selectedSaga);
-        // }
-    }, []);
-
-    const onSubmit = async (data: SelectSagaProps) => {
-        const selectedSaga = availableSagas.find(saga => saga.id === data.selectedSagaId);
-        if (!selectedSaga) return;
-
-        try {
-            const result = await attempt(selectedSaga.id);
-            addTriedSaga(selectedSaga);
-            reset({ searchTerm: '', selectedSagaId: undefined });
-
-            if (result.haveFoundSagle) {
-                fetchUserAgain();
-                setFoundedSagle(true);
-                localStorage.setItem('foundedSagle', 'true');
-            }
-        } catch (error) {
-            console.error('Error attempting saga:', error);
-            alert('There was an error processing your guess. Please try again later.');
-        }
-    }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
+        <div
             aria-label="select-saga-form"
         >
             <h2
                 className="lg:text-5xl text-3xl font-bold text-center mb-6 text-amber-100 mt-5"
                 aria-label="guess-sagle"
             >
-                Guess the Sagle today!
+                {t("selectSagaTitle")}
             </h2>
             {
                 yesterdaySagle && (
@@ -131,58 +56,15 @@ const SelectSaga = () => {
                             {yesterdaySagle.title}
                         </a>
                         , good luck today! */}
-                        Yesterday's Sagle was: <span className="text-blue-500">{yesterdaySagle.title}</span>, good luck today!
+                        {t("yesterdaySagle")} <span className="text-blue-500">{yesterdaySagle.title}</span>, {t("goodLuck")}
                     </p>
                 )
             }
 
-            <div className="relative md:px-0 px-4">
-                <input
-                    type="text"
-                    {...register('searchTerm', {
-                        required: 'Please enter a saga name',
-                        validate: value => value.trim() !== '' || 'Saga name cannot be empty',
-                    })}
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-                    onFocus={() => setShowDropdown(true)}
-                    autoComplete='off'
-                    translate='no'
-                    placeholder={user.hasParticipatedToday ? "You've guessed the Sagle today! Come back tomorrow" : 'Write the name of a saga...'}
-                    className="w-full p-2 border border-gray-300 rounded-lg bg-white text-black disabled:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:min-w-[420px] placeholder:lg:text-base placeholder:text-sm placeholder:text-gray-700"
-                    aria-label="search-saga"
-                    disabled={isSubmitting || isLoading || user?.hasParticipatedToday}
-                />
-
-                {searchTerm && showDropdown && (
-                    <SagasDropdown
-                        sagas={filteredSagas}
-                        onClick={handleSagaSelect}
-                    />
-                )}
-            </div>
-
-            {selectedSagaId && (
-                <button
-                    className="mt-4 cursor-pointer w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors mx-4 md:mx-0"
-                    aria-label="submit-guess"
-                    type="submit"
-                    disabled={foundedSagle || isSubmitting || isLoading || user?.hasParticipatedToday}
-                >
-                    Submit Guess
-                </button>
-            )}
-
-            {
-                isSubmitting && (
-                    <div className="mt-4 flex items-center w-full justify-center">
-                        <LoadingSpinner size="medium" />
-                    </div>
-                )
-            }
-        </form>
+            <SelectSagaInput 
+                yesterdaySagle={yesterdaySagle}
+            />
+        </div>
     )
 }
 

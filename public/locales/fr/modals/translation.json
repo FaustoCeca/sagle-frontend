@@ -1,0 +1,19 @@
+{
+    "howModalTitle": "Devinez la saga du jour parmi les sagas les plus célèbres de l'industrie du jeu vidéo ! Elle change toutes les 24 heures.",
+    "howModalDescription": "Lorsque vous tapez le nom d'une saga, vous verrez une liste de suggestions. Cliquez sur celle que vous pensez être correcte. Cela révélera ses propriétés. La couleur du carré indiquera si vous avez raison, tort ou si c'est partiel :",
+    "howModalCorrect": "Vert : Saga correcte",
+    "howModalIncorrect": "Rouge : Saga incorrecte",
+    "howModalPartial": "Jaune : Correspondance partielle (certaines propriétés correspondent)",
+    "howModalProperties": "Propriétés. Voici les propriétés que vous pouvez voir :",
+    "howModalPossibleValues": "Valeurs possibles",
+    "howModalCategories": "Catégories : les catégories de la saga, de quoi elle parle.",
+    "howModalGames": "Jeux : les jeux qui font partie de la saga.",
+    "howModalGamesExplanation": "De 2 à un nombre infini de jeux. (Nous n'acceptons que les jeux principaux et les spin-offs qui ressemblent à ceux-ci, pas les DLCs ou les spin-offs de 4-6 heures)",
+    "howModalFirstGame": "Premier jeu en : l'année du premier jeu dans la saga.",
+    "howModalFirstGameExplanation": "Toute année de 1950 à l'année en cours",
+    "howModalPerspective": "Perspectives : les perspectives de la saga, comment elle est jouée.",
+    "howModalArtStyle": "Style artistique : le style visuel de la saga, à quoi elle ressemble.",
+    "howModalMultiplayer": "Multijoueur : si la saga a un mode multijoueur ou non.",
+    "howModalMultiplayerExplanation": "Oui, non ou certains (si certains jeux ont un mode multijoueur et d'autres non, ce sera \"certains\") (Nous n'acceptons le multijoueur que s'il est en ligne et en mode PvP ou PvE, pas s'il s'agit simplement d'un classement ou d'un mode coopératif dans un jeu solo)",
+    "sagasModalTitle": "Ici, vous pouvez trouver une liste de toutes les sagas disponibles dans le jeu. Et les différentes mises à jour qui leur ont été apportées."
+}

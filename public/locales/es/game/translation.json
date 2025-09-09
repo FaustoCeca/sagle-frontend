@@ -1,0 +1,21 @@
+{
+    "selectSagaTitle": "¡Adivina el Sagle de hoy!",
+    "yesterdaySagle": "El Sagle de ayer fue: ",
+    "goodLuck": "¡Buena suerte hoy!",
+    "guessedSagle": "¡Has adivinado el Sagle de hoy! Vuelve mañana.",
+    "notGuessedSagle": "Escribe el nombre de una saga...",
+    "submitGuess": "Enviar intento",
+    "categories": "Categorías",
+    "games": "Juegos",
+    "firstGame": "Primer Juego",
+    "lastGame": "Último Juego",
+    "perspectives": "Perspectivas",
+    "artStyles": "Estilos de Arte",
+    "multiplayer": "Multijugador",
+    "youNeed": "Necesitas",
+    "triesHint": "intentos para desbloquear una pista!",
+    "unlockHint": "Desbloquear pista",
+    "loadingHint": "Cargando pista...",
+    "loadingAttempts": "Cargando tus intentos...",
+    "hint": "Pista"
+}

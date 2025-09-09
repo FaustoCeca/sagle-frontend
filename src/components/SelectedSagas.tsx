@@ -5,6 +5,7 @@ import TableSagaItem from "./TableSagaItem";
 import LoadingSpinner from "./LoadingSpinners";
 import { getGameYear } from "../utils/getGameYear";
 import type { Saga } from "../types/game";
+import { useTranslation } from "react-i18next";
 
 interface SelectedSagasProps {
     sagle: Saga | null;
@@ -13,12 +14,13 @@ interface SelectedSagasProps {
 const SelectedSagas = ({sagle}: SelectedSagasProps) => {
     const triedSagas = useTriedSagasStore((state) => state.triedSagas);
     const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
+    const {t} = useTranslation('game');
 
-    if (!sagle) return <LoadingSpinner className="mt-4" size="large" />
+    if (!sagle) return <LoadingSpinner className="mt-4" size="large" />;
     return (
         <>
         <div
-            className="flex flex-col items-center justify-center mt-4 lg:w-auto w-full"
+            className="flex flex-col items-center justify-center mt-4 lg:w-auto w-full mb-12"
         >
             <div
                 className="w-full overflow-x-auto pb-4 hide-scrollbar"
@@ -38,7 +40,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="Category"
+                    title={t("categories")}
                     ariaLabel="saga-categories"
                     renderLogic={(saga) => ({
                         state: categoriesLogic(sagle, saga),
@@ -49,7 +51,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="Games"
+                    title={t("games")}
                     ariaLabel="saga-games"
                     renderLogic={(saga) => ({
                         // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
@@ -63,7 +65,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="First Game in"
+                    title={t("firstGame")}
                     ariaLabel="saga-first-game"
                     renderLogic={(saga) => ({
                         // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
@@ -76,8 +78,8 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                     triedSagas={memoizedTriedSagas}
                 />
 
-                <TableSagaItem 
-                    title="Last Game in"
+                <TableSagaItem
+                    title={t("lastGame")}
                     ariaLabel="saga-last-game"
                     renderLogic={(saga) => ({
                         // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
@@ -91,7 +93,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="Perspectives"
+                    title={t("perspectives")}
                     ariaLabel="saga-perspectives"
                     renderLogic={(saga) => ({
                         state: perspectivesLogic(sagle, saga),
@@ -102,7 +104,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="Art style"
+                    title={t("artStyles")}
                     ariaLabel="saga-art-style"
                     renderLogic={(saga) => ({
                         state: artStylesLogic(sagle, saga),
@@ -113,7 +115,7 @@ const SelectedSagas = ({sagle}: SelectedSagasProps) => {
                 />
 
                 <TableSagaItem
-                    title="Multiplayer"
+                    title={t("multiplayer")}
                     ariaLabel="saga-multiplayer"
                     renderLogic={(saga) => ({
                         state: multiplayerLogic(sagle, saga),

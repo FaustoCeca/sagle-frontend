@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { UserDB } from "../types/user";
 import { createSession, getCurrentSession } from "../actions/session";
+import { useCurrentUser } from "./useCurrentUser";
 
 interface Response {
     user: UserDB;
@@ -11,26 +12,22 @@ interface Response {
 
 export const useGetUser = (): Response => {
     const queryClient = useQueryClient();
-    
+    const setError = useCurrentUser((state) => state.setError);
+
     const { data: userData, isLoading, error } = useQuery({
         queryKey: ['session'],
         queryFn: async () => {
-            try {
-                // Primero intentamos obtener la sesión actual
-                // Si hay cookie, el backend la leerá automáticamente
-                const user = await getCurrentSession();
-                
-                // Si la respuesta tiene datos, significa que la cookie es válida
-                if (user) {
-                    return user;
-                }
-            } catch (error) {
-                console.log("No existing session found or it's invalid");
-                // Si hay un error, simplemente continuamos con el flujo
+            const user = await getCurrentSession();
+
+            if (user) return user;
+
+            const newUser = await createSession();
+
+            if (!newUser) {
+                setError("Failed to create a new user session.");
             }
 
-            // Si no hay sesión existente o es inválida, creamos una nueva
-            return await createSession();
+            return newUser;
         },
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,

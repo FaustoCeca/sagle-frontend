@@ -1,0 +1,21 @@
+{
+    "selectSagaTitle": "Guess today's Sagle!",
+    "yesterdaySagle": "Yesterday's Sagle was: ",
+    "goodLuck": "Good luck today!",
+    "guessedSagle": "You've guessed the Sagle today! Come back tomorrow.",
+    "notGuessedSagle": "Write the name of a saga...",
+    "submitGuess": "Submit Guess",
+    "categories": "Categories",
+    "games": "Games",
+    "firstGame": "First Game",
+    "lastGame": "Last Game",
+    "perspectives": "Perspectives",
+    "artStyles": "Art Styles",
+    "multiplayer": "Multiplayer",
+    "youNeed": "You need",
+    "triesHint": "tries to unlock a hint!",
+    "unlockHint": "Unlock Hint",
+    "loadingHint": "Loading hint...",
+    "loadingAttempts": "Loading your attempts...",
+    "hint": "Hint"
+}
