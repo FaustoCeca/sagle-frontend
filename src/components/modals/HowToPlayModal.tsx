@@ -18,7 +18,7 @@ const HowToPlayModal = () => {
             onClose={closeModal}
         >
             <div className="flex flex-col">
-                <h2 className="text-4xl font-bold mb-4">
+                <h2 className="font-heading uppercase tracking-wide text-3xl lg:text-4xl font-bold mb-4 text-neon-cyan text-glow-cyan">
                     {t("howModal")}
                 </h2>
                 <p className="text-lg mb-4">
@@ -27,10 +27,10 @@ const HowToPlayModal = () => {
                 <p className="text-lg mb-4">
                     {t("howModalDescription")}
                 </p>
-                <ul className="list-disc pl-6 mb-4">
-                    <li className="text-lg">{t("howModalCorrect")}</li>
-                    <li className="text-lg">{t("howModalIncorrect")}</li>
-                    <li className="text-lg">{t("howModalPartial")}</li>
+                <ul className="list-none pl-0 mb-4 flex flex-col gap-2">
+                    <li className="text-lg flex items-center gap-3"><span className="inline-block w-4 h-4 rounded-sm bg-neon-green glow-green shrink-0" />{t("howModalCorrect")}</li>
+                    <li className="text-lg flex items-center gap-3"><span className="inline-block w-4 h-4 rounded-sm bg-neon-red glow-red shrink-0" />{t("howModalIncorrect")}</li>
+                    <li className="text-lg flex items-center gap-3"><span className="inline-block w-4 h-4 rounded-sm bg-neon-yellow glow-yellow shrink-0" />{t("howModalPartial")}</li>
                 </ul>
                 <p
                     className="text-lg mb-4 font-semibold"

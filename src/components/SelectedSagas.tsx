@@ -1,9 +1,6 @@
-import { useMemo } from "react";
-import useTriedSagasStore from "../hooks/useTriedSagas";
-import { artStylesLogic, categoriesLogic, firstGameLogic, gamesLogic, lastGameLogic, multiplayerLogic, perspectivesLogic } from "../logic/gameLogic";
+import { useGetAttempts } from "../hooks/useGetAttempts";
 import TableSagaItem from "./TableSagaItem";
 import LoadingSpinner from "./LoadingSpinners";
-import { getGameYear } from "../utils/getGameYear";
 import type { Saga } from "../types/game";
 import { useTranslation } from "react-i18next";
 
@@ -11,127 +8,84 @@ interface SelectedSagasProps {
     sagle: Saga | null;
 }
 
-const SelectedSagas = ({sagle}: SelectedSagasProps) => {
-    const triedSagas = useTriedSagasStore((state) => state.triedSagas);
-    const memoizedTriedSagas = useMemo(() => triedSagas, [triedSagas]);
-    const {t} = useTranslation('game');
+const SelectedSagas = ({ sagle }: SelectedSagasProps) => {
+    const { attempts } = useGetAttempts();
+    const { t } = useTranslation('game');
 
     if (!sagle) return <LoadingSpinner className="mt-4" size="large" />;
     return (
         <>
-        <div
-            className="flex flex-col items-center justify-center mt-4 lg:w-auto w-full mb-12"
-        >
             <div
-                className="w-full overflow-x-auto pb-4 hide-scrollbar"
+                className="flex flex-col items-center justify-center mt-6 lg:w-auto w-full mb-12 animate-rise"
             >
-                <div className="flex flex-nowrap gap-4 min-w-max">
+                <div
+                    className="w-full max-w-[95vw] overflow-x-auto hide-scrollbar glass border border-neon-pink/30 glow-pink rounded-2xl p-4 lg:p-6"
+                >
+                    <div className="flex flex-nowrap gap-6 lg:gap-10 min-w-max">
 
-                <TableSagaItem
-                    title="Saga"
-                    ariaLabel="selected-sagas"
-                    renderLogic={(_) => ({
-                        state: "correct",
-                        showArrow: false
-                    })}
-                    showImage={true}
-                    getDisplayValue={(saga) => saga.title}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title="Saga"
+                            ariaLabel="selected-sagas"
+                            showImage={true}
+                            attempts={attempts}
+                        />
 
-                <TableSagaItem
-                    title={t("categories")}
-                    ariaLabel="saga-categories"
-                    renderLogic={(saga) => ({
-                        state: categoriesLogic(sagle, saga),
-                        showArrow: false
-                    })}
-                    getDisplayValue={(saga) => saga.categories.map(c => c.name).join(", ")}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("categories")}
+                            ariaLabel="saga-categories"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.categories}
+                        />
 
-                <TableSagaItem
-                    title={t("games")}
-                    ariaLabel="saga-games"
-                    renderLogic={(saga) => ({
-                        // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
-                        state: gamesLogic(sagle, saga),
-                        showArrow: true,
-                        higher: sagle && saga.games.length < sagle.games.length,
-                        lower: sagle && saga.games.length > sagle.games.length
-                    })}
-                    getDisplayValue={(saga) => saga.games.length.toString()}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("games")}
+                            ariaLabel="saga-games"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.games}
+                        />
 
-                <TableSagaItem
-                    title={t("firstGame")}
-                    ariaLabel="saga-first-game"
-                    renderLogic={(saga) => ({
-                        // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
-                        state: firstGameLogic(sagle, saga),
-                        showArrow: true,
-                        higher: sagle && getGameYear(saga, "first") < getGameYear(sagle, "first"),
-                        lower: sagle && getGameYear(saga, "first") > getGameYear(sagle, "first")
-                    })}
-                    getDisplayValue={(saga) => saga.games.map(g => g.birthYear).sort((a, b) => a - b)[0].toString()}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("firstGame")}
+                            ariaLabel="saga-first-game"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.firstGame}
+                        />
 
-                <TableSagaItem
-                    title={t("lastGame")}
-                    ariaLabel="saga-last-game"
-                    renderLogic={(saga) => ({
-                        // @ts-expect-error error esperado, espera un partial y la logica no puede devolverlo
-                        state: lastGameLogic(sagle, saga),
-                        showArrow: true,
-                        higher: sagle && getGameYear(saga, "last") < getGameYear(sagle, "last"),
-                        lower: sagle && getGameYear(saga, "last") > getGameYear(sagle, "last")
-                    })}
-                    getDisplayValue={(saga) => saga.games.map(g => g.birthYear).sort((a, b) => a - b)[saga.games.length - 1].toString()}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("lastGame")}
+                            ariaLabel="saga-last-game"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.lastGame}
+                        />
 
-                <TableSagaItem
-                    title={t("perspectives")}
-                    ariaLabel="saga-perspectives"
-                    renderLogic={(saga) => ({
-                        state: perspectivesLogic(sagle, saga),
-                        showArrow: false,
-                    })}
-                    getDisplayValue={(saga) => saga.perspectives.map(p => p.name).join(", ")}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("perspectives")}
+                            ariaLabel="saga-perspectives"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.perspectives}
+                        />
 
-                <TableSagaItem
-                    title={t("artStyles")}
-                    ariaLabel="saga-art-style"
-                    renderLogic={(saga) => ({
-                        state: artStylesLogic(sagle, saga),
-                        showArrow: false
-                    })}
-                    getDisplayValue={(saga) => saga.artStyles.map((artStyle) => artStyle.name).join(", ")}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("artStyles")}
+                            ariaLabel="saga-art-style"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.artStyles}
+                        />
 
-                <TableSagaItem
-                    title={t("multiplayer")}
-                    ariaLabel="saga-multiplayer"
-                    renderLogic={(saga) => ({
-                        state: multiplayerLogic(sagle, saga),
-                        showArrow: false
-                    })}
-                    getDisplayValue={(saga) => saga.hasMultiplayer}
-                    triedSagas={memoizedTriedSagas}
-                />
+                        <TableSagaItem
+                            title={t("multiplayer")}
+                            ariaLabel="saga-multiplayer"
+                            attempts={attempts}
+                            getField={(attempt) => attempt.multiplayer}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
-        <p
-            className="text-center mt-2 lg:hidden block text-white"
-        >
-            {'<'} Scroll horizontally to see all the columns {">"}
-        </p>
+            <p
+                className="text-center mt-3 lg:hidden block text-xs uppercase tracking-widest text-arcade-muted animate-pulse"
+            >
+                ← {t("scrollHorizontally")} →
+            </p>
         </>
 
     )

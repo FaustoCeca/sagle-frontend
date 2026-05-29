@@ -24,5 +24,5 @@ export const useGetCategories = (): Response => {
         return { categories: [], isLoading: false, error }
     }
 
-    return { categories: data, isLoading: false, error: null }
+    return { categories: data ?? [], isLoading: false, error: null }
 }

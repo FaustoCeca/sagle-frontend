@@ -9,12 +9,13 @@
     "howModalPossibleValues": "Possible values",
     "howModalCategories": "Categories: the categories of the saga, what it is about.",
     "howModalGames": "Games: the games that are part of the saga.",
-    "howModalGamesExplanation": "Starting from 2 to infinity number of games. (We only a accept principal games and spin-offs that feels like a these ones, not DLCs or 4-6 hours spin-offs)",
+    "howModalGamesExplanation": "Starting from 2 to infinity number of games. (We only accept main games and spin-offs that feel like these ones, not DLCs or 4-6 hours spin-offs)",
     "howModalFirstGame": "First Game in: the year of the first game in the saga.",
     "howModalFirstGameExplanation": "Any year from 1950 to the current year",
     "howModalPerspective": "Perspectives: the perspectives of the saga, how it is played.",
     "howModalArtStyle": "Art Style: the art style of the saga, how it looks.",
     "howModalMultiplayer": "Multiplayer: if the saga has multiplayer or not.",
     "howModalMultiplayerExplanation": "Yes, no or some (if some games have multiplayer and some don't, it will be \"some\") (We only accept multiplayer if it is online and pvp or pve mode, not if it is just a leaderboard or a co-op mode in a single player game)",
-    "sagasModalTitle": "Here you can find a list of all the sagas available in the game. And the different updates that have been made to them." 
+    "sagasModalTitle": "Here you can find a list of all the sagas available in the game.",
+    "viewSaga": "View {{title}}"
 }

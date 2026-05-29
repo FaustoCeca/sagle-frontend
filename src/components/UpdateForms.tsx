@@ -275,8 +275,6 @@ export const GameForm = () => {
       steamLink: data.steamLink
     }
 
-    console.log("Updating game:", updatedGame);
-
     try {
       await updateGame(currentGame.id, updatedGame, file);
       reset();

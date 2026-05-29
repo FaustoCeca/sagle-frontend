@@ -1,50 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAttemptsIds } from "../actions/getters";
-import { useGetSagas } from "./useGetSagas";
-import type { Saga } from "../types/game";
+import { getAttempts } from "../actions/getters";
+import { useGetUser } from "./useGetUser";
+import type { AttemptResult } from "../types/game";
 
 interface Response {
-    attemptedIds: number[];
-    attemptedSagas: Saga[];
-    isLoading: boolean
-    error: Error | null
+    attempts: AttemptResult[];
+    isLoading: boolean;
+    error: Error | null;
 }
 
-
+/**
+ * Single source of truth for the player's attempts today.
+ *
+ * BUG-06: the grid is derived only from this query (no parallel store that an
+ * effect could overwrite with stale data on win).
+ * BUG-07: the query only runs once a session exists, and an empty list is a
+ * normal state — never an error or a console warning.
+ */
 export const useGetAttempts = (): Response => {
-    const { data: attemptedIds, isLoading, error } = useQuery({
-        queryKey: ["attemptsIds"],
-        queryFn: getAttemptsIds,
+    const { user } = useGetUser();
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["attempts"],
+        queryFn: getAttempts,
+        enabled: !!user,
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 60 * 60, // 1 hour
     });
 
-    const { sagas } = useGetSagas();
-
-    if (isLoading) {
-        return { attemptedIds: [], attemptedSagas: [], isLoading, error: null };
-    }
-
-    if (error) {
-        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error };
-    }
-
-    if (!attemptedIds || !Array.isArray(attemptedIds) || attemptedIds.length === 0) {
-        console.warn("No valid attempted IDs found:", attemptedIds);
-        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error: new Error("No attempted IDs found or invalid format") };
-    }
-
-
-    const filteredSagas = sagas
-        .filter(saga => attemptedIds.includes(saga.id))
-        .sort((a, b) => {
-            // Sort based on the position of the ids in attemptedIds array
-            return attemptedIds.indexOf(b.id) - attemptedIds.indexOf(a.id);
-        });
-
-    if (filteredSagas.length === 0) {
-        return { attemptedIds: [], attemptedSagas: [], isLoading: false, error: null };
-    }
-
-    return { attemptedIds, isLoading: false, error: null, attemptedSagas: filteredSagas };
-}
+    return {
+        attempts: data ?? [],
+        isLoading,
+        error: error as Error | null,
+    };
+};

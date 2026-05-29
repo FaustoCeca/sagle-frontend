@@ -27,42 +27,40 @@ const OptionsBar = () => {
   return (
     <>
       <div
-        className="bg-gray-600 border border-amber-300 border-solid rounded-lg py-2 px-4 max-w-2xl mt-12"
+        className="glass glow-amber border border-neon-amber/50 rounded-xl py-2 px-5 max-w-2xl mt-12 animate-rise"
       >
         <div
-          className="flex flex-row justify-between items-center gap-8"
+          className="flex flex-row justify-between items-center gap-7"
         >
-          <div className="relative group mb-1">
+          <div className="relative group flex items-center gap-1.5">
             <span
-              className="text-2xl transform transition-transform group-hover:animate-flame cursor-default"
+              className="text-2xl transform transition-transform group-hover:animate-flame cursor-default drop-shadow-[0_0_8px_rgba(255,177,61,0.7)]"
               aria-label={`Streak: ${user?.streak || 0} days`}
               title={`Streak: ${user?.streak || 0} days`}
             >
               🔥
             </span>
-            <span className="ml-0.5 font-bold text-amber-300">
+            <span className="font-display text-sm text-neon-amber text-glow-amber leading-none pt-0.5">
               {user?.streak || 0}
             </span>
           </div>
           <button
             onClick={openModal}
-            className="cursor-pointer"
+            className="cursor-pointer text-neon-cyan transition-transform hover:scale-110 hover:text-glow-cyan"
             aria-label="how-to-play"
           >
             <CircleHelp
-              className="text-amber-300"
-              size={30}
+              size={28}
               aria-label="how-to-play"
             />
           </button>
           <button
             onClick={openGamesModal}
-            className="cursor-pointer"
+            className="cursor-pointer text-neon-pink transition-transform hover:scale-110 hover:text-glow-pink"
             aria-label="gamepad"
           >
             <Gamepad
-              className="text-amber-300"
-              size={30}
+              size={28}
               aria-label="gamepad"
             />
           </button>

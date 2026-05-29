@@ -1,69 +1,62 @@
 import { useEffect, useState } from 'react';
-import type { Saga } from '../types/game';
+import type { AttemptField, AttemptResult } from '../types/game';
 import SquareResult from './SquareResult';
 
 interface TableSagaItemProps {
     title: string;
     ariaLabel: string;
-    renderLogic: (saga: Saga) => {
-        state: "correct" | "incorrect" | "partial";
-        showArrow?: boolean;
-        higher?: boolean;
-        lower?: boolean;
-    };
-    getDisplayValue: (saga: Saga) => string | string[];
+    attempts: AttemptResult[];
+    getField?: (attempt: AttemptResult) => AttemptField;
     showImage?: boolean;
-    triedSagas: Saga[];
 }
 
 const TableSagaItem = ({
     title,
     ariaLabel,
-    renderLogic,
-    getDisplayValue,
+    attempts,
+    getField,
     showImage = false,
-    triedSagas = []
 }: TableSagaItemProps) => {
     const [animateId, setAnimateId] = useState<number>(0);
 
     useEffect(() => {
-        if (triedSagas.length == 0) return;
-        const newSaga = triedSagas[0];
+        if (attempts.length === 0) return;
+        const newest = attempts[0];
 
-        setAnimateId(newSaga.id);
+        setAnimateId(newest.sagaId);
 
         const timer = setTimeout(() => {
             setAnimateId(0);
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, [triedSagas]);
+    }, [attempts]);
 
     return (
         <div className="text-center">
             <span
-                className="text-base font-bold text-white"
+                className="block text-xs font-bold uppercase tracking-widest text-neon-cyan/90 pb-1"
                 aria-label={ariaLabel}
             >
                 {title}
             </span>
             {
-                triedSagas.length > 0 && !showImage &&
+                attempts.length > 0 && !showImage && getField &&
                 <div className="flex flex-col items-center mt-2">
                     {
-                        triedSagas.map((saga) => {
-                            const { state, showArrow, higher, lower } = renderLogic(saga);
+                        attempts.map((attempt) => {
+                            const field = getField(attempt);
                             return (
                                 <div
-                                    key={saga.id}
-                                    className={`square-result-container ${animateId == saga?.id ? 'animate-fade-in' : ''}`}
+                                    key={attempt.sagaId}
+                                    className={`square-result-container ${animateId == attempt.sagaId ? 'animate-fade-in' : ''}`}
                                 >
                                     <SquareResult
-                                        title={getDisplayValue(saga)}
-                                        showArrow={showArrow || false}
-                                        state={state}
-                                        higher={higher}
-                                        lower={lower}
+                                        title={field.value}
+                                        showArrow={!!field.arrow}
+                                        state={field.state}
+                                        higher={field.arrow === 'up'}
+                                        lower={field.arrow === 'down'}
                                     />
                                 </div>
                             );
@@ -72,17 +65,17 @@ const TableSagaItem = ({
                 </div>
             }
             {
-                showImage && triedSagas.length > 0 && (
+                showImage && attempts.length > 0 && (
                     <div className="flex flex-col items-center">
-                        {triedSagas.map((saga) => (
+                        {attempts.map((attempt) => (
                             <div
-                                key={saga.id}
-                                className={`${animateId == saga?.id ? 'animate-fade-in' : ''} mt-2 text-[0px] h-full w-full flex items-center justify-center`}
+                                key={attempt.sagaId}
+                                className={`${animateId == attempt.sagaId ? 'animate-fade-in' : ''} mt-2 text-[0px] h-full w-full flex items-center justify-center`}
                             >
                                 <img
-                                    src={saga.imageUrl}
-                                    alt={saga.title}
-                                    className="w-[110px] h-[110px] object-cover border-solid border-2 border-black"
+                                    src={attempt.imageUrl}
+                                    alt={attempt.title}
+                                    className="w-[110px] h-[110px] object-cover rounded-lg border-2 border-neon-cyan/50 glow-cyan"
                                 />
                             </div>
                         ))}

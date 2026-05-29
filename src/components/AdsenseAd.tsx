@@ -1,60 +1,72 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AdSenseProps {
   client: string;
   slot: string;
-  format?: string;
+  /** Responsive auto ad. When false, pass width + height for a fixed-size unit. */
   responsive?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
+  format?: string;
   width?: string;
   height?: string;
+  className?: string;
 }
 
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: unknown[];
   }
 }
 
 const AdSense: React.FC<AdSenseProps> = ({
   client,
   slot,
-  format = 'auto',
   responsive = true,
-  style = { display: 'block' },
-  className = '',
+  format = 'auto',
   width,
   height,
+  className = '',
 }) => {
+  const insRef = useRef<HTMLModElement>(null);
+
   useEffect(() => {
+    const ins = insRef.current;
+    // Only push once per <ins>. StrictMode (dev) runs effects twice and a
+    // remount can re-run this, so we bail if AdSense already filled this slot
+    // — otherwise it throws "All 'ins' elements ... already have ads in them".
+    if (!ins || ins.getAttribute('data-adsbygoogle-status')) return;
     try {
-      // Ensure we're in browser environment and AdSense is loaded
-      if (window) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {
       console.error('Error initializing AdSense:', e);
     }
-  }, []);
+  }, [slot]);
 
-  // Combine style with width and height if provided
-  const combinedStyle = {
-    ...style,
-    ...(width && { width }),
-    ...(height && { height }),
-    maxWidth: '100%',
-  };
+  // Fixed-size and responsive units require *different* markup. Mixing fixed
+  // dimensions with data-ad-format / full-width-responsive makes AdSense ignore
+  // one of them, so each path renders only the attributes it should.
+  const insProps = responsive
+    ? {
+        style: { display: 'block' as const },
+        'data-ad-format': format,
+        'data-full-width-responsive': 'true',
+      }
+    : {
+        style: {
+          display: 'inline-block' as const,
+          width,
+          height,
+          maxWidth: '100%',
+        },
+      };
 
   return (
     <div className={className}>
       <ins
-        className={`adsbygoogle ${responsive ? 'adsbygoogle-responsive' : ''}`}
-        style={combinedStyle}
+        ref={insRef}
+        className="adsbygoogle"
         data-ad-client={client}
         data-ad-slot={slot}
-        data-ad-format={format}
-        data-full-width-responsive={responsive ? 'true' : 'false'}
+        {...insProps}
       />
     </div>
   );

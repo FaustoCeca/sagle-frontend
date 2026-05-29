@@ -1,12 +1,21 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-export default defineConfig(({mode}) => {
+// React Compiler (babel-plugin-react-compiler) is enabled here, so manual
+// memoization (useMemo / useCallback / memo) is unnecessary throughout the
+// app — the compiler inserts optimal, fine-grained memoization automatically.
+const reactCompilerConfig = { target: '19' } as const
+
+export default defineConfig(({ mode }) => {
   return {
     plugins: [
-      react(),
-      tailwindcss()
+      react({
+        babel: {
+          plugins: [['babel-plugin-react-compiler', reactCompilerConfig]],
+        },
+      }),
+      tailwindcss(),
     ],
     build: {
       outDir: 'dist',
@@ -15,6 +24,6 @@ export default defineConfig(({mode}) => {
     envPrefix: 'VITE_',
     define: {
       'process.env.NODE_ENV': JSON.stringify(mode),
-    }
+    },
   }
 })

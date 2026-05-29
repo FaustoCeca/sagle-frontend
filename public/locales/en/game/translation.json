@@ -12,10 +12,12 @@
     "perspectives": "Perspectives",
     "artStyles": "Art Styles",
     "multiplayer": "Multiplayer",
-    "youNeed": "You need",
-    "triesHint": "tries to unlock a hint!",
+    "youNeed_one": "You need {{count}} try to unlock a hint!",
+    "youNeed_other": "You need {{count}} tries to unlock a hint!",
     "unlockHint": "Unlock Hint",
     "loadingHint": "Loading hint...",
     "loadingAttempts": "Loading your attempts...",
-    "hint": "Hint"
+    "hint": "Hint",
+    "hintNotAvailable": "Hint not available in this language.",
+    "scrollHorizontally": "< Scroll horizontally to see all the columns >"
 }

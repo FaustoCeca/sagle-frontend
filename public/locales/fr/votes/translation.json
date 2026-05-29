@@ -1,5 +1,7 @@
 {
   "congrats": "Félicitations ! Vous avez deviné le Sagle du jour :",
   "congratsDescription": "Y avez-vous joué ? Dites-nous quel était votre jeu préféré et votez pour lui !",
-  "loading": "Chargement du Sagle..."
+  "loading": "Chargement du Sagle...",
+  "votes_one": "{{count}} vote",
+  "votes_other": "{{count}} votes"
 }

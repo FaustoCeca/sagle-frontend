@@ -12,7 +12,9 @@ export const createSession = async () => {
         withCredentials: true // This is important to send cookies
     });
 
-    if (response.status !== 200) {
+    // BUG-04: the backend replies 201 to POST /users/session. Accept any 2xx
+    // so the first visitor's session is created without a failed attempt.
+    if (response.status < 200 || response.status >= 300) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -28,7 +30,9 @@ export const getCurrentSession = async () => {
         }
     });
 
-    if (response.status !== 200) {
+    // BUG-04: the backend replies 201 to POST /users/session. Accept any 2xx
+    // so the first visitor's session is created without a failed attempt.
+    if (response.status < 200 || response.status >= 300) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 

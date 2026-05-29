@@ -17,23 +17,23 @@ const SagasModal = () => {
       <div
         className='flex flex-col items-center justify-center p-4'
       >
-        <h2 className="text-4xl font-bold mb-4">Sagas</h2>
-        <p className="text-lg mb-4">
+        <h2 className="font-heading uppercase tracking-wide text-3xl lg:text-4xl font-bold mb-4 text-neon-pink text-glow-pink">Sagas</h2>
+        <p className="text-lg mb-4 text-arcade-muted">
           {t("sagasModalTitle")}
         </p>
-        {isLoading && <p>Loading sagas...</p>}
-        {error && <p className="text-red-500">Error loading sagas: {error.message}</p>}
+        {isLoading && <p className="text-arcade-muted">Loading sagas...</p>}
+        {error && <p className="text-neon-red">Error loading sagas: {error.message}</p>}
         {
           sagas && sagas.length > 0 && (
             <div className="mb-4 flex flex-col items-start justify-start w-full gap-2">
               {selectableSagas.map((saga) => (
-                <a 
-                  key={saga.id} 
-                  className="text-lg font-bold flex items-center gap-2 text-blue-500 hover:text-blue-700"
+                <a
+                  key={saga.id}
+                  className="text-lg font-semibold flex items-center gap-2 text-neon-cyan hover:text-glow-cyan transition"
                   href={saga.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title={`View saga in Wikipedia: ${saga.title}`}
+                  title={t('viewSaga', { title: saga.title })}
                 >
                   {saga.title}
                 </a>

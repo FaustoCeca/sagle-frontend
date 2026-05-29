@@ -12,10 +12,12 @@
     "perspectives": "Perspectives",
     "artStyles": "Styles Artistiques",
     "multiplayer": "Multijoueur",
-    "youNeed": "Vous avez besoin de",
-    "triesHint": "essais pour débloquer un indice !",
+    "youNeed_one": "Vous avez besoin de {{count}} essai pour débloquer un indice !",
+    "youNeed_other": "Vous avez besoin de {{count}} essais pour débloquer un indice !",
     "unlockHint": "Débloquer l'indice",
     "loadingHint": "Chargement de l'indice...",
     "loadingAttempts": "Chargement de vos tentatives...",
-    "hint": "Indice"
+    "hint": "Indice",
+    "hintNotAvailable": "Indice non disponible dans cette langue.",
+    "scrollHorizontally": "< Faites défiler horizontalement pour voir toutes les colonnes >"
 }

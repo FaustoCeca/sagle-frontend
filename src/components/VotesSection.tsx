@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { voteGame } from "../actions/voteGame";
 import GameCard from "./GameCard";
-import { useMemo, useRef } from "react";
 import { useGetUser } from "../hooks/useGetUser";
 import LoadingSpinner from "./LoadingSpinners";
 import GameCardSkeleton from "./GameCardSkeleton";
@@ -11,7 +10,6 @@ import { useTranslation } from "react-i18next";
 const VotesSection = () => {
     const { sagle, fetchSagleAgain, isFetching } = useGetSagle();
     const { user, fetchUserAgain } = useGetUser();
-    const isProcessingVote = useRef(false);
     const { mutateAsync: vote, isPending: isVoting } = useMutation({
         mutationFn: voteGame,
         onSuccess: () => {
@@ -22,18 +20,16 @@ const VotesSection = () => {
     const {t} = useTranslation('votes');
 
 
-    const sortedGames = useMemo(() => {
-        // Add safety check to ensure sagle and sagle.games exist
-        if (!sagle || !sagle.games) return [];
-        return [...sagle.games].sort((a, b) => a.id - b.id);
-    }, [sagle?.games]);
-    // Notice the [...sagle.games] - this creates a copy of the array before sorting, which is a good practice since sort() mutates the original array.
+    // Copy before sorting — sort() mutates in place, and sagle.games is cached query data.
+    const sortedGames = sagle?.games ? [...sagle.games].sort((a, b) => a.id - b.id) : [];
 
     const votesArr = sagle?.games.map(game => game.votes) || [];
     const totalVotes = votesArr.reduce((acc, votes) => acc + votes, 0);
 
     const handleVote = async (gameId: number) => {
-        if (user.hasVotedToday || isProcessingVote.current) {
+        // BUG-16: guard against missing user and use the real in-flight state
+        // (isVoting) instead of a ref that was never set.
+        if (user?.hasVotedToday || isVoting) {
             console.warn('Vote already cast or in process, ignoring vote attempt.');
             return;
         }
@@ -54,7 +50,7 @@ const VotesSection = () => {
             }}
         >
             <h2
-                className="text-2xl font-bold text-center mb-4 lg:px-0 px-5 text-white"
+                className="font-heading uppercase tracking-wide text-3xl font-bold text-center mb-4 lg:px-0 px-5 text-neon-green text-glow-pink"
                 aria-label="congrats-sagle"
             >
                 {t("congrats")} {
@@ -64,18 +60,18 @@ const VotesSection = () => {
                                 href={`${sagle?.link}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-500 hover:text-blue-700"
+                                className="text-neon-cyan text-glow-cyan underline decoration-neon-cyan/40 underline-offset-4 hover:decoration-neon-cyan transition"
                                 aria-label="sagle-link"
                             >
                                 {sagle.title}
                             </a>
-                        </span> : <span className="inline-flex items-center text-blue-500 hover:text-blue-700">
+                        </span> : <span className="inline-flex items-center text-neon-cyan">
                             {t("loading")}
                             <LoadingSpinner size="small" className="ml-2" />
                         </span>}
             </h2>
             <p
-                className="text-lg text-center mb-6 lg:px-0 px-5 text-white"
+                className="text-lg text-center mb-6 lg:px-0 px-5 text-arcade-muted"
                 aria-label="vote-instructions"
             >
                 {t("congratsDescription")}

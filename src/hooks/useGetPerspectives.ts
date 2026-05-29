@@ -24,5 +24,5 @@ export const useGetPerspectives = (): Response => {
         return { perspectives: [], isLoading: false, error }
     }
 
-    return { perspectives: data, isLoading: false, error: null }
+    return { perspectives: data ?? [], isLoading: false, error: null }
 }

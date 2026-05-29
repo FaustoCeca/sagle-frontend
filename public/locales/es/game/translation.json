@@ -12,10 +12,12 @@
     "perspectives": "Perspectivas",
     "artStyles": "Estilos de Arte",
     "multiplayer": "Multijugador",
-    "youNeed": "Necesitas",
-    "triesHint": "intentos para desbloquear una pista!",
+    "youNeed_one": "Necesitas {{count}} intento para desbloquear una pista!",
+    "youNeed_other": "Necesitas {{count}} intentos para desbloquear una pista!",
     "unlockHint": "Desbloquear pista",
     "loadingHint": "Cargando pista...",
     "loadingAttempts": "Cargando tus intentos...",
-    "hint": "Pista"
+    "hint": "Pista",
+    "hintNotAvailable": "Pista no disponible en este idioma.",
+    "scrollHorizontally": "< Desliza horizontalmente para ver todas las columnas >"
 }

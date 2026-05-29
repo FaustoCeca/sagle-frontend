@@ -22,3 +22,12 @@ i18n
             caches: ['localStorage', 'cookie']
         }
     })
+
+// BUG-12: keep <html lang> in sync with the active language (a11y/SEO).
+const setHtmlLang = (lng: string) => {
+    if (typeof document !== 'undefined' && lng) {
+        document.documentElement.lang = lng;
+    }
+};
+i18n.on('languageChanged', setHtmlLang);
+setHtmlLang(i18n.language);

@@ -3,7 +3,7 @@ import { getSagle } from "../actions/getters";
 import type { Saga } from "../types/game";
 
 interface Response {
-  sagle: Saga;
+  sagle: Saga | null;
   isLoading: boolean;
   isFetching: boolean;
   isFetched: boolean;
@@ -32,7 +32,7 @@ export const useGetSagle = (): Response => {
 
 
     return {
-      sagle,
+      sagle: sagle ?? null,
       isLoading,
       isFetching,
       isFetched,

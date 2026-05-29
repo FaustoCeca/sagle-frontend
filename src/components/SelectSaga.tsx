@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useGetSagas } from '../hooks/useGetSagas';
 import { useGetUser } from '../hooks/useGetUser';
 import LoadingSpinner from './LoadingSpinners';
@@ -13,10 +12,7 @@ const SelectSaga = () => {
     const { user } = useGetUser();
     const { t } = useTranslation('game');
     
-    const yesterdaySagle = useMemo(() =>
-        sagas?.find((saga) => saga.wasSagleYesterday),
-        [sagas]
-    );
+    const yesterdaySagle = sagas?.find((saga) => saga.wasSagleYesterday);
     
     if (!user && isLoading) {
         return (
@@ -33,7 +29,7 @@ const SelectSaga = () => {
             aria-label="select-saga-form"
         >
             <h2
-                className="lg:text-5xl text-3xl font-bold text-center mb-6 text-amber-100 mt-5"
+                className="font-heading uppercase tracking-wide lg:text-5xl text-3xl font-bold text-center mb-6 text-neon-cyan text-glow-cyan animate-flicker mt-5"
                 aria-label="guess-sagle"
             >
                 {t("selectSagaTitle")}
@@ -42,21 +38,10 @@ const SelectSaga = () => {
                 yesterdaySagle && (
 
                     <p
-                        className="lg:text-lg text-base text-center mb-4 font-semibold text-white lg:px-0 px-4"
+                        className="lg:text-lg text-base text-center mb-4 font-medium text-arcade-muted lg:px-0 px-4"
                         aria-label="yesterday-sagle"
                     >
-                            {/* TODO: Fix this link */}
-                        {/* Yesterday's Sagle was: {' '}
-                        <a
-                            href={`https://${yesterdaySagle.link}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:text-blue-700"
-                        >
-                            {yesterdaySagle.title}
-                        </a>
-                        , good luck today! */}
-                        {t("yesterdaySagle")} <span className="text-blue-500">{yesterdaySagle.title}</span>, {t("goodLuck")}
+                        {t("yesterdaySagle")} <span className="font-semibold text-neon-pink text-glow-pink">{yesterdaySagle.title}</span>, {t("goodLuck")}
                     </p>
                 )
             }

@@ -1,9 +1,11 @@
 import { config } from "../config/config"
+import type { AttemptResult } from "../types/game";
 
 export const attempt = async (sagaId: number): Promise<{
     message: string;
     success: boolean;
     haveFoundSagle?: boolean;
+    result: AttemptResult;
 }> => {
     const url = `${config.apiUrl}/sagle/attempt`;
 
@@ -15,7 +17,7 @@ export const attempt = async (sagaId: number): Promise<{
         body: JSON.stringify({ sagaId }),
         credentials: "include", // Include cookies in the request
     });
-    
+
     if (!response.ok) {
         throw new Error(`Failed to attempt game: ${response.statusText}`);
     }
@@ -30,5 +32,6 @@ export const attempt = async (sagaId: number): Promise<{
         message: data.message,
         success: data.success,
         haveFoundSagle: data.haveFoundSagle,
+        result: data.result,
     };
 }

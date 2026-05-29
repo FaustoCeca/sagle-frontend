@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { config } from '../config/config';
 import { useQueryClient } from '@tanstack/react-query';
-import type { Saga } from '../types/game';
 
 const socket = io(config.apiUrl, {
   transports: ['websocket'],
@@ -22,22 +21,20 @@ export const useSockets = () => {
 
     function onConnect() {
       setIsConnected(true);
-      console.log('WebSocket connected');
     }
 
     function onDisconnect() {
       setIsConnected(false);
     }
 
-    function onVoteUpdate(saga: Saga) {
-      // Actualizar la caché de React Query con los nuevos datos de saga
-      queryClient.setQueryData(['sagle'], saga);
+    // BUG-03: the socket no longer carries the Sagle. We just refetch it over
+    // HTTP, which returns the answer only to clients allowed to see it.
+    function onVoteUpdate() {
+      queryClient.invalidateQueries({ queryKey: ['sagle'] });
     }
 
-    function onAttemptUpdate(saga: Saga) {
-      // Actualizar la caché de React Query con los nuevos datos de saga
+    function onAttemptUpdate() {
       queryClient.invalidateQueries({ queryKey: ['sagle'] });
-      queryClient.setQueryData(['sagle'], saga);
     }
 
     // Registrar los eventos
@@ -46,13 +43,14 @@ export const useSockets = () => {
     socket.on('voteUpdate', onVoteUpdate);
     socket.on('attemptUpdate', onAttemptUpdate);
 
-    // Limpiar los eventos al desmontar
+    // BUG-20: only remove this effect's listeners on cleanup. Disconnecting the
+    // shared singleton socket here raced with the initial connection under
+    // StrictMode/HMR ("WebSocket is closed before the connection is established").
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('voteUpdate', onVoteUpdate);
       socket.off('attemptUpdate', onAttemptUpdate);
-      socket.disconnect();
     };
   }, [queryClient]);
 

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Game } from "../types/game";
 
 interface GameCardProps {
@@ -16,6 +17,7 @@ const GameCard = ({
     hasVotedToday = false,
     totalVotes = 0
 }: GameCardProps) => {
+    const { t } = useTranslation('votes');
 
     const handleClick = async () => {
         try {
@@ -41,19 +43,19 @@ const GameCard = ({
                 aspectRatio: '16/9',
                 minHeight: '300px',
             }}
-            className={`relative w-full cursor-pointer h-full rounded-lg shadow-lg 
-                flex items-end justify-center p-4 pb-8 text-white 
-                transition-transform duration-300
-                ${hasVotedToday ? '' : 'hover:scale-105'}
-                ${isVoting ? 'opacity-80 cursor-not-allowed ring-2 ring-blue-500 ring-opacity-75' : ''}
+            className={`group relative w-full cursor-pointer h-full rounded-xl overflow-hidden border border-neon-cyan/30
+                flex items-end justify-center p-4 pb-8 text-white
+                transition-all duration-300
+                ${hasVotedToday ? '' : 'hover:scale-[1.03] hover:border-neon-cyan/80 hover:glow-cyan'}
+                ${isVoting ? 'opacity-80 cursor-not-allowed border-neon-cyan glow-cyan' : ''}
                        `}
         >
             <div
-                className={`absolute inset-0 bg-black opacity-50 rounded-lg transition-opacity duration-300`}
+                className={`absolute inset-0 rounded-xl bg-gradient-to-t from-black/85 via-black/40 to-black/30 transition-opacity duration-300`}
                 aria-hidden="true"
             />
             <div
-                className="absolute rounded-lg inset-y-0 right-0 w-full bg-white/10 backdrop-blur-sm transition-all duration-1000 ease-out"
+                className="absolute rounded-xl inset-y-0 right-0 w-full bg-neon-cyan/20 backdrop-blur-sm transition-all duration-1000 ease-out"
                 style={{
                     height: `${votePercentage}%`,
                     bottom: 0,
@@ -67,8 +69,7 @@ const GameCard = ({
                 {/* Porcentaje de votos */}
                 {
                     votePercentage > 0 &&
-                    <span className={`absolute left-2 top-2 font-bold text-white text-sm
-                            `}>
+                    <span className="absolute left-2 top-2 font-display text-[10px] text-neon-cyan text-glow-cyan">
                         {Math.round(votePercentage)}%
                     </span>
                 }
@@ -83,23 +84,23 @@ const GameCard = ({
                 </div>
             )}
 
-            <h3 className="text-xl font-bold text-center z-10 pointer-events-none">{game.title}</h3>
+            <h3 className="font-heading text-xl font-bold uppercase tracking-wide text-center z-10 pointer-events-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{game.title}</h3>
             {
                 !hasVotedToday &&
-                <p className="absolute top-2 left-2 pointer-events-none">
+                <p className="absolute top-2 left-2 font-display text-[10px] text-arcade-muted pointer-events-none">
                     {game.birthYear}
                 </p>
             }
 
-            <p className="absolute bottom-2 left-2 text-white z-20">
-                {game.votes} votes
+            <p className="absolute bottom-2 left-2 font-display text-[9px] text-neon-cyan z-20">
+                {t('votes', { count: game.votes })}
             </p>
             {game.steamLink && (
                 <a
                     href={game.steamLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute top-2 right-2 text-sm text-blue-400 hover:underline"
+                    className="absolute top-2 right-2 text-xs font-semibold text-neon-cyan hover:text-glow-cyan transition z-20"
                 >
                     Steam
                 </a>

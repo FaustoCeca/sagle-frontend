@@ -25,5 +25,5 @@ export const useGetArtStyles = (): Response => {
         return { artStyles: [], isLoading: false, error };
     }
 
-    return { artStyles: data, isLoading: false, error: null };
+    return { artStyles: data ?? [], isLoading: false, error: null };
 }

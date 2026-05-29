@@ -24,5 +24,5 @@ export const useGetSagas = (): Response => {
         return { sagas: [], isLoading: false, error }
     }
 
-    return { sagas: data, isLoading: false, error: null }
+    return { sagas: data ?? [], isLoading: false, error: null }
 }

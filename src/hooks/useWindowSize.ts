@@ -1,31 +1,33 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
-export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+interface WindowSize {
+  width: number;
+  height: number;
+}
 
-  // Función debounce para limitar actualizaciones
-  const debounce = useCallback((fn: Function, ms = 20000000) => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return function(...args: any[]) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => fn(...args), ms);
-    };
-  }, []);
+const getWindowSize = (): WindowSize => ({
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
+
+/** Tracks the viewport size, debounced to one update per 250ms of resizing. */
+export const useWindowSize = (): WindowSize => {
+  const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize);
 
   useEffect(() => {
-    const handleResize = debounce(() => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }, 250);
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => setWindowSize(getWindowSize()), 250);
+    };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [debounce]);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return windowSize;
 };

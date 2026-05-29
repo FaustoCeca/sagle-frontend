@@ -213,8 +213,6 @@ export const GameForm = () => {
         }
     }
 
-    console.log("Sagas:", sagas);
-
     return (
         <FormProvider {...methods}>
             <form

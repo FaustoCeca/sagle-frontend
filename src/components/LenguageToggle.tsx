@@ -17,9 +17,10 @@ const LanguageToggle = () => {
   };
 
   return (
-    <button 
+    <button
       onClick={toggleLanguage}
-      className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      aria-label="toggle-language"
+      className="font-display text-[10px] leading-none px-3 py-2 rounded-md text-neon-cyan border border-neon-cyan/60 bg-neon-cyan/10 transition-all hover:bg-neon-cyan/20 hover:text-glow-cyan glow-cyan active:scale-95"
     >
       {i18n.language === SupportedLanguages.English ? 'EN' : i18n.language === SupportedLanguages.Spanish ? 'ES' : 'FR'}
     </button>

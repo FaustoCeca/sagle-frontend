@@ -1,20 +1,53 @@
 @import "tailwindcss";
-/* import bg from '../public/bg.png'; */
+
+/* ─────────────────────────────────────────────────────────────
+   The Sagle — Retro-Arcade / Synthwave design system
+   The neon background image (bg-black.jpg / bg-mobile-black.jpg) is the
+   north star: every surface, glow and accent below is tuned to live on
+   top of it without competing with it.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces */
+  --color-arcade-bg: #070713;
+  --color-arcade-ink: #eaecff;
+  --color-arcade-muted: #9aa0d6;
+
+  /* Neon accents (sampled to harmonise with the background art) */
+  --color-neon-cyan: #2de2ff;
+  --color-neon-pink: #ff43c0;
+  --color-neon-magenta: #ff2e97;
+  --color-neon-amber: #ffb13d;
+  --color-neon-green: #3dffa2;
+  --color-neon-yellow: #ffd23d;
+  --color-neon-red: #ff4d6d;
+
+  /* Type */
+  --font-display: "Press Start 2P", "Courier New", monospace;
+  --font-heading: "Chakra Petch", system-ui, sans-serif;
+  --font-body: "Chakra Petch", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
   padding: 0;
   position: relative;
+  font-family: var(--font-body);
+  color: var(--color-arcade-ink);
+  background-color: var(--color-arcade-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* The background art — kept exactly as authored, only the source image. */
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+  inset: 0;
+  z-index: -2;
   background-image: url('../public/bg-black.jpg');
   background-size: cover;
   background-position: center;
@@ -27,52 +60,161 @@ body::before {
   }
 }
 
-html {
-    scroll-behavior: smooth;
+/* Atmosphere layer: a soft vignette + faint CRT scanlines sit ABOVE the
+   background image but BELOW the UI, deepening contrast so neon text reads
+   cleanly. The background image itself is never modified. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 0%, transparent 40%, rgba(7, 7, 19, 0.55) 100%),
+    linear-gradient(180deg, rgba(7, 7, 19, 0.35) 0%, rgba(7, 7, 19, 0.05) 35%, rgba(7, 7, 19, 0.6) 100%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0px, rgba(0, 0, 0, 0.10) 1px, transparent 1px, transparent 4px);
 }
 
+/* ── Glass surfaces ───────────────────────────────────────────── */
+.glass {
+  background: rgba(9, 10, 28, 0.55);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+.glass-strong {
+  background: rgba(9, 10, 28, 0.82);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ── Neon glow utilities (registered with @utility so hover:/focus: work) ── */
+@utility glow-cyan   { box-shadow: 0 0 16px rgba(45, 226, 255, 0.35), inset 0 0 18px rgba(45, 226, 255, 0.06); }
+@utility glow-pink   { box-shadow: 0 0 16px rgba(255, 67, 192, 0.35), inset 0 0 18px rgba(255, 67, 192, 0.06); }
+@utility glow-amber  { box-shadow: 0 0 16px rgba(255, 177, 61, 0.35), inset 0 0 18px rgba(255, 177, 61, 0.06); }
+@utility glow-green  { box-shadow: 0 0 18px rgba(61, 255, 162, 0.45), inset 0 0 14px rgba(61, 255, 162, 0.18); }
+@utility glow-yellow { box-shadow: 0 0 18px rgba(255, 210, 61, 0.45), inset 0 0 14px rgba(255, 210, 61, 0.18); }
+@utility glow-red    { box-shadow: 0 0 18px rgba(255, 77, 109, 0.40), inset 0 0 14px rgba(255, 77, 109, 0.16); }
+
+/* ── Neon text ────────────────────────────────────────────────── */
+@utility text-glow-cyan  { text-shadow: 0 0 6px rgba(45, 226, 255, 0.85), 0 0 22px rgba(45, 226, 255, 0.45); }
+@utility text-glow-pink  { text-shadow: 0 0 6px rgba(255, 67, 192, 0.85), 0 0 22px rgba(255, 67, 192, 0.45); }
+@utility text-glow-amber { text-shadow: 0 0 6px rgba(255, 177, 61, 0.85), 0 0 20px rgba(255, 177, 61, 0.45); }
+
+/* ── Arcade CTA button ────────────────────────────────────────── */
+.btn-arcade {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-arcade-bg);
+  background: linear-gradient(180deg, var(--color-neon-cyan), #1bc4e6);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 18px rgba(45, 226, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 0 #0b6f86;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-arcade:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 0 28px rgba(45, 226, 255, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 0 #0b6f86;
+}
+.btn-arcade:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 0 18px rgba(45, 226, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 #0b6f86;
+}
+.btn-arcade:disabled {
+  filter: grayscale(0.6) brightness(0.7);
+  cursor: not-allowed;
+}
+
+/* ── Votes grid ───────────────────────────────────────────────── */
 .grid-votes {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 
-    @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 0.5rem;
-    }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
 }
 
+/* ── Hide scrollbar on the horizontal comparison board ────────── */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Animations ───────────────────────────────────────────────── */
 @keyframes flame {
-    0% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-5deg) scale(1.1); }
-    50% { transform: rotate(0deg) scale(1); }
-    75% { transform: rotate(5deg) scale(1.1); }
-    100% { transform: rotate(0deg) scale(1); }
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(-5deg) scale(1.1); }
+  50%  { transform: rotate(0deg) scale(1); }
+  75%  { transform: rotate(5deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
 }
-
 .animate-flame {
   animation: flame 0.5s ease-in-out infinite;
 }
 
-/* Añade esto a tu archivo CSS global */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
 }
 
+/* Staggered entrance for the main column on load */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  /* End on `transform: none` so the element does not keep a stacking context
+     after the entrance — otherwise it would trap the autocomplete dropdown
+     beneath later siblings (e.g. the hint box). */
+  to   { opacity: 1; transform: none; }
+}
+.animate-rise {
+  opacity: 0;
+  animation: riseIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Subtle neon sign flicker for hero headings */
+@keyframes neonFlicker {
+  0%, 100%   { opacity: 1; }
+  92%        { opacity: 1; }
+  93%        { opacity: 0.72; }
+  94%        { opacity: 1; }
+  96%        { opacity: 0.85; }
+  97%        { opacity: 1; }
+}
+.animate-flicker {
+  animation: neonFlicker 6s linear infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(45, 226, 255, 0.3); }
+  50%      { box-shadow: 0 0 26px rgba(45, 226, 255, 0.6); }
+}
+.animate-glow-pulse {
+  animation: glowPulse 2.4s ease-in-out infinite;
+}
+
 .square-result-container {
   display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-flicker,
+  .animate-glow-pulse,
+  .animate-fade-in,
+  .animate-flame {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .banner-ad {

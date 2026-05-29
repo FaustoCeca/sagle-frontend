@@ -52,3 +52,29 @@ export interface Hint {
     sagaId: number;
     createdAt: Date;
 }
+
+export type FieldState = "correct" | "partial" | "incorrect";
+export type ArrowDirection = "up" | "down" | null;
+
+export interface AttemptField {
+    value: string;
+    state: FieldState;
+    arrow?: ArrowDirection;
+}
+
+/**
+ * Per-field comparison of a guessed saga against the Sagle, computed on the
+ * backend (BUG-03). The client never receives the Sagle itself.
+ */
+export interface AttemptResult {
+    sagaId: number;
+    title: string;
+    imageUrl: string;
+    categories: AttemptField;
+    games: AttemptField;
+    firstGame: AttemptField;
+    lastGame: AttemptField;
+    perspectives: AttemptField;
+    artStyles: AttemptField;
+    multiplayer: AttemptField;
+}

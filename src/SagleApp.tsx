@@ -4,14 +4,12 @@ import SelectSaga from "./components/SelectSaga";
 import logo from '../public/sagle-logo.png';
 import SelectedSagas from "./components/SelectedSagas";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import VotesSection from "./components/VotesSection";
 import { useGetUser } from "./hooks/useGetUser";
 import { useGetSagle } from "./hooks/useGetSagle";
 import useSagleStore from "./hooks/useSagle";
-import useTriedSagasStore from "./hooks/useTriedSagas";
-import { useGetAttempts } from "./hooks/useGetAttempts";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
@@ -23,22 +21,35 @@ import { useWindowSize } from "./hooks/useWindowSize";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback";
 
+// The QueryClient lives at module scope: creating it inside render (as it was
+// before) discarded the entire cache on every re-render. The React Compiler
+// handles component memoization, so no manual memo() wrappers are needed.
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
 const SagleContentApp = () => {
   const { user: userData } = useGetUser();
   const { setUser, error } = useCurrentUser();
   const voteSectionRef = useRef<HTMLDivElement>(null);
   const { sagle } = useGetSagle();
   const setSagle = useSagleStore((state) => state.setSagle);
-  const setTriedSagas = useTriedSagasStore((state) => state.setTriedSagas);
-  const { attemptedSagas } = useGetAttempts();
-  const { isConnected } = useSockets();
+  // Opens the realtime socket and refetches the Sagle on vote/attempt updates.
+  useSockets();
   const { width } = useWindowSize();
 
   if (error) {
     throw new Error(error);
   }
-  
 
+
+  // BUG-06: the grid/hint derive from the ['attempts'] query alone, so there
+  // is no effect here overwriting them with stale data when userData changes.
   useEffect(() => {
     if (sagle) {
       setSagle(sagle);
@@ -46,9 +57,8 @@ const SagleContentApp = () => {
 
     if (userData) {
       setUser(userData);
-      setTriedSagas(attemptedSagas);
     }
-  }, [sagle, userData, setSagle, setUser, setTriedSagas]);
+  }, [sagle, userData, setSagle, setUser]);
 
 
   useEffect(() => {
@@ -71,13 +81,7 @@ const SagleContentApp = () => {
     }
   }, [userData?.hasParticipatedToday]);
 
-  const MemoizedOptionsBar = memo(OptionsBar);
-  const MemoizedSelectSaga = memo(SelectSaga);
-  const MemoizedHintSection = memo(HintSection)
-  const MemoizedSelectedSagas = memo(SelectedSagas);
-  const MemoizedVotesSection = memo(VotesSection);
-
-  const isMobile = useMemo(() => width < 768, [width]);
+  const isMobile = width < 768;
 
   return (
     <AppWrapper>
@@ -96,7 +100,7 @@ const SagleContentApp = () => {
       <picture>
         <img
           src={logo}
-          className="w-full h-auto max-w-[220px] lg:max-w-[300px] max-h-[220px] lg:max-h-[300px] object-contain"
+          className="w-full h-auto max-w-[220px] lg:max-w-[300px] max-h-[220px] lg:max-h-[300px] object-contain animate-rise drop-shadow-[0_0_25px_rgba(45,226,255,0.35)]"
           alt="sagle-logo"
           aria-label="sagle-logo"
         />
@@ -106,10 +110,10 @@ const SagleContentApp = () => {
           <ActionButton />
         )
       }
-      <MemoizedOptionsBar />
-      <MemoizedSelectSaga />
-      <MemoizedHintSection sagle={sagle} />
-      <MemoizedSelectedSagas
+      <OptionsBar />
+      <SelectSaga />
+      <HintSection sagle={sagle} />
+      <SelectedSagas
         sagle={sagle}
       />
       <div
@@ -118,7 +122,7 @@ const SagleContentApp = () => {
         id="votes-section"
         data-votes-section
       >
-        <MemoizedVotesSection />
+        <VotesSection />
       </div>
       {
         config.nodeEnv === 'production' &&
@@ -137,8 +141,6 @@ const SagleContentApp = () => {
 };
 
 const SagleApp = () => {
-  const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary

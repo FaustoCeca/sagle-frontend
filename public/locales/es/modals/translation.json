@@ -16,5 +16,6 @@
     "howModalArtStyle": "Estilo artístico: el estilo visual de la saga, cómo se ve.",
     "howModalMultiplayer": "Multijugador: si la saga tiene multijugador o no.",
     "howModalMultiplayerExplanation": "Sí, no o algunos (si algunos juegos tienen multijugador y otros no, será \"algunos\") (Solo aceptamos multijugador si es online y en modo PvP o PvE, no si solo es una tabla de clasificación o un modo cooperativo en un juego de un solo jugador)",
-    "sagasModalTitle": "Aquí puedes encontrar una lista de todas las sagas disponibles en el juego. Y las diferentes actualizaciones que se les han hecho."
+    "sagasModalTitle": "Aquí puedes encontrar una lista de todas las sagas disponibles en el juego.",
+    "viewSaga": "Ver {{title}}"
 }

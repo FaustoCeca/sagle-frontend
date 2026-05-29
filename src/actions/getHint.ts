@@ -1,7 +1,8 @@
 import axios from "axios";
 import { config } from "../config/config"
+import type { Hint } from "../types/game";
 
-export const getHint = async () => {
+export const getHint = async (): Promise<Hint[]> => {
     try {
         const url = `${config.apiUrl}/hint`;
 
@@ -16,7 +17,7 @@ export const getHint = async () => {
             throw new Error(`Error fetching hint: ${response.statusText}`);
         }
 
-        return response.data;
+        return response.data as Hint[];
     } catch (error) {
         console.error("Error in getHint:", error);
         throw new Error("Failed to fetch hint");
