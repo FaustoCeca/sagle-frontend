@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Fondo: cuadrado redondeado con el navy del tema (#070713) -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="#0b0b1f"/>
+  <rect x="5" y="5" width="502" height="502" rx="108" fill="none" stroke="#23234a" stroke-width="4"/>
+
+  <!-- Resplandor neón cian sutil, como el fondo de la página -->
+  <circle cx="256" cy="248" r="176" fill="#22d3ee" opacity="0.09"/>
+
+  <!-- Mando: empuñaduras (detrás) + cuerpo, mismo gris para que se vean como una sola pieza -->
+  <circle cx="140" cy="348" r="70" fill="#4a5363"/>
+  <circle cx="372" cy="348" r="70" fill="#4a5363"/>
+  <rect x="72" y="156" width="368" height="176" rx="86" fill="#59616f"/>
+
+  <!-- Brillo superior -->
+  <rect x="100" y="170" width="312" height="50" rx="25" fill="#7c8499" opacity="0.40"/>
+
+  <!-- D-pad (cruceta) -->
+  <rect x="148" y="190" width="40" height="108" rx="11" fill="#13172a"/>
+  <rect x="114" y="224" width="108" height="40" rx="11" fill="#13172a"/>
+
+  <!-- Botones de acción (diamante de 4 colores) -->
+  <circle cx="360" cy="200" r="26" fill="#f59e0b"/>
+  <circle cx="316" cy="244" r="26" fill="#3b82f6"/>
+  <circle cx="404" cy="244" r="26" fill="#22c55e"/>
+  <circle cx="360" cy="288" r="26" fill="#ef4444"/>
+</svg>
