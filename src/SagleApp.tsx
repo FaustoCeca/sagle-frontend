@@ -15,9 +15,13 @@ import confetti from "canvas-confetti";
 import { useSockets } from "./hooks/useSockets";
 import ActionButton from "./components/CreateButton";
 import HintSection from "./components/HintSection";
-import AdSense from "./components/AdsenseAd";
-import { config } from "./config/config";
-import { useWindowSize } from "./hooks/useWindowSize";
+import ShareResult from "./components/ShareResult";
+// NO BORRAR — imports de los banners AdSense manuales. Comentados (no borrados):
+// ya funcionan los Auto ads y los slots siguen siendo placeholders. Reactivar
+// junto con los bloques <AdSense> de abajo cuando tengas slots reales.
+// import AdSense from "./components/AdsenseAd";
+// import { config } from "./config/config";
+// import { useWindowSize } from "./hooks/useWindowSize";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback";
 
@@ -41,7 +45,8 @@ const SagleContentApp = () => {
   const setSagle = useSagleStore((state) => state.setSagle);
   // Opens the realtime socket and refetches the Sagle on vote/attempt updates.
   useSockets();
-  const { width } = useWindowSize();
+  // NO BORRAR — solo alimenta el tamaño de los banners AdSense manuales (abajo).
+  // const { width } = useWindowSize();
 
   if (error) {
     throw new Error(error);
@@ -81,11 +86,16 @@ const SagleContentApp = () => {
     }
   }, [userData?.hasParticipatedToday]);
 
-  const isMobile = width < 768;
+  // NO BORRAR — solo alimenta el tamaño de los banners AdSense manuales (abajo).
+  // const isMobile = width < 768;
 
   return (
     <AppWrapper>
-      {
+      {/* NO BORRAR — banner AdSense manual (ubicación superior). Comentado a
+          propósito: ya funcionan los Auto ads y este slot sigue siendo un
+          placeholder (XXXXXXXXXX). Reactivar quitando este comentario (y los
+          imports/variables de arriba) cuando tengas un slot real.
+
         config.nodeEnv === 'production' &&
         <AdSense
           client="ca-pub-7814206622129697"
@@ -96,7 +106,7 @@ const SagleContentApp = () => {
           height={isMobile ? "50px" : "90px"}
           className="mx-auto my-4"
         />
-      }
+      */}
       <picture>
         <img
           src={logo}
@@ -116,6 +126,7 @@ const SagleContentApp = () => {
       <SelectedSagas
         sagle={sagle}
       />
+      <ShareResult />
       <div
         className="w-full"
         ref={voteSectionRef}
@@ -124,7 +135,11 @@ const SagleContentApp = () => {
       >
         <VotesSection />
       </div>
-      {
+      {/* NO BORRAR — banner AdSense manual (ubicación inferior). Comentado a
+          propósito: ya funcionan los Auto ads y este slot sigue siendo un
+          placeholder (XXXXXXXXXX). Reactivar quitando este comentario (y los
+          imports/variables de arriba) cuando tengas un slot real.
+
         config.nodeEnv === 'production' &&
         <AdSense
           client="ca-pub-7814206622129697"
@@ -135,7 +150,7 @@ const SagleContentApp = () => {
           height={isMobile ? "50px" : "90px"}
           className="mx-auto my-4"
         />
-      }
+      */}
     </AppWrapper>
   );
 };

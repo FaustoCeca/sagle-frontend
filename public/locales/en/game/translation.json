@@ -19,5 +19,10 @@
     "loadingAttempts": "Loading your attempts...",
     "hint": "Hint",
     "hintNotAvailable": "Hint not available in this language.",
-    "scrollHorizontally": "< Scroll horizontally to see all the columns >"
+    "scrollHorizontally": "< Scroll horizontally to see all the columns >",
+    "shareHeading": "Share your result!",
+    "shareButton": "Share result",
+    "shareCopied": "Copied!",
+    "shareSolved_one": "Solved in {{count}} guess",
+    "shareSolved_other": "Solved in {{count}} guesses"
 }

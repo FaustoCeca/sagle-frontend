@@ -19,5 +19,10 @@
     "loadingAttempts": "Chargement de vos tentatives...",
     "hint": "Indice",
     "hintNotAvailable": "Indice non disponible dans cette langue.",
-    "scrollHorizontally": "< Faites défiler horizontalement pour voir toutes les colonnes >"
+    "scrollHorizontally": "< Faites défiler horizontalement pour voir toutes les colonnes >",
+    "shareHeading": "Partage ton résultat !",
+    "shareButton": "Partager le résultat",
+    "shareCopied": "Copié !",
+    "shareSolved_one": "Résolu en {{count}} essai",
+    "shareSolved_other": "Résolu en {{count}} essais"
 }

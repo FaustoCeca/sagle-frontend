@@ -19,5 +19,10 @@
     "loadingAttempts": "Cargando tus intentos...",
     "hint": "Pista",
     "hintNotAvailable": "Pista no disponible en este idioma.",
-    "scrollHorizontally": "< Desliza horizontalmente para ver todas las columnas >"
+    "scrollHorizontally": "< Desliza horizontalmente para ver todas las columnas >",
+    "shareHeading": "¡Comparte tu resultado!",
+    "shareButton": "Compartir resultado",
+    "shareCopied": "¡Copiado!",
+    "shareSolved_one": "Resuelto en {{count}} intento",
+    "shareSolved_other": "Resuelto en {{count}} intentos"
 }
