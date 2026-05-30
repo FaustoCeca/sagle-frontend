@@ -71,7 +71,7 @@ const ShareResult = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center mt-2 mb-10 animate-rise">
+    <div className="w-full flex flex-col items-center mt-2 mb-6 animate-rise">
       <div className="glass-strong border border-neon-green/40 glow-green rounded-2xl px-6 py-5 flex flex-col items-center gap-4 max-w-md text-center">
         <h3 className="font-heading uppercase tracking-wider text-neon-green drop-shadow-[0_0_8px_currentColor] text-lg">
           {t("shareHeading")}

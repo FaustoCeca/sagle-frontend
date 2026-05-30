@@ -44,7 +44,7 @@ const VotesSection = () => {
 
     return (
         <div
-            className="flex flex-col items-center justify-center min-h-dvh w-full "
+            className="flex flex-col items-center justify-start w-full"
             style={{
                 display: user?.hasParticipatedToday ? 'flex' : 'none',
             }}
