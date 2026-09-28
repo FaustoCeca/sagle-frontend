@@ -1,1 +1,3 @@
+# NO BORRAR: requerido por Google AdSense para autorizar la venta de anuncios
+# y poder cobrar. Debe quedar accesible en https://<dominio>/ads.txt
 google.com, pub-7814206622129697, DIRECT, f08c47fec0942fa0

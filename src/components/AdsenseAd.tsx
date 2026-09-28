@@ -1,3 +1,6 @@
+// ⚠️ NO BORRAR: componente de anuncios de Google AdSense (banners manuales).
+// Aunque los Auto ads colocan anuncios automáticamente, este componente se
+// usa para las ubicaciones manuales en SagleApp.tsx. Mantener.
 import React, { useEffect, useRef } from 'react';
 
 interface AdSenseProps {
